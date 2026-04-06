@@ -2458,9 +2458,23 @@
                     else dayGroups['Other'].push(event);
                 });
                 
+                // Helper function to parse time for sorting
+                function parseTime(timeStr) {
+                    const match = timeStr.match(/(\d{1,2}):(\d{2})/);
+                    if (!match) return 0;
+                    let hour = parseInt(match[1]);
+                    const minute = parseInt(match[2]);
+                    if (timeStr.toLowerCase().includes('pm') && hour !== 12) hour += 12;
+                    if (timeStr.toLowerCase().includes('am') && hour === 12) hour = 0;
+                    return hour * 60 + minute;
+                }
+                
                 let html = '';
                 Object.keys(dayGroups).forEach(day => {
                     if (dayGroups[day].length > 0) {
+                        // Sort events by time
+                        dayGroups[day].sort((a, b) => parseTime(a.time) - parseTime(b.time));
+                        
                         html += `<div class="day-header">${day}</div>`;
                         dayGroups[day].forEach(event => {
                             html += `
