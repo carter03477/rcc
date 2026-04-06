@@ -1,0 +1,147 @@
+{
+  "calendar": [
+    {
+      "id": 1,
+      "title": "Basketball",
+      "date": "2026-03-28",
+      "time": "Today",
+      "category": "sport",
+      "color": "#FF6B35"
+    },
+    {
+      "id": 2,
+      "title": "Drum Lesson",
+      "date": "Every Monday",
+      "time": "12:30 PM",
+      "location": "School",
+      "category": "music",
+      "color": "#FFE66D"
+    }
+  ],
+  "contacts": [
+    {
+      "id": 1,
+      "name": "Dad (Darren)",
+      "category": "family",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": 2,
+      "name": "Myles (Brother)",
+      "category": "family",
+      "phone": "",
+      "notes": "Uses Buddy agent"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Set up weekly calendar routine",
+      "due": "2026-03-31",
+      "priority": "medium",
+      "completed": false,
+      "category": "personal"
+    }
+  ],
+  "notes": [
+    {
+      "id": 1,
+      "title": "RCC Setup",
+      "content": "Rocky Command Centre - My personal dashboard!",
+      "date": "2026-03-29",
+      "category": "general"
+    },
+    {
+      "id": 2,
+      "title": "Weekly Schedule",
+      "content": "Drum lessons: Every Monday 12:30 PM at school",
+      "date": "2026-03-29",
+      "category": "music"
+    }
+  ],
+  "music": {
+    "instruments": [
+      {
+        "id": 1,
+        "name": "Drums",
+        "emoji": "🥁",
+        "currentGoal": "Working on paradiddles and double bass",
+        "lessonDay": "Monday",
+        "lessonTime": "12:30 PM"
+      },
+      {
+        "id": 2,
+        "name": "Saxophone",
+        "emoji": "🎷",
+        "currentGoal": "Scales and jazz improvisation",
+        "lessonDay": "Monday",
+        "lessonTime": "TBD"
+      },
+      {
+        "id": 3,
+        "name": "Flute",
+        "emoji": "🪈",
+        "currentGoal": "Breath control exercises",
+        "lessonDay": "Tuesday",
+        "lessonTime": "TBD"
+      },
+      {
+        "id": 4,
+        "name": "Guitar",
+        "emoji": "🎸",
+        "currentGoal": "Learning new chords",
+        "lessonDay": "Tuesday",
+        "lessonTime": "TBD"
+      },
+      {
+        "id": 5,
+        "name": "Clarinet",
+        "emoji": "🎵",
+        "currentGoal": "Tone quality improvement",
+        "lessonDay": "Thursday",
+        "lessonTime": "TBD"
+      },
+      {
+        "id": 6,
+        "name": "Piano",
+        "emoji": "🎹",
+        "currentGoal": "Sight reading practice",
+        "lessonDay": "Friday",
+        "lessonTime": "TBD"
+      }
+    ],
+    "practiceLog": [
+      {
+        "id": 1,
+        "date": "2026-04-03",
+        "instrument": "Drums",
+        "duration": 30,
+        "notes": "Practiced rudiments and fills",
+        "rating": 4
+      }
+    ],
+    "masteredSongs": [
+      {
+        "id": 1,
+        "instrument": "Drums",
+        "title": "Example Song",
+        "dateCompleted": "2026-03-15"
+      }
+    ],
+    "stats": {
+      "totalPracticeMinutes": 30,
+      "currentStreak": 1,
+      "longestStreak": 5
+    },
+    "lessonNotes": [
+      {
+        "id": 1,
+        "instrument": "Drums",
+        "date": "2026-04-01",
+        "teacherSaid": "Focus on keeping steady tempo",
+        "homework": "Practice with metronome 15 min daily"
+      }
+    ]
+  }
+}

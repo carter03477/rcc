@@ -1,0 +1,14 @@
+{
+  "name": "rcc-gmail-client",
+  "version": "1.0.0",
+  "description": "Gmail integration for Rocky Command Centre",
+  "main": "gmail-server.js",
+  "scripts": {
+    "start": "node gmail-server.js"
+  },
+  "dependencies": {
+    "canvas": "^3.2.3",
+    "express": "^4.22.1",
+    "googleapis": "^118.0.0"
+  }
+}

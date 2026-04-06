@@ -1,0 +1,29 @@
+PHASE 1 FEATURES TO ADD:
+
+1. DARK MODE
+- Toggle button in header
+- Dark purple/black theme
+- Save preference to localStorage
+- Smooth transition
+
+2. SEARCH BAR
+- In header area
+- Search events, tasks, contacts, notes
+- Highlight matches
+- Clear button
+
+3. HOMEWORK TRACKER
+- New dedicated tab
+- Subject field
+- Assignment name
+- Due date
+- Status (not started, in progress, done)
+- Priority
+
+4. COUNTDOWN TIMERS
+- Show on Today view
+- Days until next big event
+- Urgent tasks coming up
+- Visual countdown badges
+
+Building now...
