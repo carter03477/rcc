@@ -1,1 +1,394 @@
  <!-- New RCC v2 will be pasted here by Rocky -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>🚀 Rocky Command Centre 2 (RCC v2)</title>
+ <style>
+ *{margin:0;padding:0;box-sizing:border-box}
+ body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  color:#333;padding:20px;min-height:100vh;transition:all .3s ease}
+ .container{max-width:1000px;margin:0 auto}
+  header{position:relative;text-align:center;color:#fff;margin-bottom:20px;padding:60px 20px 20px;background:rgba(255,255,255,.1);border-radius:15px;backdrop-filter:blur(10px)}
+ header h1{font-size:2.2em;margin-bottom:6px}
+ header p{font-size:1em;opacity:.9}
+ .btn{background:#667eea;color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+ .btn.secondary{background:#4ECDC4}.btn.danger{background:#FF6B35}.btn:disabled{opacity:.6;cursor:not-allowed}
+ .dark-mode-toggle,.lock-toggle{
+   position:absolute;top:15px;left:20px;background:rgba(255,255,255,.2);border:none;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:1em;color:#fff}
+ .lock-toggle{left:100px}
+ .tab-nav{display:flex;gap:10px;margin:15px 0 20px;flex-wrap:wrap}
+ .tab-button{flex:1;min-width:120px;padding:12px;background:rgba(255,255,255,.9);border:none;border-radius:12px;font-weight:700;cursor:pointer}
+ .tab-button.active{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff}
+ .card{background:#fff;border-radius:15px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.2);min-height:200px}
+ body.dark-mode .card{background:#2a2a3e;color:#e0e0e0}
+ .card h2{color:#667eea;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+ body.dark-mode .card h2{color:#8b9aff}
+ .event-item,.task-item,.contact-item,.note-item,.email-item{
+  padding:12px;margin-bottom:10px;border-radius:8px;background:#f8f9fa;border-left:4px solid #667eea;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  body.dark-mode .event-item,body.dark-mode .task-item,body.dark-mode .contact-item,body.dark-mode .note-item,body.dark-mode .email-item{background:#1e1e2f}
+ .event-item.sport{border-left-color:#FF6B35}.event-item.school{border-left-color:#4ECDC4}.event-item.music{border-left-color:#FFE66D}
+ .item-title{font-weight:700}.item-detail{color:#666;font-size:.9em}body.dark-mode .item-detail{color:#b0b0b0}
+ .small{font-size:.85em;color:#777}body.dark-mode .small{color:#aaa}
+ .empty-state{text-align:center;padding:25px;color:#999;font-style:italic}
+ .tag{display:inline-block;padding:2px 6px;background:#eee;border-radius:6px;font-size:.75em;color:#555}
+ body.dark-mode .tag{background:#333;color:#ddd}
+ .form{display:grid;gap:10px;margin-bottom:12px}
+ .row-3{display:grid;gap:10px;grid-template-columns:2fr 1fr 1fr}
+ .row-2{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+ input[type=text],input[type=datetime-local],select,textarea{width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:8px}
+ label{font-weight:700;font-size:.9em;color:#444}
+ body.dark-mode input,body.dark-mode select,body.dark-mode textarea{background:#1e1e2f;border-color:#444;color:#e0e0e0}
+ body.dark-mode label{color:#e0e0e0}
+ .email-connects{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+ .email-list .email-item{border-left-color:#4ECDC4}
+  
+ .email-from{font-weight:700}.email-subject{color:#555}body.dark-mode .email-subject{color:#cfcfcf}
+  .lock-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
+ .lock-card{width:min(92%,420px);background:#fff;border-radius:16px;padding:20px;text-align:center}
+ body.dark-mode .lock-card{background:#2a2a3e;color:#e0e0e0}
+ .pin-input{letter-spacing:8px;text-align:center;font-size:1.4em}
+ .hint{margin-top:8px}
+ .view-toggle{text-align:center;margin-bottom:10px}
+ .view-toggle button{padding:8px 14px;border:2px solid #667eea;background:#fff;color:#667eea;border-radius:20px;font-weight:700}
+ .view-toggle button.active{background:#667eea;color:#fff}
+ body.dark-mode .view-toggle button{background:#2a2a3e;color:#8b9aff;border-color:#8b9aff}
+ </style>
+</head>
+<body>
+ <div id="lock" class="lock-overlay" style="display:none;">
+  <div class="lock-card">
+   <h2>🔒 RCC Locked</h2>
+   <p class="small">Enter your 4–8 digit PIN</p>
+   <input id="pin" class="pin-input" type="password" inputmode="numeric" maxlength="8" placeholder="••••" />
+   <div class="form" style="margin-top:10px;">
+    <button class="btn" id="unlockBtn">Unlock</button>
+    <button class="btn secondary" id="setPinBtn">Set / Change PIN</button>
+   </div>
+   <div id="lockHint" class="hint small"></div>
+  </div>
+ </div>
+
+ <div class="container" id="app" style="display:none;">
+  <header>
+   <button class="dark-mode-toggle" id="darkBtn" title="Toggle Dark Mode">🌙</button>
+   <button class="lock-toggle" id="lockNow" title="Lock Now">🔒 Lock</button>
+   <h1>🚀 ROCKY COMMAND CENTRE 2</h1>
+   <p>Your Personal Dashboard</p>
+  </header>
+
+  <div class="tab-nav">
+   <button class="tab-button active" data-tab="home">🏠 Today</button>
+   <button class="tab-button" data-tab="calendar">📅 Calendar</button>
+   <button class="tab-button" data-tab="emails">📧 Emails</button>
+   <button class="tab-button" data-tab="tasks">✅ Tasks</button>
+   <button class="tab-button" data-tab="contacts">👥 Contacts</button>
+   <button class="tab-button" data-tab="notes">📝 Notes</button>
+  </div>
+
+  <div id="home" class="card tab">
+   <h2>🏠 Today's Overview</h2>
+   <div id="today-date" class="small" style="margin-bottom:10px;"></div>
+   <div style="margin-bottom:18px;">
+    <h3 style="color:#667eea;margin-bottom:6px;">📅 Today's Events</h3>
+    <div id="today-events"></div>
+   </div>
+   <div style="margin-bottom:18px;">
+    <h3 style="color:#667eea;margin-bottom:6px;">✅ Active Tasks</h3>
+    <div id="today-tasks"></div>
+   </div>
+   <div>
+    <h3 style="color:#667eea;margin-bottom:6px;">📝 Quick Notes</h3>
+    <div id="today-notes"></div>
+   </div>
+  </div>
+----- END CHUNK A -----
+ 
+----- START CHUNK B -----
+  <!-- Calendar Tab -->
+  <div id="calendar" class="card tab" style="display:none;">
+   <h2>📅 Calendar</h2>
+
+   <div class="form">
+    <div class="row-3">
+     <div>
+      <label>Title</label>
+      <input id="ev-title" type="text" placeholder="e.g., Football Training">
+     </div>
+     <div>
+      <label>Start</label>
+      <input id="ev-start" type="datetime-local">
+      </div>
+     <div>
+      <label>End</label>
+      <input id="ev-end" type="datetime-local">
+     </div>
+    </div>
+    <div class="row-2">
+     <div>
+      <label>Category</label>
+      <select id="ev-category">
+       <option value="school">School</option>
+       <option value="sport">Sport</option>
+       <option value="music">Music</option>
+       <option value="personal">Personal</option>
+      </select>
+     </div>
+     <div>
+      <label>Location (optional)</label>
+      <input id="ev-location" type="text" placeholder="e.g., Kensington Oval">
+     </div>
+    </div>
+    <div class="row-2">
+     <label style="display:flex;align-items:center;gap:8px;">
+      <input id="ev-notify" type="checkbox"> Notify Rocky about this event
+     </label>
+     <div style="text-align:right;">
+      <button class="btn" id="ev-add">+ Add Event</button>
+     </div>
+    </div>
+    <div class="row-2">
+     <button class="btn secondary" id="share-update">Share update (copy)</button>
+     <span class="small">Copies a summary of your latest changes to paste to Rocky.</span>
+    </div>
+   </div>
+   <div id="calendar-list"></div>
+  </div>
+
+  <!-- Emails Tab -->
+  <div id="emails" class="card tab" style="display:none;">
+   <h2>📧 Emails</h2>
+   <div class="email-connects">
+    <button class="btn" id="connect-gmail">Connect Gmail</button>
+    <button class="btn secondary" id="connect-outlook">Connect Outlook</button>
+   </div>
+   <div class="small" style="margin-bottom:8px;">
+    After Dad runs the email server on the Mac mini, these buttons will open a sign-in page.
+   </div>
+   <div id="email-status" class="small"></div>
+   <div id="email-list" class="email-list" style="margin-top:10px;"></div>
+  </div>
+  <!-- Tasks Tab -->
+  <div id="tasks" class="card tab" style="display:none;">
+   <h2>✅ Tasks</h2>
+   <div id="tasks-list"></div>
+  </div>
+
+  <!-- Contacts Tab -->
+  <div id="contacts" class="card tab" style="display:none;">
+   <h2>👥 Contacts</h2>
+   <div id="contacts-list"></div>
+  </div>
+
+  <!-- Notes Tab -->
+  <div id="notes" class="card tab" style="display:none;">
+   <h2>📝 Notes</h2>
+   <div id="notes-list"></div>
+  </div>
+  <footer class="small" style="text-align:center;color:white;margin-top:18px;opacity:.8;">
+   Built by Carter & Rocky | Last updated: <span id="last-update"></span>
+  </footer>
+ </div>
+
+ <script>
+ // --- Utilities ---
+ const $ = (id)=>document.getElementById(id);
+ const bySelAll = (sel)=>Array.from(document.querySelectorAll(sel));
+
+ function parseDateMaybe(s){ if(!s) return null; const d=new Date(s); return isNaN(d)?null:d; }
+ function fmtRange(ev){
+  const s=parseDateMaybe(ev.start), e=parseDateMaybe(ev.end);
+  if(s&&e){
+   const sd=s.toLocaleDateString([], {month:'short',day:'numeric'});
+   const st=s.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+   const ed=e.toLocaleDateString([], {month:'short',day:'numeric'});
+   const et=e.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+   return (sd===ed)? `${sd} • ${st}–${et}` : `${sd} ${st} → ${ed} ${et}`;
+  }
+  if(s){
+   const sd=s.toLocaleDateString([], {month:'short',day:'numeric'});
+   const st=s.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+   return `${sd} • ${st}`;
+  }
+  if(ev.date||ev.time) return `${ev.time||''} ${ev.date||''}`.trim();
+  return '';
+ }
+ function sortEvents(list){
+  return [...list].sort((a,b)=>{
+   const as=parseDateMaybe(a.start)||parseDateMaybe(`${a.date||''} ${a.time||''}`)||new Date(0);
+   const bs=parseDateMaybe(b.start)||parseDateMaybe(`${b.date||''} ${b.time||''}`)||new Date(0);
+   return as-bs;
+  });
+  }
+ function nextId(list){ return (list.reduce((m,it)=>Math.max(m,it.id||0),0)+1); }
+
+ // --- Local storage for events + outbox ---
+ const LS_EV='rcc2_local_events', LS_OUT='rcc2_outbox';
+ const loadLocal=()=>{ try{return JSON.parse(localStorage.getItem(LS_EV))||[]}catch{ return []} };
+ const saveLocal=(arr)=>localStorage.setItem(LS_EV, JSON.stringify(arr));
+ function pushOutbox(entry){
+  let box=[]; try{box=JSON.parse(localStorage.getItem(LS_OUT))||[]}catch{}
+  box.push({ts:Date.now(),...entry}); localStorage.setItem(LS_OUT, JSON.stringify(box));
+ }
+
+ // --- Tabs ---
+ bySelAll('.tab-button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+   const tab=btn.dataset.tab;
+   bySelAll('.tab-button').forEach(b=>b.classList.remove('active'));
+   btn.classList.add('active');
+   bySelAll('.tab').forEach(c=>c.style.display='none');
+   $(tab).style.display='block';
+  });
+ });
+
+ // --- Dark mode ---
+ const darkBtn=$('darkBtn');
+ function applyDarkPref(){
+  const isDark=localStorage.getItem('rcc2_dark')==='true';
+  document.body.classList.toggle('dark-mode', isDark);
+  darkBtn.textContent = isDark? '☀️':'🌙';
+ }
+ darkBtn.addEventListener('click', ()=>{
+  const v=document.body.classList.toggle('dark-mode');
+  localStorage.setItem('rcc2_dark', v?'true':'false');
+  darkBtn.textContent=v?'☀️':'🌙';
+  });
+ applyDarkPref();
+
+ // --- PIN Lock ---
+ const lock=$('lock'), app=$('app');
+ const PIN_KEY='rcc2_pin_hash', FAILS='rcc2_pin_fails', COOLDOWN='rcc2_pin_cool';
+ let idleTimer=null;
+ function sha256(s){ return crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)).then(b=>Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')); }
+ async function checkUnlock(pin){
+  const hash=await sha256(pin);
+  const saved=localStorage.getItem(PIN_KEY);
+  return saved && saved===hash;
+ }
+ function showLock(show){ lock.style.display=show?'flex':'none'; app.style.display=show?'none':'block'; }
+ async function requirePinOnStart(){
+  const saved=localStorage.getItem(PIN_KEY);
+  if(saved){ showLock(true); } else { showLock(false); }
+  }
+ $('unlockBtn').addEventListener('click', async ()=>{
+  const now=Date.now(); const cd=parseInt(localStorage.getItem(COOLDOWN)||'0',10);
+  if(now<cd){ $('lockHint').textContent=`Wait ${Math.ceil((cd-now)/1000)}s`; return; }
+  const pin=$('pin').value.trim();
+  if(!pin){ $('lockHint').textContent='Enter PIN'; return; }
+  if(await checkUnlock(pin)){ $('lockHint').textContent=''; showLock(false); $('pin').value=''; localStorage.setItem(FAILS,'0'); resetIdle(); }
+  else{
+   let f=parseInt(localStorage.getItem(FAILS)||'0',10)+1; localStorage.setItem(FAILS', String(f));
+   if(f>=3){ localStorage.setItem(COOLDOWN, String(Date.now()+30000)); $('lockHint').textContent='Too many tries. Wait 30s.'; }
+   else $('lockHint').textContent='Wrong PIN';
+  }
+ });
+ $('setPinBtn').addEventListener('click', async ()=>{
+  const pin=prompt('Set a new 4–8 digit PIN:'); if(!pin) return;
+  if(!/^[0-9]{4,8}$/.test(pin)){ alert('Use 4–8 digits'); return; }
+  const hash=await sha256(pin); localStorage.setItem(PIN_KEY, hash); alert('PIN set!');
+  showLock(false); resetIdle();
+ });
+ $('lockNow').addEventListener('click', ()=>{ showLock(true); });
+
+ function resetIdle(){
+  if(idleTimer) clearTimeout(idleTimer);
+  idleTimer=setTimeout(()=>showLock(true), 5*60*1000); // 5 min idle lock
+ }
+ ['click','touchstart','keydown'].forEach(ev=>document.addEventListener(ev, resetIdle, {passive:true}));
+ requirePinOnStart();
+
+ // --- Data bootstrap (use your existing data.json if available) ---
+ let DATA={calendar:[],tasks:[],contacts:[],notes:[]};
+ let LOCAL=loadLocal();
+
+ fetch('data.json').then(r=>r.json()).then(d=>{
+  DATA=d||DATA;
+  // Normalize legacy date/time into start when possible
+  DATA.calendar=(DATA.calendar||[]).map(ev=>{
+   if(!ev.start && (ev.date||ev.time)){
+    const guess=parseDateMaybe(`${ev.date||''} ${ev.time||''}`); if(guess) return {...ev, start:guess.toISOString()};
+   }
+   return ev;
+  });
+ }).catch(()=>{}).finally(()=>{ renderAll(); });
+
+ // --- Rendering ---
+ function renderCalendar(){
+  const list=$('calendar-list');
+  const removed=new Set(LOCAL.filter(x=>x._op==='remove').map(x=>x.id));
+  const adds=LOCAL.filter(x=>x._op==='add');
+  const merged = (DATA.calendar||[]).filter(ev=>!removed.has(ev.id)).concat(adds);
+  const events=sortEvents(merged);
+  if(!events.length){ list.innerHTML='<div class="empty-state">No events yet</div>'; return; }
+  list.innerHTML=events.map(ev=>{
+   const left=`<div>
+     <div class="item-title">${ev.title}</div>
+     <div class="item-detail">${fmtRange(ev)} ${ev.location? ' • '+ev.location:''}</div>
+     <div class="small"><span class="tag">${ev.category||'general'}</span></div>
+   </div>`;
+   const right=`<div><button class="btn danger" onclick="removeEvent(${ev.id})">Remove</button></div>`;
+   return `<div class="event-item ${ev.category||''}">${left}${right}</div>`;
+  }).join('');
+ }
+
+ function renderTasks(){
+  const box=$('tasks-list'), arr=DATA.tasks||[];
+  if(!arr.length){ box.innerHTML='<div class="empty-state">No tasks yet</div>'; return; }
+  box.innerHTML=arr.map(t=>`<div class="task-item priority-${t.priority} ${t.completed?'completed':''}">
+   <div class="item-title">${t.completed?'✓ ':''}${t.title}</div>
+   <div class="item-detail">Due: ${t.due}</div>
+  </div>`).join('');
+ }
+
+ function renderContacts(){
+  const box=$('contacts-list'), arr=DATA.contacts||[];
+  if(!arr.length){ box.innerHTML='<div class="empty-state">No contacts yet</div>'; return; }
+  box.innerHTML=arr.map(c=>`<div class="contact-item">
+    <div>
+     <div class="item-title">${c.name}</div>
+     ${c.phone?`<div class="item-detail">📱 ${c.phone}</div>`:''}
+     ${c.notes?`<div class="item-detail">${c.notes}</div>`:''}
+     <span class="tag">${c.category}</span>
+    </div>
+  </div>`).join('');
+ }
+  function renderNotes(){
+  const box=$('notes-list'), arr=DATA.notes||[];
+  if(!arr.length){ box.innerHTML='<div class="empty-state">No notes yet</div>'; return; }
+  box.innerHTML=arr.map(n=>`<div class="note-item">
+    <div class="item-title">${n.title}</div>
+    <div>${n.content}</div>
+    <div class="item-detail">${n.date}</div>
+  </div>`).join('');
+ }
+----- END CHUNK B -----
+
+Say “C” for Chunk C/4.
+  Cool — smaller tap-to-copy blocks it is. We’ll finish with Chunk D (final part) split into 3 mini blocks. Paste them one after another under Chunk C, then Commit.
+
+Chunk D — Block 1/3 (tap-to-copy)
+<script>
+// Simple navigation helpers (show default tab on load)
+(function initTabs(){
+  const firstTabBtn = document.querySelector('.tab-button[data-tab="home"]');
+  if (firstTabBtn) firstTabBtn.click();
+})();
+</script>
+
+Chunk D — Block 2/3 (tap-to-copy)
+<script>
+// Safety: prevent accidental page unload while editing
+window.addEventListener('beforeunload', (e)=>{
+  // Comment out this section if it becomes annoying:
+  // e.preventDefault();// e.returnValue = '';
+});
+</script>
+
+Chunk D — Block 3/3 (tap-to-copy, closes HTML)
+</script>
+</body>
+</html>
