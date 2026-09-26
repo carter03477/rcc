@@ -377,6 +377,40 @@
             background: linear-gradient(135deg, #ff6b6b 0%, #c0392b 100%) !important;
         }
 
+        .music-section {
+            margin-bottom: 28px;
+            padding: 15px;
+            border-radius: 14px;
+            background: rgba(102, 126, 234, 0.08);
+        }
+
+        .music-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 12px 0 16px 0;
+        }
+
+        .sheet-music-link {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .music-pill {
+            display: inline-block;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: rgba(102, 126, 234, 0.15);
+            font-size: 0.85em;
+            margin-top: 6px;
+        }
+
         .rcc-small-warning {
             font-size: 0.85em;
             opacity: 0.8;
@@ -1572,6 +1606,7 @@
             <button class="tab-button" onclick="showTab('tasks')">✅ Tasks</button>
             <button class="tab-button" onclick="showTab('contacts')">👥 Contacts</button>
             <button class="tab-button" onclick="showTab('notes')">📝 Notes</button>
+            <button class="tab-button" onclick="showTab('music')">🎵 Music</button>
             <button class="tab-button" onclick="showTab('email')">📧 Email</button>
             <button class="tab-button" onclick="showTab('daymap')">🗓️ Daymap</button>
         </div>
@@ -1659,6 +1694,28 @@
                 <div id="notes-list"></div>
             </div>
             
+            <!-- Music Tab -->
+            <div id="music" class="tab-content">
+                <h2>🎵 Music Centre</h2>
+                <p class="rcc-small-warning">Your music home base: notes from Apple Notes, practice tasks, and sheet music links/files.</p>
+                <div class="music-section">
+                    <h3>🎼 Music Notes</h3>
+                    <div class="music-actions"><button class="add-button" onclick="openAddMusicNoteModal()">+ Add Music Note</button></div>
+                    <div id="music-notes-list"></div>
+                </div>
+                <div class="music-section">
+                    <h3>✅ Music Tasks</h3>
+                    <div class="music-actions"><button class="add-button" onclick="openAddMusicTaskModal()">+ Add Music Task</button></div>
+                    <div id="music-tasks-list"></div>
+                </div>
+                <div class="music-section">
+                    <h3>📄 Sheet Music</h3>
+                    <p class="rcc-small-warning">Add a link now, or send Rocky the PDF/photo from Apple Files and I can add it to RCC so it opens on all devices.</p>
+                    <div class="music-actions"><button class="add-button" onclick="openAddSheetMusicModal()">+ Add Sheet Music</button></div>
+                    <div id="sheet-music-list"></div>
+                </div>
+            </div>
+
             <!-- Email Tab -->
             <div id="email" class="tab-content">
                 <h2>📧 Email</h2>
@@ -1863,6 +1920,48 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             </div>
         </div>
         
+        <!-- Add Music Note Modal -->
+        <div id="musicNoteModal" class="modal">
+            <div class="modal-content">
+                <h3>🎼 Add Music Note</h3>
+                <form id="musicNoteForm">
+                    <div class="form-group"><label>Title*</label><input type="text" id="music-note-title" required></div>
+                    <div class="form-group"><label>Instrument*</label><select id="music-note-instrument" required><option value="General">General</option><option value="Saxophone">Saxophone</option><option value="Drums">Drums</option><option value="Piano">Piano</option><option value="Clarinet">Clarinet</option><option value="Flute">Flute</option><option value="Guitar">Guitar</option></select></div>
+                    <div class="form-group"><label>Note*</label><textarea id="music-note-content" rows="5" placeholder="Paste notes from Apple Notes here..." required></textarea></div>
+                    <div class="form-buttons"><button type="button" class="btn-cancel" onclick="closeModal('musicNoteModal')">Cancel</button><button type="submit" class="btn-submit">Add Music Note</button></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Music Task Modal -->
+        <div id="musicTaskModal" class="modal">
+            <div class="modal-content">
+                <h3>🎵 Add Music Task</h3>
+                <form id="musicTaskForm">
+                    <div class="form-group"><label>Task*</label><input type="text" id="music-task-title" placeholder="e.g., Practice Spank Street song for sax auditions" required></div>
+                    <div class="form-group"><label>Instrument*</label><select id="music-task-instrument" required><option value="Saxophone">Saxophone</option><option value="Drums">Drums</option><option value="Piano">Piano</option><option value="Clarinet">Clarinet</option><option value="Flute">Flute</option><option value="Guitar">Guitar</option><option value="General">General</option></select></div>
+                    <div class="form-group"><label>Due / Goal Date*</label><input type="text" id="music-task-due" placeholder="e.g., Friday or This week" required></div>
+                    <div class="form-group"><label>Priority*</label><select id="music-task-priority" required><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></div>
+                    <div class="form-group"><label>Notes</label><textarea id="music-task-notes" rows="3" placeholder="Optional practice notes..."></textarea></div>
+                    <div class="form-buttons"><button type="button" class="btn-cancel" onclick="closeModal('musicTaskModal')">Cancel</button><button type="submit" class="btn-submit">Add Music Task</button></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Sheet Music Modal -->
+        <div id="sheetMusicModal" class="modal">
+            <div class="modal-content">
+                <h3>📄 Add Sheet Music</h3>
+                <form id="sheetMusicForm">
+                    <div class="form-group"><label>Title*</label><input type="text" id="sheet-title" placeholder="Song or book name" required></div>
+                    <div class="form-group"><label>Instrument*</label><select id="sheet-instrument" required><option value="Saxophone">Saxophone</option><option value="Drums">Drums</option><option value="Piano">Piano</option><option value="Clarinet">Clarinet</option><option value="Flute">Flute</option><option value="Guitar">Guitar</option><option value="General">General</option></select></div>
+                    <div class="form-group"><label>Link</label><input type="url" id="sheet-link" placeholder="https://... or leave blank and ask Rocky to add the PDF"></div>
+                    <div class="form-group"><label>Notes</label><textarea id="sheet-notes" rows="3" placeholder="Page number, audition, teacher notes..."></textarea></div>
+                    <div class="form-buttons"><button type="button" class="btn-cancel" onclick="closeModal('sheetMusicModal')">Cancel</button><button type="submit" class="btn-submit">Add Sheet Music</button></div>
+                </form>
+            </div>
+        </div>
+
         <!-- Add Homework Modal -->
         <div id="homeworkModal" class="modal">
             <div class="modal-content">
@@ -2700,6 +2799,18 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         function openAddHomeworkModal() {
             document.getElementById('homeworkModal').classList.add('active');
         }
+
+        function openAddMusicNoteModal() {
+            document.getElementById('musicNoteModal').classList.add('active');
+        }
+
+        function openAddMusicTaskModal() {
+            document.getElementById('musicTaskModal').classList.add('active');
+        }
+
+        function openAddSheetMusicModal() {
+            document.getElementById('sheetMusicModal').classList.add('active');
+        }
         
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
@@ -2804,6 +2915,40 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             alert('Note added! 📝\nIt\'s saved locally. Tell Rocky to make it permanent!');
         });
         
+        document.getElementById('musicNoteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const localMusicNotes = getLocalData('musicNotes');
+            const today = new Date();
+            localMusicNotes.push({ id: 'local_' + Date.now(), title: document.getElementById('music-note-title').value, instrument: document.getElementById('music-note-instrument').value, content: document.getElementById('music-note-content').value, date: today.toLocaleDateString('en-AU'), isLocal: true });
+            saveLocalData('musicNotes', localMusicNotes);
+            closeModal('musicNoteModal');
+            this.reset();
+            renderAll();
+            alert('Music note added! 🎼');
+        });
+
+        document.getElementById('musicTaskForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const localMusicTasks = getLocalData('musicTasks');
+            localMusicTasks.push({ id: 'local_' + Date.now(), title: document.getElementById('music-task-title').value, instrument: document.getElementById('music-task-instrument').value, due: document.getElementById('music-task-due').value, priority: document.getElementById('music-task-priority').value, notes: document.getElementById('music-task-notes').value, completed: false, isLocal: true });
+            saveLocalData('musicTasks', localMusicTasks);
+            closeModal('musicTaskModal');
+            this.reset();
+            renderAll();
+            alert('Music task added! 🎵');
+        });
+
+        document.getElementById('sheetMusicForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const localSheetMusic = getLocalData('sheetMusic');
+            localSheetMusic.push({ id: 'local_' + Date.now(), title: document.getElementById('sheet-title').value, instrument: document.getElementById('sheet-instrument').value, link: document.getElementById('sheet-link').value, notes: document.getElementById('sheet-notes').value, isLocal: true });
+            saveLocalData('sheetMusic', localSheetMusic);
+            closeModal('sheetMusicModal');
+            this.reset();
+            renderAll();
+            alert('Sheet music added! 📄');
+        });
+
         // Photo attachment handlers
         document.getElementById('homework-photo').addEventListener('change', function(e) {
             handlePhotoUpload(e, 'homework-photo-preview');
@@ -2861,7 +3006,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         });
         
         // All your data is embedded right here - no external files needed!
-        const data = {"calendar":[{"id":20,"title":"\ud83c\udfb7 Saxophone Lesson","date":"Every Monday","time":"5:00-6:00 PM","location":"Home","category":"music"},{"id":22,"title":"\ud83c\udfb8 Guitar Lesson","date":"Every Tuesday","time":"4:30-5:15 PM","location":"Magill Rd","category":"music"},{"id":24,"title":"\ud83c\udfb5 FOMO Rehearsal","date":"Every Thursday","time":"4:20-6:00 PM","location":"School","category":"music"},{"id":24,"title":"\u26bd Football Training","date":"Every Thursday","time":"5:00-6:15 PM","location":"Kensington Oval","category":"sport"},{"id":"newschool-mon-1-1","title":"7 HUMANITIES - HASS 2D","date":"Every Monday","time":"8:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-2-2","title":"7 HUMANITIES - HASS 2D","date":"Every Monday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-3-3","title":"7 HPE - HPE & LEAF 2E","date":"Every Monday","time":"9:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-4-4","title":"7 HOMEGROUP C","date":"Every Monday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-5-5","title":"7 ELECTIVE MUSIC","date":"Every Monday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-6-6","title":"7 ELECTIVE MUSIC","date":"Every Monday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-7-7","title":"7 ENGLISH - English 2B","date":"Every Monday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-8-8","title":"7 ENGLISH - English 2B","date":"Every Monday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-2-9","title":"7 MATHEMATICS","date":"Every Tuesday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-4-10","title":"7 MATHEMATICS","date":"Every Tuesday","time":"10:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-5-11","title":"7 LANGUAGES - French 2","date":"Every Tuesday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-6-12","title":"7 HPE - HPE & LEAF 2E","date":"Every Tuesday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-7-13","title":"7 HPE - HPE & LEAF 2E","date":"Every Tuesday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-8-14","title":"7 SCIENCE - Science 2G","date":"Every Tuesday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-9-15","title":"7 SCIENCE - Science 2G","date":"Every Tuesday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-1-16","title":"7 MUSIC - Ensemble Band","date":"Every Wednesday","time":"8:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-2-17","title":"7 MUSIC - Choir A","date":"Every Wednesday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-3-18","title":"7 HUMANITIES - HASS 2D","date":"Every Wednesday","time":"9:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-5-19","title":"7 HOMEGROUP C","date":"Every Wednesday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-6-20","title":"7 ENGLISH - English 2B","date":"Every Wednesday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-7-21","title":"7 ENGLISH - English 2B","date":"Every Wednesday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-8-22","title":"7 LANGUAGES - French 2","date":"Every Wednesday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-9-23","title":"7 LANGUAGES - French 2","date":"Every Wednesday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-2-24","title":"7 SCIENCE - Science 2G","date":"Every Thursday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-4-25","title":"7 SCIENCE - Science 2G","date":"Every Thursday","time":"10:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-5-26","title":"7 ENGLISH - English 2B","date":"Every Thursday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-6-27","title":"7 HPE - HPE & LEAF 2E","date":"Every Thursday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-7-28","title":"7 HPE - HPE & LEAF 2E","date":"Every Thursday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-8-29","title":"7 MATHEMATICS","date":"Every Thursday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-9-30","title":"7 MATHEMATICS","date":"Every Thursday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-1-31","title":"7 LANGUAGES - French 2","date":"Every Friday","time":"8:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-2-32","title":"7 LANGUAGES - French 2","date":"Every Friday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-3-33","title":"7 ELECTIVE MUSIC","date":"Every Friday","time":"9:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-5-34","title":"7 HOMEGROUP C","date":"Every Friday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-6-35","title":"7 HUMANITIES - HASS 2D","date":"Every Friday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-7-36","title":"7 HUMANITIES - HASS 2D","date":"Every Friday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-8-37","title":"7 SCIENCE - Science 2G","date":"Every Friday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-9-38","title":"7 MATHEMATICS","date":"Every Friday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-concert-band-ii","title":"Concert Band II","date":"Every Monday","time":"3:30 PM","location":"School","category":"music","source":"timetable-photo-20260926"},{"id":"music-clarinet-daymap-mon","title":"\ud83c\udfb5 Clarinet Lesson","date":"Every Monday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"},{"id":"music-big-band-3-tue","title":"\ud83c\udfba Big Band 3","date":"Every Tuesday","time":"3:30-4:45 PM","location":"School","category":"music"},{"id":"music-flute-wed-evening","title":"\ud83c\udfb5 Flute Lesson","date":"Every Wednesday","time":"6:30-7:00 PM","location":"School","category":"music"},{"id":"music-drums-daymap-thu","title":"\ud83e\udd41 Drum Lesson","date":"Every Thursday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"},{"id":"music-piano-daymap-thu","title":"\ud83c\udfb9 Piano Lesson","date":"Every Thursday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"},{"id":"music-jazz-improv-daymap-fri","title":"\ud83c\udfb7 Jazz Improvisation","date":"Every Friday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"}],"contacts":[{"id":1,"name":"Dad (Darren)","category":"family","phone":"","notes":""},{"id":2,"name":"Myles (Brother)","category":"family","phone":"","notes":"Uses Buddy agent"}],"tasks":[{"id":1,"title":"Weekly calendar check","due":"Every Sunday","priority":"low","completed":false,"category":"personal"}],"notes":[{"id":"music-daymap-linked-20260927","title":"Music lessons updated \u2014 Daymap times needed","content":"Updated on 2026-09-27: Clarinet is Monday, Drums and Piano are Thursday, Jazz Improvisation is Friday, Flute is Wednesday 6:30-7:00 PM, and Big Band 3 is Tuesday 3:30-4:45 PM. Drums, Piano, Jazz Improvisation, and Clarinet are linked to the saved Daymap shortcut for exact times.","date":"2026-09-27","category":"music"},{"id":"school-move-note-20260926","title":"New school timetable added with times","content":"Carter sent timetable photos on 2026-09-26. RCC now includes the visible Monday-Friday classes with approximate times from the time-column photo.","date":"2026-09-26","category":"school"},{"id":1,"title":"RCC is Live! \ud83c\udf89","content":"Now with + Add buttons! Click them to add events, tasks, contacts, and notes instantly!","date":"2026-03-29","category":"general"},{"id":2,"title":"Weekly Schedule","content":"Check the Calendar tab for your full school timetable organized by day!","date":"2026-03-29","category":"school"},{"id":3,"title":"Test","content":"Test","date":"29/3/2026","category":"general"}],"homework":[{"id":"hw1","subject":"HASS","name":"Tester","due":"30th march","status":"completed","priority":"medium","notes":"Hello rocky"},{"id":"hw2","subject":"Mathematics","name":"Tester 2","due":"30th march","status":"completed","priority":"high","notes":""}]};
+        const data = {"calendar":[{"id":20,"title":"\ud83c\udfb7 Saxophone Lesson","date":"Every Monday","time":"5:00-6:00 PM","location":"Home","category":"music"},{"id":22,"title":"\ud83c\udfb8 Guitar Lesson","date":"Every Tuesday","time":"4:30-5:15 PM","location":"Magill Rd","category":"music"},{"id":24,"title":"\ud83c\udfb5 FOMO Rehearsal","date":"Every Thursday","time":"4:20-6:00 PM","location":"School","category":"music"},{"id":24,"title":"\u26bd Football Training","date":"Every Thursday","time":"5:00-6:15 PM","location":"Kensington Oval","category":"sport"},{"id":"newschool-mon-1-1","title":"7 HUMANITIES - HASS 2D","date":"Every Monday","time":"8:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-2-2","title":"7 HUMANITIES - HASS 2D","date":"Every Monday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-3-3","title":"7 HPE - HPE & LEAF 2E","date":"Every Monday","time":"9:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-4-4","title":"7 HOMEGROUP C","date":"Every Monday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-5-5","title":"7 ELECTIVE MUSIC","date":"Every Monday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-6-6","title":"7 ELECTIVE MUSIC","date":"Every Monday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-7-7","title":"7 ENGLISH - English 2B","date":"Every Monday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-8-8","title":"7 ENGLISH - English 2B","date":"Every Monday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-2-9","title":"7 MATHEMATICS","date":"Every Tuesday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-4-10","title":"7 MATHEMATICS","date":"Every Tuesday","time":"10:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-5-11","title":"7 LANGUAGES - French 2","date":"Every Tuesday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-6-12","title":"7 HPE - HPE & LEAF 2E","date":"Every Tuesday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-7-13","title":"7 HPE - HPE & LEAF 2E","date":"Every Tuesday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-8-14","title":"7 SCIENCE - Science 2G","date":"Every Tuesday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-9-15","title":"7 SCIENCE - Science 2G","date":"Every Tuesday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-1-16","title":"7 MUSIC - Ensemble Band","date":"Every Wednesday","time":"8:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-2-17","title":"7 MUSIC - Choir A","date":"Every Wednesday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-3-18","title":"7 HUMANITIES - HASS 2D","date":"Every Wednesday","time":"9:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-5-19","title":"7 HOMEGROUP C","date":"Every Wednesday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-6-20","title":"7 ENGLISH - English 2B","date":"Every Wednesday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-7-21","title":"7 ENGLISH - English 2B","date":"Every Wednesday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-8-22","title":"7 LANGUAGES - French 2","date":"Every Wednesday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-9-23","title":"7 LANGUAGES - French 2","date":"Every Wednesday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-2-24","title":"7 SCIENCE - Science 2G","date":"Every Thursday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-4-25","title":"7 SCIENCE - Science 2G","date":"Every Thursday","time":"10:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-5-26","title":"7 ENGLISH - English 2B","date":"Every Thursday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-6-27","title":"7 HPE - HPE & LEAF 2E","date":"Every Thursday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-7-28","title":"7 HPE - HPE & LEAF 2E","date":"Every Thursday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-8-29","title":"7 MATHEMATICS","date":"Every Thursday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-9-30","title":"7 MATHEMATICS","date":"Every Thursday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-1-31","title":"7 LANGUAGES - French 2","date":"Every Friday","time":"8:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-2-32","title":"7 LANGUAGES - French 2","date":"Every Friday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-3-33","title":"7 ELECTIVE MUSIC","date":"Every Friday","time":"9:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-5-34","title":"7 HOMEGROUP C","date":"Every Friday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-6-35","title":"7 HUMANITIES - HASS 2D","date":"Every Friday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-7-36","title":"7 HUMANITIES - HASS 2D","date":"Every Friday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-8-37","title":"7 SCIENCE - Science 2G","date":"Every Friday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-9-38","title":"7 MATHEMATICS","date":"Every Friday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-concert-band-ii","title":"Concert Band II","date":"Every Monday","time":"3:30 PM","location":"School","category":"music","source":"timetable-photo-20260926"},{"id":"music-clarinet-daymap-mon","title":"\ud83c\udfb5 Clarinet Lesson","date":"Every Monday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"},{"id":"music-big-band-3-tue","title":"\ud83c\udfba Big Band 3","date":"Every Tuesday","time":"3:30-4:45 PM","location":"School","category":"music"},{"id":"music-flute-wed-evening","title":"\ud83c\udfb5 Flute Lesson","date":"Every Wednesday","time":"6:30-7:00 PM","location":"School","category":"music"},{"id":"music-drums-daymap-thu","title":"\ud83e\udd41 Drum Lesson","date":"Every Thursday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"},{"id":"music-piano-daymap-thu","title":"\ud83c\udfb9 Piano Lesson","date":"Every Thursday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"},{"id":"music-jazz-improv-daymap-fri","title":"\ud83c\udfb7 Jazz Improvisation","date":"Every Friday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"}],"contacts":[{"id":1,"name":"Dad (Darren)","category":"family","phone":"","notes":""},{"id":2,"name":"Myles (Brother)","category":"family","phone":"","notes":"Uses Buddy agent"}],"tasks":[{"id":1,"title":"Weekly calendar check","due":"Every Sunday","priority":"low","completed":false,"category":"personal"}],"notes":[{"id":"music-daymap-linked-20260927","title":"Music lessons updated \u2014 Daymap times needed","content":"Updated on 2026-09-27: Clarinet is Monday, Drums and Piano are Thursday, Jazz Improvisation is Friday, Flute is Wednesday 6:30-7:00 PM, and Big Band 3 is Tuesday 3:30-4:45 PM. Drums, Piano, Jazz Improvisation, and Clarinet are linked to the saved Daymap shortcut for exact times.","date":"2026-09-27","category":"music"},{"id":"school-move-note-20260926","title":"New school timetable added with times","content":"Carter sent timetable photos on 2026-09-26. RCC now includes the visible Monday-Friday classes with approximate times from the time-column photo.","date":"2026-09-26","category":"school"},{"id":1,"title":"RCC is Live! \ud83c\udf89","content":"Now with + Add buttons! Click them to add events, tasks, contacts, and notes instantly!","date":"2026-03-29","category":"general"},{"id":2,"title":"Weekly Schedule","content":"Check the Calendar tab for your full school timetable organized by day!","date":"2026-03-29","category":"school"},{"id":3,"title":"Test","content":"Test","date":"29/3/2026","category":"general"}],"homework":[{"id":"hw1","subject":"HASS","name":"Tester","due":"30th march","status":"completed","priority":"medium","notes":"Hello rocky"},{"id":"hw2","subject":"Mathematics","name":"Tester 2","due":"30th march","status":"completed","priority":"high","notes":""}],"musicNotes":[{"id":"music-note-starter","title":"Music notes from Apple Notes","instrument":"General","content":"Copy and paste your useful Apple Notes music notes here so they are inside RCC too.","date":"2026-09-27"}],"musicTasks":[],"sheetMusic":[]};
         
         // Combine data with localStorage
         function getAllData() {
@@ -2870,7 +3015,10 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 tasks: [...data.tasks, ...getLocalData('tasks')],
                 contacts: [...data.contacts, ...getLocalData('contacts')],
                 notes: [...data.notes, ...getLocalData('notes')],
-                homework: [...(data.homework || []), ...getLocalData('homework')]
+                homework: [...(data.homework || []), ...getLocalData('homework')],
+                musicNotes: [...(data.musicNotes || []), ...getLocalData('musicNotes')],
+                musicTasks: [...(data.musicTasks || []), ...getLocalData('musicTasks')],
+                sheetMusic: [...(data.sheetMusic || []), ...getLocalData('sheetMusic')]
             };
         }
         
@@ -3134,6 +3282,38 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 `).join('');
             }
             
+            // Render Music Centre
+            const musicNotesList = document.getElementById('music-notes-list');
+            musicNotesList.innerHTML = allData.musicNotes.length ? allData.musicNotes.map(note => `
+                <div class="note-item">
+                    <div class="item-title">${note.title}${note.isLocal ? '<span class="local-badge">LOCAL</span>' : ''}</div>
+                    <span class="music-pill">${note.instrument || 'General'}</span>
+                    <div style="margin-top: 8px; white-space: pre-wrap;">${note.content}</div>
+                    <div class="note-date">${note.date || ''}</div>
+                </div>
+            `).join('') : '<div class="empty-state">No music notes yet. Copy one from Apple Notes and add it here.</div>';
+
+            const musicTasksList = document.getElementById('music-tasks-list');
+            musicTasksList.innerHTML = allData.musicTasks.length ? allData.musicTasks.map(task => `
+                <div class="task-item priority-${task.priority || 'medium'} ${task.completed ? 'completed' : ''}" data-music-task-id="${task.id}">
+                    <div class="item-title">${task.completed ? '✓ ' : ''}${task.title}${task.isLocal ? '<span class="local-badge">LOCAL</span>' : ''}</div>
+                    <div class="item-detail">🎵 ${task.instrument || 'General'} • Goal: ${task.due || 'No date'}</div>
+                    ${task.notes ? `<div class="item-detail" style="margin-top: 5px; font-style: italic;">${task.notes}</div>` : ''}
+                    ${!task.completed && task.isLocal ? '<div class="swipe-hint">← Swipe</div>' : ''}
+                    <div class="complete-action">✓ Done</div>
+                </div>
+            `).join('') : '<div class="empty-state">No music tasks yet. Add something to practise.</div>';
+
+            const sheetMusicList = document.getElementById('sheet-music-list');
+            sheetMusicList.innerHTML = allData.sheetMusic.length ? allData.sheetMusic.map(sheet => `
+                <div class="note-item">
+                    <div class="item-title">${sheet.title}${sheet.isLocal ? '<span class="local-badge">LOCAL</span>' : ''}</div>
+                    <span class="music-pill">${sheet.instrument || 'General'}</span>
+                    ${sheet.notes ? `<div class="item-detail" style="margin-top: 8px;">${sheet.notes}</div>` : ''}
+                    ${sheet.link ? `<a class="sheet-music-link" href="${sheet.link}" target="_blank" rel="noopener noreferrer">📄 Open Sheet Music</a>` : '<div class="item-detail" style="margin-top: 8px;">No file linked yet — send it to Rocky to add it to RCC.</div>'}
+                </div>
+            `).join('') : '<div class="empty-state">No sheet music yet. Add a link, or send Rocky the file and I can add it.</div>';
+
             // Render Homework
             const homeworkList = document.getElementById('homework-list');
             if (allData.homework.length === 0) {
@@ -3244,6 +3424,13 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 });
             });
             
+            // Enable swipe on music tasks
+            document.querySelectorAll('#music-tasks-list .task-item:not(.completed)').forEach(taskEl => {
+                const musicTaskId = taskEl.dataset.musicTaskId;
+                if (!musicTaskId) return;
+                handleSwipeGesture(taskEl, () => completeMusicTask(musicTaskId));
+            });
+
             // Enable swipe on homework
             document.querySelectorAll('#homework-list .task-item:not(.completed)').forEach(hwEl => {
                 const hwId = hwEl.dataset.hwId;
@@ -3269,6 +3456,17 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             }
         }
         
+        function completeMusicTask(taskId) {
+            const localMusicTasks = getLocalData('musicTasks');
+            const taskIndex = localMusicTasks.findIndex(t => t.id === taskId);
+            if (taskIndex !== -1) {
+                localMusicTasks[taskIndex].completed = true;
+                saveLocalData('musicTasks', localMusicTasks);
+                renderAll();
+                setTimeout(() => alert('✅ Music task completed!'), 100);
+            }
+        }
+
         function completeHomework(hwId) {
             const localHomework = getLocalData('homework');
             const hwIndex = localHomework.findIndex(h => h.id === hwId);
