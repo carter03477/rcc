@@ -2196,7 +2196,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         }
 
         function isMusicLine(text) {
-            return /\b(drum|drums|piano|clarinet|flute|jazz|improvisation|big band|stage band|concert band|band\s*3|saxophone|guitar|fomo)\b/i.test(text);
+            return /\b(drum|drums|piano|clarinet|flute|jazz|improvisation|big band|stage band|concert band|band\s*3|saxophone|guitar|fomo|instrumental music)\b/i.test(text);
         }
 
         function cleanImportedTitle(text) {
@@ -2262,13 +2262,14 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 const dtStart = parseIcsDate(icsField(lines, 'DTSTART'));
                 const dtEnd = parseIcsDate(icsField(lines, 'DTEND'));
                 const combined = `${summary} ${description}`;
-                const looksLikeHomework = /\b(homework|assignment|assessment|task|due)\b/i.test(combined);
+                const looksLikeHomework = /\b(homework|assignment|assessment|task|due|exam|test|quiz)\b/i.test(combined);
                 if (looksLikeHomework) {
                     homework.push({
                         id: 'daymap_ics_hw_' + Date.now() + '_' + index,
                         subject: summary.split(/[:\-–—]/)[0].trim() || 'School',
                         name: summary,
                         due: dtStart ? formatDaymapDate(dtStart.date) : (extractDueDate(combined) || 'Check Daymap'),
+                        startDate: dtStart ? dtStart.date.toISOString() : '',
                         status: 'not-started',
                         priority: /\b(high|important|urgent)\b/i.test(combined) ? 'high' : 'medium',
                         notes: description || summary,
@@ -2289,6 +2290,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                         location: location,
                         category: isMusicLine(combined) ? 'music' : 'school',
                         source: isMusicLine(combined) ? 'daymap-music' : 'daymap',
+                        startDate: dtStart.date.toISOString(),
                         isLocal: true
                     });
                 }
@@ -2363,12 +2365,30 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             saveLocalData('homework', [...keptHomework, ...parsed.homework]);
         }
 
-        function daymapImportMessage(parsed, intro = 'Imported') {
+        function isWithinDaysFromToday(item, daysAhead) {
+            if (!item.startDate) return true;
+            const date = new Date(item.startDate);
+            if (Number.isNaN(date.getTime())) return true;
+            const start = new Date();
+            start.setHours(0, 0, 0, 0);
+            const end = new Date(start);
+            end.setDate(end.getDate() + daysAhead);
+            return date >= start && date <= end;
+        }
+
+        function filterParsedDaymapSync(parsed) {
+            return {
+                events: parsed.events.filter(event => event.category === 'music' && isWithinDaysFromToday(event, 21)),
+                homework: parsed.homework.filter(item => isWithinDaysFromToday(item, 90))
+            };
+        }
+
+        function daymapImportMessage(parsed, intro = 'Imported', extra = '') {
             const musicEvents = parsed.events.filter(event => event.category === 'music');
             const musicSummary = musicEvents.length
                 ? `<br><strong>🎵 Music times found:</strong><br>${musicEvents.map(event => `${event.title} — ${event.date.replace('Every ', '')} ${event.time}`).join('<br>')}`
                 : '';
-            return `✅ ${intro} <strong>${parsed.events.length}</strong> timetable/music items and <strong>${parsed.homework.length}</strong> homework/assignment items.${musicSummary}<br>If something looks weird, send the Daymap text to Rocky and I’ll clean it up.`;
+            return `✅ ${intro} <strong>${parsed.events.length}</strong> timetable/music items and <strong>${parsed.homework.length}</strong> homework/assignment items.${musicSummary}${extra}<br>If something looks weird, send the Daymap text to Rocky and I’ll clean it up.`;
         }
 
         function importDaymapText(mode) {
@@ -2399,10 +2419,13 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     throw new Error('The saved link did not return calendar text.');
                 }
                 const parsed = parseIcsCalendar(text);
-                saveParsedDaymapItems(parsed, { replaceDaymap: true });
+                const filtered = filterParsedDaymapSync(parsed);
+                saveParsedDaymapItems(filtered, { replaceDaymap: true });
                 localStorage.setItem('rcc_daymap_last_sync', new Date().toISOString());
                 renderAll();
-                showDaymapImportResults(daymapImportMessage(parsed, 'Synced from Daymap iCal'));
+                const ignoredCount = Math.max(0, parsed.events.length + parsed.homework.length - filtered.events.length - filtered.homework.length);
+                const extra = ignoredCount ? `<br><small>Kept RCC tidy by skipping ${ignoredCount} older/regular class items from the ical feed.</small>` : '';
+                showDaymapImportResults(daymapImportMessage(filtered, 'Synced from Daymap iCal', extra));
             } catch (error) {
                 showDaymapImportResults(`⚠️ RCC could not read the iCal link directly in the browser. Daymap may be blocking website fetches. Open the saved Daymap link, copy the calendar text if it appears, paste it into the big box, then tap <strong>Import Assignments + Music Times</strong>.<br><small>${error.message}</small>`);
             }
