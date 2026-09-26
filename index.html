@@ -1699,8 +1699,9 @@
                               color: white; text-decoration: none; border-radius: 12px; text-align: center; font-size: 18px;">
                         🔎 Open Daymap Search
                     </a>
+                    <button class="add-button" onclick="syncDaymapCalendarFromSavedLink()">🔄 Sync Saved iCal</button>
                 </div>
-                <p class="rcc-small-warning">No Daymap username or password is stored in RCC.</p>
+                <p class="rcc-small-warning">No Daymap username or password is stored in RCC. A saved iCal link stays only in this browser.</p>
 
                 <div style="margin-top: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px;">
                     <h3>📥 Import Daymap into RCC</h3>
@@ -2344,6 +2345,32 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             return { events, homework };
         }
 
+        function saveParsedDaymapItems(parsed, options = {}) {
+            const replaceDaymap = Boolean(options.replaceDaymap);
+            const replaceSchoolTimetable = Boolean(options.replaceSchoolTimetable);
+            const localEvents = getLocalData('events');
+            const localHomework = getLocalData('homework');
+            let keptEvents = localEvents;
+            let keptHomework = localHomework;
+            if (replaceDaymap) {
+                keptEvents = keptEvents.filter(event => event.source !== 'daymap' && event.source !== 'daymap-music');
+                keptHomework = keptHomework.filter(item => item.source !== 'daymap');
+            }
+            if (replaceSchoolTimetable) {
+                keptEvents = keptEvents.filter(event => event.category !== 'school' && event.source !== 'daymap');
+            }
+            saveLocalData('events', [...keptEvents, ...parsed.events]);
+            saveLocalData('homework', [...keptHomework, ...parsed.homework]);
+        }
+
+        function daymapImportMessage(parsed, intro = 'Imported') {
+            const musicEvents = parsed.events.filter(event => event.category === 'music');
+            const musicSummary = musicEvents.length
+                ? `<br><strong>🎵 Music times found:</strong><br>${musicEvents.map(event => `${event.title} — ${event.date.replace('Every ', '')} ${event.time}`).join('<br>')}`
+                : '';
+            return `✅ ${intro} <strong>${parsed.events.length}</strong> timetable/music items and <strong>${parsed.homework.length}</strong> homework/assignment items.${musicSummary}<br>If something looks weird, send the Daymap text to Rocky and I’ll clean it up.`;
+        }
+
         function importDaymapText(mode) {
             const box = document.getElementById('daymapImportText');
             const raw = box.value.trim();
@@ -2352,20 +2379,33 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 return;
             }
             const parsed = parseDaymapText(raw);
-            if (mode === 'replace-timetable') {
-                const keptEvents = getLocalData('events').filter(event => event.category !== 'school' && event.source !== 'daymap');
-                saveLocalData('events', keptEvents);
-            }
-            const localEvents = getLocalData('events');
-            const localHomework = getLocalData('homework');
-            saveLocalData('events', [...localEvents, ...parsed.events]);
-            saveLocalData('homework', [...localHomework, ...parsed.homework]);
+            saveParsedDaymapItems(parsed, { replaceSchoolTimetable: mode === 'replace-timetable' });
             renderAll();
-            const musicEvents = parsed.events.filter(event => event.category === 'music');
-            const musicSummary = musicEvents.length
-                ? `<br><strong>🎵 Music times found:</strong><br>${musicEvents.map(event => `${event.title} — ${event.date.replace('Every ', '')} ${event.time}`).join('<br>')}`
-                : '';
-            showDaymapImportResults(`✅ Imported <strong>${parsed.events.length}</strong> timetable/music items and <strong>${parsed.homework.length}</strong> homework/assignment items.${musicSummary}<br>If something looks weird, send the Daymap text to Rocky and I’ll clean it up.`);
+            showDaymapImportResults(daymapImportMessage(parsed));
+        }
+
+        async function syncDaymapCalendarFromSavedLink() {
+            const saved = getSavedDaymapUrl();
+            if (!saved) {
+                showDaymapImportResults('🗓️ Save your Daymap iCal/CalendarExport link first, then tap Sync Saved iCal.');
+                return;
+            }
+            showDaymapImportResults('🔄 Trying to read your saved Daymap iCal link...');
+            try {
+                const response = await fetch(saved, { cache: 'no-store', credentials: 'omit' });
+                if (!response.ok) throw new Error('Daymap returned ' + response.status);
+                const text = await response.text();
+                if (!/BEGIN:VCALENDAR/i.test(text)) {
+                    throw new Error('The saved link did not return calendar text.');
+                }
+                const parsed = parseIcsCalendar(text);
+                saveParsedDaymapItems(parsed, { replaceDaymap: true });
+                localStorage.setItem('rcc_daymap_last_sync', new Date().toISOString());
+                renderAll();
+                showDaymapImportResults(daymapImportMessage(parsed, 'Synced from Daymap iCal'));
+            } catch (error) {
+                showDaymapImportResults(`⚠️ RCC could not read the iCal link directly in the browser. Daymap may be blocking website fetches. Open the saved Daymap link, copy the calendar text if it appears, paste it into the big box, then tap <strong>Import Assignments + Music Times</strong>.<br><small>${error.message}</small>`);
+            }
         }
 
         function clearSchoolTimetable() {
