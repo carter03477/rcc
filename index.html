@@ -326,7 +326,8 @@
         }
 
         .rcc-lock-card input,
-        .daymap-link-input {
+        .daymap-link-input,
+        .daymap-import-box {
             width: 100%;
             padding: 12px;
             border: 2px solid #ddd;
@@ -335,8 +336,15 @@
             font-size: 1em;
         }
 
+        .daymap-import-box {
+            min-height: 180px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
         body.dark-mode .rcc-lock-card input,
-        body.dark-mode .daymap-link-input {
+        body.dark-mode .daymap-link-input,
+        body.dark-mode .daymap-import-box {
             background: #1e1e2f;
             color: #e0e0e0;
             border-color: #444;
@@ -346,6 +354,27 @@
             display: grid;
             gap: 12px;
             margin-top: 15px;
+        }
+
+        .daymap-import-results {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.12);
+            display: none;
+        }
+
+        .daymap-example {
+            font-size: 0.88em;
+            opacity: 0.85;
+            line-height: 1.6;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .danger-button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #c0392b 100%) !important;
         }
 
         .rcc-small-warning {
@@ -1633,7 +1662,7 @@
             <div id="daymap" class="tab-content">
                 <h2>🗓️ Daymap</h2>
                 <p style="margin: 20px 0; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
-                    Save your school's Daymap address once on this device, then open it quickly from RCC.
+                    Save your school's Daymap address once, then paste Daymap homework or timetable text to pull it into RCC.
                 </p>
                 <input id="daymapLinkInput" class="daymap-link-input" type="url" placeholder="https://your-school.daymap.net/daymap/">
                 <div class="daymap-actions">
@@ -1645,6 +1674,24 @@
                     </a>
                 </div>
                 <p class="rcc-small-warning">No Daymap username or password is stored in RCC.</p>
+
+                <div style="margin-top: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px;">
+                    <h3>📥 Import Daymap into RCC</h3>
+                    <p class="rcc-small-warning">Paste copied Daymap text below. RCC will look for homework, assignments, dates, weekdays, and times.</p>
+                    <textarea id="daymapImportText" class="daymap-import-box" placeholder="Example:
+Monday 8:40-9:30 Maths Room 12
+Science assignment due 15 Oct - Ecosystems worksheet
+Tuesday 11:05-11:55 English Room 4"></textarea>
+                    <div class="daymap-actions">
+                        <button class="add-button" onclick="importDaymapText('add')">✨ Import Homework + Timetable</button>
+                        <button class="add-button" onclick="importDaymapText('replace-timetable')">🔄 Replace School Timetable From Paste</button>
+                        <button class="add-button danger-button" onclick="clearSchoolTimetable()">🧹 Clear Old School Timetable</button>
+                    </div>
+                    <div class="daymap-example">
+                        Best format: one line per class or assignment. Include a weekday + time for timetable items, or words like <strong>due</strong>, <strong>assignment</strong>, or <strong>homework</strong> for homework.
+                    </div>
+                    <div id="daymapImportResults" class="daymap-import-results"></div>
+                </div>
             </div>
         </div>
         
@@ -2045,6 +2092,113 @@
             input.value = saved;
             link.href = saved || 'https://daymap.net/';
             link.textContent = saved ? '🗓️ Open Daymap' : '🔎 Open Daymap Search';
+        }
+
+        function showDaymapImportResults(message) {
+            const box = document.getElementById('daymapImportResults');
+            if (!box) return;
+            box.style.display = 'block';
+            box.innerHTML = message;
+        }
+
+        function normaliseDayName(text) {
+            const match = text.match(/\b(mon(?:day)?|tue(?:sday)?|wed(?:nesday)?|thu(?:rsday)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?)\b/i);
+            if (!match) return '';
+            const key = match[1].slice(0,3).toLowerCase();
+            return {mon:'Every Monday', tue:'Every Tuesday', wed:'Every Wednesday', thu:'Every Thursday', fri:'Every Friday', sat:'Every Saturday', sun:'Every Sunday'}[key] || '';
+        }
+
+        function extractTimeRange(text) {
+            const match = text.match(/\b\d{1,2}(?::\d{2})?\s*(?:am|pm)?\s*[-–—]\s*\d{1,2}(?::\d{2})?\s*(?:am|pm)?\b/i);
+            return match ? match[0].replace(/\s+/g, ' ').trim() : '';
+        }
+
+        function extractDueDate(text) {
+            const match = text.match(/\b(?:due|by)\s*:?\s*([A-Za-z]{3,9}\s+\d{1,2}|\d{1,2}\s+[A-Za-z]{3,9}|\d{1,2}[\/.-]\d{1,2}(?:[\/.-]\d{2,4})?)/i);
+            return match ? match[1].trim() : '';
+        }
+
+        function cleanImportedTitle(text) {
+            return text
+                .replace(/\b(mon(?:day)?|tue(?:sday)?|wed(?:nesday)?|thu(?:rsday)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?)\b/ig, '')
+                .replace(/\b\d{1,2}(?::\d{2})?\s*(?:am|pm)?\s*[-–—]\s*\d{1,2}(?::\d{2})?\s*(?:am|pm)?\b/ig, '')
+                .replace(/\b(?:room|rm)\s*[A-Za-z0-9. -]+/ig, '')
+                .replace(/\s+/g, ' ')
+                .replace(/^[-–—: ]+|[-–—: ]+$/g, '')
+                .trim();
+        }
+
+        function parseDaymapText(rawText) {
+            const lines = rawText.split(/\n+/).map(line => line.trim()).filter(Boolean);
+            const events = [];
+            const homework = [];
+            lines.forEach((line, index) => {
+                const day = normaliseDayName(line);
+                const time = extractTimeRange(line);
+                const lower = line.toLowerCase();
+                const looksLikeHomework = /\b(homework|assignment|assessment|task|due)\b/.test(lower);
+                const roomMatch = line.match(/\b(?:room|rm)\s*([A-Za-z0-9. -]+)/i);
+
+                if (day && time) {
+                    events.push({
+                        id: 'daymap_event_' + Date.now() + '_' + index,
+                        title: cleanImportedTitle(line) || 'School class',
+                        date: day,
+                        time: time,
+                        location: roomMatch ? 'Room ' + roomMatch[1].trim() : 'School',
+                        category: 'school',
+                        source: 'daymap',
+                        isLocal: true
+                    });
+                    return;
+                }
+
+                if (looksLikeHomework) {
+                    const due = extractDueDate(line) || 'Check Daymap';
+                    const title = line.replace(/\b(homework|assignment|assessment|task)\b/ig, '').replace(/\b(?:due|by)\s*:?\s*[^-–—]+/i, '').replace(/^[-–—: ]+|[-–—: ]+$/g, '').trim();
+                    const parts = title.split(/[:\-–—]/).map(part => part.trim()).filter(Boolean);
+                    homework.push({
+                        id: 'daymap_hw_' + Date.now() + '_' + index,
+                        subject: parts[0] || 'School',
+                        name: parts.slice(1).join(' - ') || parts[0] || 'Daymap assignment',
+                        due: due,
+                        status: 'not-started',
+                        priority: /\b(high|important|urgent)\b/i.test(line) ? 'high' : 'medium',
+                        notes: line,
+                        source: 'daymap',
+                        isLocal: true
+                    });
+                }
+            });
+            return { events, homework };
+        }
+
+        function importDaymapText(mode) {
+            const box = document.getElementById('daymapImportText');
+            const raw = box.value.trim();
+            if (!raw) {
+                alert('Paste Daymap text first.');
+                return;
+            }
+            const parsed = parseDaymapText(raw);
+            if (mode === 'replace-timetable') {
+                const keptEvents = getLocalData('events').filter(event => event.category !== 'school' && event.source !== 'daymap');
+                saveLocalData('events', keptEvents);
+            }
+            const localEvents = getLocalData('events');
+            const localHomework = getLocalData('homework');
+            saveLocalData('events', [...localEvents, ...parsed.events]);
+            saveLocalData('homework', [...localHomework, ...parsed.homework]);
+            renderAll();
+            showDaymapImportResults(`✅ Imported <strong>${parsed.events.length}</strong> timetable items and <strong>${parsed.homework.length}</strong> homework/assignment items. If something looks weird, send the timetable text to Rocky and I’ll clean it up.`);
+        }
+
+        function clearSchoolTimetable() {
+            if (!confirm('Clear school timetable items from this device? Music, sport, tasks, and homework stay safe.')) return;
+            const keptEvents = getLocalData('events').filter(event => event.category !== 'school' && event.source !== 'daymap');
+            saveLocalData('events', keptEvents);
+            renderAll();
+            showDaymapImportResults('🧹 Local school timetable items cleared. Paste your new school timetable above to rebuild it.');
         }
 
         window.addEventListener('DOMContentLoaded', function() {
@@ -2454,7 +2608,7 @@
         });
         
         // All your data is embedded right here - no external files needed!
-        const data = {"calendar":[{"id":1,"title":"🎹 Piano Catch-Up Lesson with Lishan","date":"Monday, March 30","time":"1:30-2:00 PM","location":"Home","category":"music"},{"id":2,"title":"Health & PE","date":"Every Monday","time":"8:30-9:20 AM","location":"Room 8.1.3","category":"school"},{"id":3,"title":"SPARK","date":"Every Monday","time":"9:20-10:35 AM","location":"Room 8.1.3","category":"school"},{"id":4,"title":"English","date":"Every Monday","time":"11:05 AM-12:25 PM","location":"Room 8.1.3","category":"school"},{"id":5,"title":"Mentor Time","date":"Every Monday","time":"12:25-1:00 PM","location":"Room 8.1.3","category":"school"},{"id":6,"title":"🥁 Drums with Lewis","date":"Every Monday","time":"12:30-1:00 PM","location":"School","category":"music"},{"id":7,"title":"Mathematics","date":"Every Monday","time":"1:30-2:50 PM","location":"Room 8.1.3","category":"school"},{"id":8,"title":"AUSLAN 1A","date":"Every Tuesday","time":"8:30-9:20 AM","location":"Room 8.3.2","category":"school"},{"id":9,"title":"HASS 1B","date":"Every Tuesday","time":"9:20-10:35 AM","location":"Room 8.1.3","category":"school"},{"id":10,"title":"SPARK 1B","date":"Every Tuesday","time":"11:05 AM-12:25 PM","location":"Room 8.1.3","category":"school"},{"id":11,"title":"Mentor Time","date":"Every Tuesday","time":"12:25-1:00 PM","location":"Room 8.1.3","category":"school"},{"id":12,"title":"Science 1B","date":"Every Tuesday","time":"1:30-2:50 PM","location":"Room 8.1.3","category":"school"},{"id":13,"title":"🎵 Clarinet/Flute with Kerryn","date":"Every Tuesday","time":"2:00-2:30 PM","location":"School","category":"music"},{"id":14,"title":"Science 1B","date":"Every Wednesday","time":"8:30-9:20 AM","location":"Room 8.1.3","category":"school"},{"id":15,"title":"English 1B","date":"Every Wednesday","time":"9:20-10:10 AM","location":"Room 8.1.3","category":"school"},{"id":16,"title":"Health & PE 1B","date":"Every Wednesday","time":"10:40-11:55 AM","location":"Room 8.1.3","category":"school"},{"id":17,"title":"Mathematics 1B","date":"Every Wednesday","time":"11:55 AM-1:10 PM","location":"Room 8.1.3","category":"school"},{"id":18,"title":"HASS 1B","date":"Every Wednesday","time":"1:50-2:40 PM","location":"Room 8.1.3","category":"school"},{"id":19,"title":"🎵 Year 7/8 Band","date":"Every Monday","time":"3:00-3:45 PM","location":"School","category":"music"},{"id":20,"title":"🎷 Saxophone Lesson","date":"Every Monday","time":"5:00-6:00 PM","location":"Home","category":"music"},{"id":21,"title":"🎵 Flute Lesson","date":"Every Tuesday","time":"2:00-2:30 PM","location":"School","category":"music"},{"id":22,"title":"🎸 Guitar Lesson","date":"Every Tuesday","time":"4:30-5:15 PM","location":"Magill Rd","category":"music"},{"id":19,"title":"SPARK 1B","date":"Every Thursday","time":"8:30-9:20 AM","location":"Room 8.1.3","category":"school"},{"id":20,"title":"AUSLAN 1A","date":"Every Thursday","time":"9:20-10:35 AM","location":"Room 8.3.2","category":"school"},{"id":21,"title":"Science 1B","date":"Every Thursday","time":"11:05 AM-12:25 PM","location":"Room 8.1.3","category":"school"},{"id":22,"title":"Mentor Time","date":"Every Thursday","time":"12:25-1:00 PM","location":"Room 8.1.3","category":"school"},{"id":23,"title":"HASS 1B","date":"Every Thursday","time":"1:30-2:50 PM","location":"Room 8.1.3","category":"school"},{"id":24,"title":"🎵 FOMO Rehearsal","date":"Every Thursday","time":"4:20-6:00 PM","location":"School","category":"music"},{"id":24,"title":"⚽ Football Training","date":"Every Thursday","time":"5:00-6:15 PM","location":"Kensington Oval","category":"sport"},{"id":25,"title":"🎵 Stage Band","date":"Every Thursday","time":"7:30-8:30 AM","location":"School","category":"music"},{"id":26,"title":"🎵 Clarinet Lesson","date":"Every Thursday","time":"1:30-2:00 PM","location":"School","category":"music"},{"id":27,"title":"Mathematics 1B","date":"Every Friday","time":"8:30-9:20 AM","location":"Room 8.1.3","category":"school"},{"id":28,"title":"English 1B","date":"Every Friday","time":"9:20-10:35 AM","location":"Room 8.1.3","category":"school"},{"id":29,"title":"AUSLAN 1A","date":"Every Friday","time":"11:05 AM-12:25 PM","location":"Room 8.3.2","category":"school"},{"id":30,"title":"Mentor Time","date":"Every Friday","time":"12:25-1:00 PM","location":"Room 8.1.3","category":"school"},{"id":31,"title":"Health & PE 1B","date":"Every Friday","time":"1:30-2:50 PM","location":"Room 8.1.3","category":"school"},{"id":32,"title":"🎹 Piano Lesson","date":"Every Friday","time":"1:30-2:00 PM","location":"Home","category":"music"}],"contacts":[{"id":1,"name":"Dad (Darren)","category":"family","phone":"","notes":""},{"id":2,"name":"Myles (Brother)","category":"family","phone":"","notes":"Uses Buddy agent"}],"tasks":[{"id":1,"title":"Weekly calendar check","due":"Every Sunday","priority":"low","completed":false,"category":"personal"}],"notes":[{"id":1,"title":"RCC is Live! 🎉","content":"Now with + Add buttons! Click them to add events, tasks, contacts, and notes instantly!","date":"2026-03-29","category":"general"},{"id":2,"title":"Weekly Schedule","content":"Check the Calendar tab for your full school timetable organized by day!","date":"2026-03-29","category":"school"},{"id":3,"title":"Test","content":"Test","date":"29/3/2026","category":"general"}],"homework":[{"id":"hw1","subject":"HASS","name":"Tester","due":"30th march","status":"completed","priority":"medium","notes":"Hello rocky"},{"id":"hw2","subject":"Mathematics","name":"Tester 2","due":"30th march","status":"completed","priority":"high","notes":""}]};
+        const data = {"calendar":[{"id":1,"title":"🎹 Piano Catch-Up Lesson with Lishan","date":"Monday, March 30","time":"1:30-2:00 PM","location":"Home","category":"music"},{"id":6,"title":"🥁 Drums with Lewis","date":"Every Monday","time":"12:30-1:00 PM","location":"School","category":"music"},{"id":13,"title":"🎵 Clarinet/Flute with Kerryn","date":"Every Tuesday","time":"2:00-2:30 PM","location":"School","category":"music"},{"id":19,"title":"🎵 Year 7/8 Band","date":"Every Monday","time":"3:00-3:45 PM","location":"School","category":"music"},{"id":20,"title":"🎷 Saxophone Lesson","date":"Every Monday","time":"5:00-6:00 PM","location":"Home","category":"music"},{"id":21,"title":"🎵 Flute Lesson","date":"Every Tuesday","time":"2:00-2:30 PM","location":"School","category":"music"},{"id":22,"title":"🎸 Guitar Lesson","date":"Every Tuesday","time":"4:30-5:15 PM","location":"Magill Rd","category":"music"},{"id":24,"title":"🎵 FOMO Rehearsal","date":"Every Thursday","time":"4:20-6:00 PM","location":"School","category":"music"},{"id":24,"title":"⚽ Football Training","date":"Every Thursday","time":"5:00-6:15 PM","location":"Kensington Oval","category":"sport"},{"id":25,"title":"🎵 Stage Band","date":"Every Thursday","time":"7:30-8:30 AM","location":"School","category":"music"},{"id":26,"title":"🎵 Clarinet Lesson","date":"Every Thursday","time":"1:30-2:00 PM","location":"School","category":"music"},{"id":32,"title":"🎹 Piano Lesson","date":"Every Friday","time":"1:30-2:00 PM","location":"Home","category":"music"}],"contacts":[{"id":1,"name":"Dad (Darren)","category":"family","phone":"","notes":""},{"id":2,"name":"Myles (Brother)","category":"family","phone":"","notes":"Uses Buddy agent"}],"tasks":[{"id":1,"title":"Weekly calendar check","due":"Every Sunday","priority":"low","completed":false,"category":"personal"}],"notes":[{"id":"school-move-note-20260926","title":"New school timetable needed","content":"Old school class timetable was removed because Carter moved schools. Use the Daymap tab to import the new timetable, or send it to Rocky to make it permanent.","date":"2026-09-26","category":"school"},{"id":1,"title":"RCC is Live! 🎉","content":"Now with + Add buttons! Click them to add events, tasks, contacts, and notes instantly!","date":"2026-03-29","category":"general"},{"id":2,"title":"Weekly Schedule","content":"Check the Calendar tab for your full school timetable organized by day!","date":"2026-03-29","category":"school"},{"id":3,"title":"Test","content":"Test","date":"29/3/2026","category":"general"}],"homework":[{"id":"hw1","subject":"HASS","name":"Tester","due":"30th march","status":"completed","priority":"medium","notes":"Hello rocky"},{"id":"hw2","subject":"Mathematics","name":"Tester 2","due":"30th march","status":"completed","priority":"high","notes":""}]};
         
         // Combine data with localStorage
         function getAllData() {
