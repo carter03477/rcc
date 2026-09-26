@@ -3926,6 +3926,16 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             showNotification(recap, 'Evening Recap');
         }
         
+
+        // Register the service worker so RCC can open after it has been loaded once, even without internet.
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js').catch(error => {
+                    console.log('RCC offline setup failed:', error);
+                });
+            });
+        }
+
         // Initial render
         migrateLocalData();
         renderAll();
