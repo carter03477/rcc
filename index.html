@@ -411,6 +411,41 @@
             margin-top: 6px;
         }
 
+        .music-note-card {
+            width: 100%;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .music-note-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 18px rgba(102, 126, 234, 0.18);
+        }
+
+        .music-note-preview {
+            margin-top: 8px;
+            color: #666;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        body.dark-mode .music-note-preview {
+            color: #b0b0b0;
+        }
+
+        .music-note-reader {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.08);
+            margin-top: 12px;
+        }
+
         .rcc-small-warning {
             font-size: 0.85em;
             opacity: 0.8;
@@ -1290,7 +1325,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 9000;
             justify-content: center;
             align-items: center;
         }
@@ -1930,6 +1965,19 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     <div class="form-group"><label>Note*</label><textarea id="music-note-content" rows="5" placeholder="Paste notes from Apple Notes here..." required></textarea></div>
                     <div class="form-buttons"><button type="button" class="btn-cancel" onclick="closeModal('musicNoteModal')">Cancel</button><button type="submit" class="btn-submit">Add Music Note</button></div>
                 </form>
+            </div>
+        </div>
+
+        <!-- View Music Note Modal -->
+        <div id="musicNoteViewModal" class="modal">
+            <div class="modal-content">
+                <h3 id="music-note-view-title">🎼 Music Note</h3>
+                <span id="music-note-view-instrument" class="music-pill">General</span>
+                <div id="music-note-view-date" class="note-date"></div>
+                <div id="music-note-view-content" class="music-note-reader"></div>
+                <div class="form-buttons" style="margin-top: 20px;">
+                    <button type="button" class="btn-cancel" onclick="closeModal('musicNoteViewModal')">Close</button>
+                </div>
             </div>
         </div>
 
@@ -3022,6 +3070,31 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             };
         }
         
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function makePreview(value, length = 120) {
+            const text = String(value || '').replace(/\s+/g, ' ').trim();
+            return text.length > length ? text.slice(0, length) + '…' : text;
+        }
+
+        function openMusicNotePopup(encodedId) {
+            const noteId = decodeURIComponent(encodedId);
+            const note = getAllData().musicNotes.find(item => String(item.id) === noteId);
+            if (!note) return;
+            document.getElementById('music-note-view-title').textContent = note.title || 'Music Note';
+            document.getElementById('music-note-view-instrument').textContent = note.instrument || 'General';
+            document.getElementById('music-note-view-date').textContent = note.date || '';
+            document.getElementById('music-note-view-content').textContent = note.content || '';
+            document.getElementById('musicNoteViewModal').classList.add('active');
+        }
+
         // Get current day name
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const today = new Date();
@@ -3285,12 +3358,12 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             // Render Music Centre
             const musicNotesList = document.getElementById('music-notes-list');
             musicNotesList.innerHTML = allData.musicNotes.length ? allData.musicNotes.map(note => `
-                <div class="note-item">
-                    <div class="item-title">${note.title}${note.isLocal ? '<span class="local-badge">LOCAL</span>' : ''}</div>
-                    <span class="music-pill">${note.instrument || 'General'}</span>
-                    <div style="margin-top: 8px; white-space: pre-wrap;">${note.content}</div>
-                    <div class="note-date">${note.date || ''}</div>
-                </div>
+                <button type="button" class="note-item music-note-card" onclick="openMusicNotePopup('${encodeURIComponent(String(note.id))}')">
+                    <div class="item-title">${escapeHtml(note.title)}${note.isLocal ? '<span class="local-badge">LOCAL</span>' : ''}</div>
+                    <span class="music-pill">${escapeHtml(note.instrument || 'General')}</span>
+                    <div class="music-note-preview">${escapeHtml(makePreview(note.content))}</div>
+                    <div class="note-date">${escapeHtml(note.date || '')}</div>
+                </button>
             `).join('') : '<div class="empty-state">No music notes yet. Copy one from Apple Notes and add it here.</div>';
 
             const musicTasksList = document.getElementById('music-tasks-list');
