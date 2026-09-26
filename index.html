@@ -2712,6 +2712,18 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         function saveLocalData(key, data) {
             localStorage.setItem('rcc_' + key, JSON.stringify(data));
         }
+
+        function migrateLocalData() {
+            const localEvents = getLocalData('events');
+            let changed = false;
+            localEvents.forEach(event => {
+                if (event.title === '🥁 Drums with Lewis' || event.title === 'Drums with Lewis') {
+                    event.title = event.title.startsWith('🥁') ? '🥁 Drum Lesson' : 'Drum Lesson';
+                    changed = true;
+                }
+            });
+            if (changed) saveLocalData('events', localEvents);
+        }
         
         // Form submissions
         document.getElementById('eventForm').addEventListener('submit', function(e) {
@@ -3715,6 +3727,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         }
         
         // Initial render
+        migrateLocalData();
         renderAll();
         renderBadges();
         trackVisit();
