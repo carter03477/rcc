@@ -1689,7 +1689,7 @@
             <div id="daymap" class="tab-content">
                 <h2>🗓️ Daymap</h2>
                 <p style="margin: 20px 0; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
-                    Save your school's Daymap address once, then paste Daymap homework or timetable text to pull it into RCC.
+                    Save your school's Daymap address once. Then paste copied Daymap text or an exported calendar (.ics) to pull assignments and weekly music lesson times into RCC.
                 </p>
                 <input id="daymapLinkInput" class="daymap-link-input" type="url" placeholder="https://your-school.daymap.net/daymap/">
                 <div class="daymap-actions">
@@ -1704,18 +1704,19 @@
 
                 <div style="margin-top: 25px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 12px;">
                     <h3>📥 Import Daymap into RCC</h3>
-                    <p class="rcc-small-warning">Paste copied Daymap text below. RCC will look for homework, assignments, dates, weekdays, and times.</p>
-                    <textarea id="daymapImportText" class="daymap-import-box" placeholder="Example:
-Monday 8:40-9:30 Maths Room 12
+                    <p class="rcc-small-warning">Paste copied Daymap text or an exported calendar file's text below. RCC will look for assignments, homework, class times, and music lessons like drums, piano, clarinet, jazz improvisation, flute, and Big Band.</p>
+                    <textarea id="daymapImportText" class="daymap-import-box" placeholder="Examples:
+Monday 10:30-11:00 Clarinet Lesson Room Music
 Science assignment due 15 Oct - Ecosystems worksheet
-Tuesday 11:05-11:55 English Room 4"></textarea>
+Thursday 12:15 PM Drums with Lewis
+BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     <div class="daymap-actions">
-                        <button class="add-button" onclick="importDaymapText('add')">✨ Import Homework + Timetable</button>
+                        <button class="add-button" onclick="importDaymapText('add')">✨ Import Assignments + Music Times</button>
                         <button class="add-button" onclick="importDaymapText('replace-timetable')">🔄 Replace School Timetable From Paste</button>
                         <button class="add-button danger-button" onclick="clearSchoolTimetable()">🧹 Clear Old School Timetable</button>
                     </div>
                     <div class="daymap-example">
-                        Best format: one line per class or assignment. Include a weekday + time for timetable items, or words like <strong>due</strong>, <strong>assignment</strong>, or <strong>homework</strong> for homework.
+                        Best format: one line per class, music lesson, or assignment. Include a weekday + time for timetable/music items, or words like <strong>due</strong>, <strong>assignment</strong>, <strong>assessment</strong>, or <strong>homework</strong> for homework. No Daymap password goes into RCC.
                     </div>
                     <div id="daymapImportResults" class="daymap-import-results"></div>
                 </div>
@@ -2182,8 +2183,10 @@ Tuesday 11:05-11:55 English Room 4"></textarea>
         }
 
         function extractTimeRange(text) {
-            const match = text.match(/\b\d{1,2}(?::\d{2})?\s*(?:am|pm)?\s*[-–—]\s*\d{1,2}(?::\d{2})?\s*(?:am|pm)?\b/i);
-            return match ? match[0].replace(/\s+/g, ' ').trim() : '';
+            const range = text.match(/\b\d{1,2}(?::\d{2})?\s*(?:am|pm)?\s*[-–—]\s*\d{1,2}(?::\d{2})?\s*(?:am|pm)?\b/i);
+            if (range) return range[0].replace(/\s+/g, ' ').trim();
+            const single = text.match(/\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b/i);
+            return single ? single[0].replace(/\s+/g, ' ').trim() : '';
         }
 
         function extractDueDate(text) {
@@ -2191,17 +2194,111 @@ Tuesday 11:05-11:55 English Room 4"></textarea>
             return match ? match[1].trim() : '';
         }
 
+        function isMusicLine(text) {
+            return /\b(drum|drums|piano|clarinet|flute|jazz|improvisation|big band|stage band|concert band|band\s*3|saxophone|guitar|fomo)\b/i.test(text);
+        }
+
         function cleanImportedTitle(text) {
             return text
                 .replace(/\b(mon(?:day)?|tue(?:sday)?|wed(?:nesday)?|thu(?:rsday)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?)\b/ig, '')
                 .replace(/\b\d{1,2}(?::\d{2})?\s*(?:am|pm)?\s*[-–—]\s*\d{1,2}(?::\d{2})?\s*(?:am|pm)?\b/ig, '')
+                .replace(/\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b/ig, '')
                 .replace(/\b(?:room|rm)\s*[A-Za-z0-9. -]+/ig, '')
                 .replace(/\s+/g, ' ')
                 .replace(/^[-–—: ]+|[-–—: ]+$/g, '')
                 .trim();
         }
 
+        function decodeIcsValue(value) {
+            return value
+                .replace(/\\n/gi, ' ')
+                .replace(/\\,/g, ',')
+                .replace(/\\;/g, ';')
+                .replace(/\\\\/g, '\\')
+                .trim();
+        }
+
+        function parseIcsDate(value) {
+            const clean = value.replace(/Z$/, '');
+            const match = clean.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})?)?/);
+            if (!match) return null;
+            const [, year, month, day, hour, minute] = match;
+            return {
+                date: new Date(Number(year), Number(month) - 1, Number(day), Number(hour || 0), Number(minute || 0)),
+                hasTime: Boolean(hour)
+            };
+        }
+
+        function formatDaymapDate(date) {
+            return date.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
+        }
+
+        function formatDaymapTime(date) {
+            return date.toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit' });
+        }
+
+        function dayFromDate(date) {
+            return 'Every ' + date.toLocaleDateString('en-US', { weekday: 'long' });
+        }
+
+        function icsField(lines, fieldName) {
+            const line = lines.find(item => item.toUpperCase().startsWith(fieldName + ':') || item.toUpperCase().startsWith(fieldName + ';'));
+            if (!line) return '';
+            const colonIndex = line.indexOf(':');
+            return colonIndex === -1 ? '' : decodeIcsValue(line.slice(colonIndex + 1));
+        }
+
+        function parseIcsCalendar(rawText) {
+            const unfolded = rawText.replace(/\r\n/g, '\n').replace(/\n[ \t]/g, '');
+            const blocks = unfolded.split('BEGIN:VEVENT').slice(1).map(block => block.split('END:VEVENT')[0]);
+            const events = [];
+            const homework = [];
+            blocks.forEach((block, index) => {
+                const lines = block.split(/\n+/).map(line => line.trim()).filter(Boolean);
+                const summary = icsField(lines, 'SUMMARY') || 'Daymap item';
+                const description = icsField(lines, 'DESCRIPTION');
+                const location = icsField(lines, 'LOCATION') || 'School';
+                const dtStart = parseIcsDate(icsField(lines, 'DTSTART'));
+                const dtEnd = parseIcsDate(icsField(lines, 'DTEND'));
+                const combined = `${summary} ${description}`;
+                const looksLikeHomework = /\b(homework|assignment|assessment|task|due)\b/i.test(combined);
+                if (looksLikeHomework) {
+                    homework.push({
+                        id: 'daymap_ics_hw_' + Date.now() + '_' + index,
+                        subject: summary.split(/[:\-–—]/)[0].trim() || 'School',
+                        name: summary,
+                        due: dtStart ? formatDaymapDate(dtStart.date) : (extractDueDate(combined) || 'Check Daymap'),
+                        status: 'not-started',
+                        priority: /\b(high|important|urgent)\b/i.test(combined) ? 'high' : 'medium',
+                        notes: description || summary,
+                        source: 'daymap',
+                        isLocal: true
+                    });
+                    return;
+                }
+                if (dtStart) {
+                    const time = dtStart.hasTime
+                        ? (dtEnd && dtEnd.hasTime ? `${formatDaymapTime(dtStart.date)}-${formatDaymapTime(dtEnd.date)}` : formatDaymapTime(dtStart.date))
+                        : 'All day';
+                    events.push({
+                        id: 'daymap_ics_event_' + Date.now() + '_' + index,
+                        title: summary,
+                        date: dayFromDate(dtStart.date),
+                        time: time,
+                        location: location,
+                        category: isMusicLine(combined) ? 'music' : 'school',
+                        source: isMusicLine(combined) ? 'daymap-music' : 'daymap',
+                        isLocal: true
+                    });
+                }
+            });
+            return { events, homework };
+        }
+
         function parseDaymapText(rawText) {
+            if (/BEGIN:VCALENDAR/i.test(rawText)) {
+                return parseIcsCalendar(rawText);
+            }
             const lines = rawText.split(/\n+/).map(line => line.trim()).filter(Boolean);
             const events = [];
             const homework = [];
@@ -2213,14 +2310,15 @@ Tuesday 11:05-11:55 English Room 4"></textarea>
                 const roomMatch = line.match(/\b(?:room|rm)\s*([A-Za-z0-9. -]+)/i);
 
                 if (day && time) {
+                    const music = isMusicLine(line);
                     events.push({
                         id: 'daymap_event_' + Date.now() + '_' + index,
-                        title: cleanImportedTitle(line) || 'School class',
+                        title: cleanImportedTitle(line) || (music ? 'Music lesson' : 'School class'),
                         date: day,
                         time: time,
                         location: roomMatch ? 'Room ' + roomMatch[1].trim() : 'School',
-                        category: 'school',
-                        source: 'daymap',
+                        category: music ? 'music' : 'school',
+                        source: music ? 'daymap-music' : 'daymap',
                         isLocal: true
                     });
                     return;
@@ -2263,7 +2361,11 @@ Tuesday 11:05-11:55 English Room 4"></textarea>
             saveLocalData('events', [...localEvents, ...parsed.events]);
             saveLocalData('homework', [...localHomework, ...parsed.homework]);
             renderAll();
-            showDaymapImportResults(`✅ Imported <strong>${parsed.events.length}</strong> timetable items and <strong>${parsed.homework.length}</strong> homework/assignment items. If something looks weird, send the timetable text to Rocky and I’ll clean it up.`);
+            const musicEvents = parsed.events.filter(event => event.category === 'music');
+            const musicSummary = musicEvents.length
+                ? `<br><strong>🎵 Music times found:</strong><br>${musicEvents.map(event => `${event.title} — ${event.date.replace('Every ', '')} ${event.time}`).join('<br>')}`
+                : '';
+            showDaymapImportResults(`✅ Imported <strong>${parsed.events.length}</strong> timetable/music items and <strong>${parsed.homework.length}</strong> homework/assignment items.${musicSummary}<br>If something looks weird, send the Daymap text to Rocky and I’ll clean it up.`);
         }
 
         function clearSchoolTimetable() {
