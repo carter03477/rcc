@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RCC — Gmail</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js"></script>
+</head>
+<body>
+  <div id="nav-root"></div>
+  <main class="container vstack">
+    <h1>Gmail</h1>
+    <div class="card vstack">
+      <strong>Quick Gmail link</strong>
+      <p class="small">This opens Gmail in a new tab. Sign in there if Google asks.</p>
+      <div class="hstack lock-actions">
+        <a class="btn" href="https://mail.google.com/mail/" target="_blank" rel="noopener noreferrer">Open Gmail</a>
+      </div>
+    </div>
+    <div class="card vstack">
+      <strong>RCC Gmail reader</strong>
+      <div class="small">The full built-in inbox can come later. For now, this shortcut is safer and simpler.</div>
+    </div>
+  </main>
+  <div class="dev-badge">DEV</div>
+  <script>mountNav('nav-mail')</script>
+</body>
+</html>

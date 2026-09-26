@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RCC — Notes</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js"></script>
+</head>
+<body>
+  <div id="nav-root"></div>
+  <main class="container vstack">
+    <h1>Notes</h1>
+    <div class="card vstack">
+      <input placeholder="Title" />
+      <textarea rows="8" placeholder="Write a note..."></textarea>
+      <div class="hstack">
+        <button>Save</button>
+        <span class="small">Notes table to be wired via Supabase.</span>
+      </div>
+    </div>
+  </main>
+  <div class="dev-badge">DEV</div>
+  <script>mountNav('nav-notes')</script>
+</body>
+</html>

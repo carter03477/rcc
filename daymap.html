@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RCC — Daymap</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js"></script>
+</head>
+<body>
+  <div id="nav-root"></div>
+  <main class="container vstack">
+    <h1>Daymap</h1>
+    <div class="card vstack">
+      <strong>Quick Daymap link</strong>
+      <p class="small">Paste your school Daymap address once, save it, then RCC will remember it on this device.</p>
+      <input id="daymap-link-input" type="url" placeholder="https://your-school.daymap.net/daymap/" />
+      <div class="hstack lock-actions">
+        <button type="button" onclick="saveDaymapLink()">Save Daymap Link</button>
+        <a id="open-daymap-link" class="btn" href="https://daymap.net/" target="_blank" rel="noopener noreferrer">Open Daymap search</a>
+      </div>
+    </div>
+    <div class="card vstack">
+      <strong>Paste from Daymap</strong>
+      <textarea rows="6" placeholder="Paste Daymap day plan HTML or text here..."></textarea>
+      <div class="hstack">
+        <button>Import</button>
+        <span class="small">We will parse this client-side first; later, a browser extension can post JSON.</span>
+      </div>
+    </div>
+  </main>
+  <div class="dev-badge">DEV</div>
+  <script>mountNav('nav-daymap'); document.addEventListener('DOMContentLoaded', updateDaymapButton);</script>
+</body>
+</html>
