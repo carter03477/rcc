@@ -278,6 +278,82 @@
             color: var(--primary) !important;
         }
         
+
+        /* Local RCC lock + Daymap quick link */
+        .lock-toggle {
+            position: absolute;
+            top: 15px;
+            left: 150px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1em;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .lock-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .rcc-lock-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        .rcc-lock-card {
+            width: min(92vw, 430px);
+            background: white;
+            color: #333;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        body.dark-mode .rcc-lock-card {
+            background: #2a2a3e;
+            color: #e0e0e0;
+        }
+
+        .rcc-lock-card input,
+        .daymap-link-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-size: 1em;
+        }
+
+        body.dark-mode .rcc-lock-card input,
+        body.dark-mode .daymap-link-input {
+            background: #1e1e2f;
+            color: #e0e0e0;
+            border-color: #444;
+        }
+
+        .daymap-actions {
+            display: grid;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .rcc-small-warning {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
         /* Search Bar */
         .search-container {
             margin-bottom: 20px;
@@ -1351,10 +1427,21 @@
     </style>
 </head>
 <body>
+    <div id="rccLockOverlay" class="rcc-lock-overlay">
+        <div class="rcc-lock-card">
+            <h2>🔒 RCC Lock</h2>
+            <p id="rccLockMessage">Enter your RCC password.</p>
+            <input id="rccLockPassword" type="password" placeholder="RCC password" autocomplete="current-password">
+            <button class="add-button" onclick="unlockRcc()">Unlock</button>
+            <button class="btn-cancel" style="margin-top: 10px;" onclick="resetRccPassword()">Reset on this device</button>
+            <p class="rcc-small-warning">Convenience lock only: the password stays in this browser. Don’t use Gmail, GitHub, or school passwords.</p>
+        </div>
+    </div>
     <div class="container">
         <header>
             <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌙</button>
             <button class="theme-toggle" onclick="toggleThemeMenu()" title="Change Theme">🎨</button>
+            <button class="lock-toggle" onclick="lockRcc()" title="Lock RCC">🔒 Lock</button>
             <button class="widget-toggle" id="widgetToggle" onclick="toggleWidgetMode()" title="Widget Mode">📱 Full</button>
             <button class="reminders-toggle" id="remindersToggle" onclick="toggleReminders()" title="Toggle Reminders">🔔 OFF</button>
             <div class="theme-menu" id="themeMenu">
@@ -1428,6 +1515,7 @@
             <button class="tab-button" onclick="showTab('contacts')">👥 Contacts</button>
             <button class="tab-button" onclick="showTab('notes')">📝 Notes</button>
             <button class="tab-button" onclick="showTab('email')">📧 Email</button>
+            <button class="tab-button" onclick="showTab('daymap')">🗓️ Daymap</button>
         </div>
         
         <!-- Content Card -->
@@ -1520,25 +1608,43 @@
                     📬 Your email: <strong>tacosax001@gmail.com</strong>
                 </p>
                 <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
-                    <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" 
+                    <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" rel="noopener noreferrer"
                        style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                               color: white; text-decoration: none; border-radius: 12px; text-align: center; font-size: 18px; 
                               transition: transform 0.2s;">
                         📬 Open Gmail Inbox
                     </a>
-                    <a href="https://mail.google.com/mail/u/0/#starred" target="_blank" 
+                    <a href="https://mail.google.com/mail/u/0/#starred" target="_blank" rel="noopener noreferrer"
                        style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
                               color: white; text-decoration: none; border-radius: 12px; text-align: center; font-size: 18px; 
                               transition: transform 0.2s;">
                         ⭐ Starred Emails
                     </a>
-                    <a href="https://mail.google.com/mail/u/0/#sent" target="_blank" 
+                    <a href="https://mail.google.com/mail/u/0/#sent" target="_blank" rel="noopener noreferrer"
                        style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
                               color: white; text-decoration: none; border-radius: 12px; text-align: center; font-size: 18px; 
                               transition: transform 0.2s;">
                         📤 Sent Emails
                     </a>
                 </div>
+            </div>
+
+            <!-- Daymap Tab -->
+            <div id="daymap" class="tab-content">
+                <h2>🗓️ Daymap</h2>
+                <p style="margin: 20px 0; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                    Save your school's Daymap address once on this device, then open it quickly from RCC.
+                </p>
+                <input id="daymapLinkInput" class="daymap-link-input" type="url" placeholder="https://your-school.daymap.net/daymap/">
+                <div class="daymap-actions">
+                    <button class="add-button" onclick="saveDaymapLink()">💾 Save Daymap Link</button>
+                    <a id="openDaymapLink" href="https://daymap.net/" target="_blank" rel="noopener noreferrer"
+                       style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+                              color: white; text-decoration: none; border-radius: 12px; text-align: center; font-size: 18px;">
+                        🔎 Open Daymap Search
+                    </a>
+                </div>
+                <p class="rcc-small-warning">No Daymap username or password is stored in RCC.</p>
             </div>
         </div>
         
@@ -1851,7 +1957,101 @@
                 }
             });
         });
-        
+
+        // RCC local convenience lock
+        function rccSimpleHash(text) {
+            let hash = 0x811c9dc5;
+            for (let i = 0; i < text.length; i++) {
+                hash ^= text.charCodeAt(i);
+                hash = Math.imul(hash, 0x01000193);
+            }
+            return (hash >>> 0).toString(16);
+        }
+
+        function showRccLock(message) {
+            document.getElementById('rccLockMessage').textContent = message;
+            document.getElementById('rccLockOverlay').style.display = 'flex';
+            document.getElementById('rccLockPassword').focus();
+        }
+
+        function lockRcc() {
+            localStorage.removeItem('rcc_unlocked');
+            const hasPassword = !!localStorage.getItem('rcc_lock_hash');
+            showRccLock(hasPassword ? 'Enter your RCC password.' : 'Create an RCC password for this browser.');
+        }
+
+        function unlockRcc() {
+            const input = document.getElementById('rccLockPassword');
+            const password = input.value;
+            if (password.length < 4) {
+                document.getElementById('rccLockMessage').textContent = 'Use at least 4 characters.';
+                return;
+            }
+            const hash = rccSimpleHash(password);
+            const saved = localStorage.getItem('rcc_lock_hash');
+            if (!saved) {
+                localStorage.setItem('rcc_lock_hash', hash);
+                localStorage.setItem('rcc_unlocked', 'yes');
+                document.getElementById('rccLockOverlay').style.display = 'none';
+                input.value = '';
+                alert('RCC lock set for this browser. 🔒');
+                return;
+            }
+            if (saved === hash) {
+                localStorage.setItem('rcc_unlocked', 'yes');
+                document.getElementById('rccLockOverlay').style.display = 'none';
+                input.value = '';
+            } else {
+                document.getElementById('rccLockMessage').textContent = 'Wrong password. Try again.';
+            }
+        }
+
+        function resetRccPassword() {
+            if (!confirm('Reset the RCC lock password on this device?')) return;
+            localStorage.removeItem('rcc_lock_hash');
+            localStorage.removeItem('rcc_unlocked');
+            showRccLock('Create a new RCC password for this browser.');
+        }
+
+        function mountRccLock() {
+            const input = document.getElementById('rccLockPassword');
+            input.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') unlockRcc();
+            });
+            if (localStorage.getItem('rcc_lock_hash') && localStorage.getItem('rcc_unlocked') !== 'yes') {
+                showRccLock('Enter your RCC password.');
+            }
+        }
+
+        function saveDaymapLink() {
+            const input = document.getElementById('daymapLinkInput');
+            const value = input.value.trim();
+            if (!value) {
+                alert('Paste your Daymap link first.');
+                return;
+            }
+            try { new URL(value); }
+            catch { alert('That does not look like a valid web address.'); return; }
+            localStorage.setItem('rcc_daymap_url', value);
+            updateDaymapLink();
+            alert('Daymap link saved on this device. 🗓️');
+        }
+
+        function updateDaymapLink() {
+            const saved = localStorage.getItem('rcc_daymap_url') || '';
+            const input = document.getElementById('daymapLinkInput');
+            const link = document.getElementById('openDaymapLink');
+            if (!input || !link) return;
+            input.value = saved;
+            link.href = saved || 'https://daymap.net/';
+            link.textContent = saved ? '🗓️ Open Daymap' : '🔎 Open Daymap Search';
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            mountRccLock();
+            updateDaymapLink();
+        });
+
         // Search functionality
         function performSearch() {
             const query = document.getElementById('searchBar').value.toLowerCase().trim();

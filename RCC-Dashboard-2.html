@@ -105,9 +105,6 @@
     <div id="today-notes"></div>
    </div>
   </div>
------ END CHUNK A -----
- 
------ START CHUNK B -----
   <!-- Calendar Tab -->
   <div id="calendar" class="card tab" style="display:none;">
    <h2>📅 Calendar</h2>
@@ -281,7 +278,7 @@
   if(!pin){ $('lockHint').textContent='Enter PIN'; return; }
   if(await checkUnlock(pin)){ $('lockHint').textContent=''; showLock(false); $('pin').value=''; localStorage.setItem(FAILS,'0'); resetIdle(); }
   else{
-   let f=parseInt(localStorage.getItem(FAILS)||'0',10)+1; localStorage.setItem(FAILS', String(f));
+   let f=parseInt(localStorage.getItem(FAILS)||'0',10)+1; localStorage.setItem(FAILS, String(f));
    if(f>=3){ localStorage.setItem(COOLDOWN, String(Date.now()+30000)); $('lockHint').textContent='Too many tries. Wait 30s.'; }
    else $('lockHint').textContent='Wrong PIN';
   }
@@ -365,30 +362,59 @@
     <div class="item-detail">${n.date}</div>
   </div>`).join('');
  }
------ END CHUNK B -----
 
-Say “C” for Chunk C/4.
-  Cool — smaller tap-to-copy blocks it is. We’ll finish with Chunk D (final part) split into 3 mini blocks. Paste them one after another under Chunk C, then Commit.
+ function removeEvent(id){
+  LOCAL.push({_op:'remove', id}); saveLocal(LOCAL); pushOutbox({type:'remove_event', id}); renderAll();
+ }
 
-Chunk D — Block 1/3 (tap-to-copy)
-<script>
-// Simple navigation helpers (show default tab on load)
-(function initTabs(){
-  const firstTabBtn = document.querySelector('.tab-button[data-tab="home"]');
-  if (firstTabBtn) firstTabBtn.click();
-})();
-</script>
+ $('ev-add').addEventListener('click', ()=>{
+  const title=$('ev-title').value.trim();
+  if(!title){ alert('Add a title first'); return; }
+  const ev={
+   _op:'add', id:nextId((DATA.calendar||[]).concat(LOCAL)), title,
+   start:$('ev-start').value || '', end:$('ev-end').value || '',
+   category:$('ev-category').value, location:$('ev-location').value.trim()
+  };
+  LOCAL.push(ev); saveLocal(LOCAL); pushOutbox({type:'add_event', event:ev});
+  ['ev-title','ev-start','ev-end','ev-location'].forEach(id=>$(id).value='');
+  renderAll();
+ });
 
-Chunk D — Block 2/3 (tap-to-copy)
-<script>
-// Safety: prevent accidental page unload while editing
-window.addEventListener('beforeunload', (e)=>{
-  // Comment out this section if it becomes annoying:
-  // e.preventDefault();// e.returnValue = '';
-});
-</script>
+ $('share-update').addEventListener('click', async ()=>{
+  const text=JSON.stringify({events:LOCAL, outbox:JSON.parse(localStorage.getItem(LS_OUT)||'[]')}, null, 2);
+  try{ await navigator.clipboard.writeText(text); alert('Copied RCC updates for Rocky.'); }
+  catch{ prompt('Copy this RCC update:', text); }
+ });
 
-Chunk D — Block 3/3 (tap-to-copy, closes HTML)
+ $('connect-gmail').addEventListener('click', ()=>{
+  window.open('https://mail.google.com/mail/', '_blank', 'noopener,noreferrer');
+ });
+ $('connect-outlook').addEventListener('click', ()=>{
+  window.open('https://outlook.office.com/mail/', '_blank', 'noopener,noreferrer');
+ });
+
+ function renderToday(){
+  $('today-date').textContent=new Date().toLocaleDateString([], {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+  const todayName=new Date().toLocaleDateString([], {weekday:'long'});
+  const events=sortEvents((DATA.calendar||[]).concat(LOCAL.filter(x=>x._op==='add'))).filter(ev=>String(ev.date||ev.start||'').includes(todayName)).slice(0,5);
+  $('today-events').innerHTML=events.length?events.map(ev=>`<div class="event-item ${ev.category||''}"><div><div class="item-title">${ev.title}</div><div class="item-detail">${fmtRange(ev)}</div></div></div>`).join(''):'<div class="empty-state">No events today</div>';
+  const tasks=(DATA.tasks||[]).filter(t=>!t.completed).slice(0,5);
+  $('today-tasks').innerHTML=tasks.length?tasks.map(t=>`<div class="task-item"><div><div class="item-title">${t.title}</div><div class="item-detail">Due: ${t.due||'No due date'}</div></div></div>`).join(''):'<div class="empty-state">No active tasks</div>';
+  const notes=(DATA.notes||[]).slice(0,3);
+  $('today-notes').innerHTML=notes.length?notes.map(n=>`<div class="note-item"><div><div class="item-title">${n.title}</div><div>${n.content||''}</div></div></div>`).join(''):'<div class="empty-state">No notes yet</div>';
+ }
+
+ function renderEmails(){
+  $('email-status').textContent='Gmail opens in a new tab; RCC does not store email passwords.';
+  $('email-list').innerHTML='<div class="empty-state">Email preview is not connected yet.</div>';
+ }
+
+ function renderAll(){
+  renderToday(); renderCalendar(); renderTasks(); renderContacts(); renderNotes(); renderEmails();
+  $('last-update').textContent=new Date().toLocaleString();
+ }
+
+ renderAll();
 </script>
 </body>
 </html>
