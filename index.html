@@ -17,7 +17,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -26,23 +26,23 @@
             min-height: 100vh;
             transition: all 0.3s ease;
         }
-        
+
         /* DARK MODE */
         body.dark-mode {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: #e0e0e0;
         }
-        
+
         body.dark-mode .card {
             background: #2a2a3e;
             color: #e0e0e0;
         }
-        
+
         body.dark-mode .card h2,
         body.dark-mode .card h3 {
             color: #8b9aff;
         }
-        
+
         body.dark-mode .event-item,
         body.dark-mode .task-item,
         body.dark-mode .contact-item,
@@ -50,39 +50,39 @@
             background: #1e1e2f;
             color: #e0e0e0;
         }
-        
+
         body.dark-mode .item-detail {
             color: #b0b0b0;
         }
-        
+
         body.dark-mode .item-location {
             color: #888;
         }
-        
+
         body.dark-mode .day-header {
             color: #8b9aff;
             border-bottom-color: #8b9aff;
         }
-        
+
         body.dark-mode .tab-button {
             background: rgba(255, 255, 255, 0.1);
             color: #e0e0e0;
         }
-        
+
         body.dark-mode .tab-button.active {
             background: linear-gradient(135deg, #8b9aff 0%, #6a7fdb 100%);
             color: white;
         }
-        
+
         body.dark-mode .modal-content {
             background: #2a2a3e;
             color: #e0e0e0;
         }
-        
+
         body.dark-mode .form-group label {
             color: #e0e0e0;
         }
-        
+
         body.dark-mode .form-group input,
         body.dark-mode .form-group select,
         body.dark-mode .form-group textarea {
@@ -90,16 +90,16 @@
             border-color: #444;
             color: #e0e0e0;
         }
-        
+
         body.dark-mode .btn-cancel {
             background: #3a3a4e;
             color: #e0e0e0;
         }
-        
+
         body.dark-mode .empty-state {
             color: #888;
         }
-        
+
         /* Dark Mode Toggle */
         .dark-mode-toggle {
             position: absolute;
@@ -113,12 +113,12 @@
             font-size: 1.2em;
             transition: all 0.3s ease;
         }
-        
+
         .dark-mode-toggle:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(1.1);
         }
-        
+
         /* Theme Toggle */
         .theme-toggle {
             position: absolute;
@@ -132,12 +132,12 @@
             font-size: 1.2em;
             transition: all 0.3s ease;
         }
-        
+
         .theme-toggle:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(1.1);
         }
-        
+
         /* Theme Menu */
         .theme-menu {
             position: absolute;
@@ -153,15 +153,15 @@
             overflow-y: auto;
             min-width: 180px;
         }
-        
+
         .theme-menu.active {
             display: block;
         }
-        
+
         body.dark-mode .theme-menu {
             background: #2a2a3e;
         }
-        
+
         .theme-option {
             padding: 10px 15px;
             margin: 5px 0;
@@ -172,112 +172,112 @@
             gap: 10px;
             transition: all 0.3s ease;
         }
-        
+
         .theme-option:hover {
             transform: translateX(5px);
         }
-        
+
         .theme-color {
             width: 30px;
             height: 30px;
             border-radius: 50%;
             border: 2px solid white;
         }
-        
+
         .theme-option.active {
             background: rgba(102, 126, 234, 0.1);
             font-weight: bold;
         }
-        
+
         /* Theme Colors */
         :root {
             --primary: #667eea;
             --secondary: #764ba2;
         }
-        
+
         body.theme-blue {
             --primary: #4A90E2;
             --secondary: #357ABD;
         }
-        
+
         body.theme-green {
             --primary: #4ECDC4;
             --secondary: #44A08D;
         }
-        
+
         body.theme-orange {
             --primary: #FF6B35;
             --secondary: #F7931E;
         }
-        
+
         body.theme-pink {
             --primary: #E91E63;
             --secondary: #C2185B;
         }
-        
+
         body.theme-red {
             --primary: #E63946;
             --secondary: #B91A25;
         }
-        
+
         body.theme-sunset {
             --primary: #FF512F;
             --secondary: #DD2476;
         }
-        
+
         body.theme-ocean {
             --primary: #2E3192;
             --secondary: #1BFFFF;
         }
-        
+
         body.theme-forest {
             --primary: #134E5E;
             --secondary: #71B280;
         }
-        
+
         body.theme-gold {
             --primary: #F7971E;
             --secondary: #FFD200;
         }
-        
+
         body.theme-lavender {
             --primary: #9D50BB;
             --secondary: #6E48AA;
         }
-        
+
         body.theme-midnight {
             --primary: #232526;
             --secondary: #414345;
         }
-        
+
         /* Apply theme colors */
         body {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         }
-        
+
         .card h2, .card h3, #today-date, .day-header {
             color: var(--primary) !important;
         }
-        
+
         .tab-button.active {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         }
-        
+
         .add-button {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         }
-        
+
         .contact-category {
             background: var(--primary);
         }
-        
+
         body.dark-mode .card h2,
         body.dark-mode .card h3,
         body.dark-mode #today-date,
         body.dark-mode .day-header {
             color: var(--primary) !important;
         }
-        
+
 
         /* Local RCC lock + Daymap quick link */
         .lock-toggle {
@@ -458,7 +458,7 @@
             position: relative;
             z-index: 1;
         }
-        
+
         .search-bar {
             width: 100%;
             padding: 12px 45px 12px 45px;
@@ -468,13 +468,13 @@
             font-size: 1em;
             transition: all 0.3s ease;
         }
-        
+
         .search-bar:focus {
             outline: none;
             border-color: white;
             box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
         }
-        
+
         .search-icon {
             position: absolute;
             left: 15px;
@@ -483,7 +483,7 @@
             font-size: 1.2em;
             pointer-events: none;
         }
-        
+
         .clear-search {
             position: absolute;
             right: 15px;
@@ -496,25 +496,25 @@
             opacity: 0.6;
             transition: opacity 0.3s ease;
         }
-        
+
         .clear-search:hover {
             opacity: 1;
         }
-        
+
         .clear-search.hidden {
             display: none;
         }
-        
+
         body.dark-mode .search-bar {
             background: #1e1e2f;
             border-color: #444;
             color: #e0e0e0;
         }
-        
+
         body.dark-mode .search-bar:focus {
             border-color: #8b9aff;
         }
-        
+
         .search-results-count {
             text-align: center;
             padding: 10px;
@@ -522,34 +522,34 @@
             font-size: 0.9em;
             margin-bottom: 10px;
         }
-        
+
         body.dark-mode .search-results-count {
             color: #b0b0b0;
         }
-        
+
         .highlight {
             background: #FFE66D;
             padding: 2px 4px;
             border-radius: 3px;
         }
-        
+
         body.dark-mode .highlight {
             background: #8b9aff;
             color: white;
         }
-        
+
         /* Countdown Badges */
         .countdown-section {
             margin-bottom: 30px;
         }
-        
+
         .countdown-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
-        
+
         .countdown-badge {
             background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
             padding: 15px;
@@ -558,54 +558,54 @@
             color: white;
             box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
         }
-        
+
         .countdown-badge.upcoming {
             background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
         }
-        
+
         .countdown-badge.urgent {
             background: linear-gradient(135deg, #FF6B35 0%, #E63946 100%);
             animation: pulse 2s infinite;
         }
-        
+
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
-        
+
         .countdown-number {
             font-size: 2.5em;
             font-weight: bold;
             margin: 5px 0;
         }
-        
+
         .countdown-label {
             font-size: 0.8em;
             opacity: 0.9;
             text-transform: uppercase;
         }
-        
+
         .countdown-title {
             font-size: 0.9em;
             margin-top: 8px;
             font-weight: 600;
         }
-        
+
         body.dark-mode .countdown-badge {
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
-        
+
         /* Swipe to Complete */
         .task-item, .note-item, .event-item, .contact-item {
             position: relative;
             transition: transform 0.3s ease;
             touch-action: pan-y;
         }
-        
+
         .task-item.swiping {
             transform: translateX(80px);
         }
-        
+
         .complete-action {
             position: absolute;
             right: 0;
@@ -622,11 +622,11 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
+
         .task-item.swiping .complete-action {
             opacity: 1;
         }
-        
+
         .swipe-hint {
             position: absolute;
             right: 10px;
@@ -637,17 +637,17 @@
             opacity: 0.5;
             pointer-events: none;
         }
-        
+
         body.dark-mode .swipe-hint {
             color: #666;
         }
-        
+
         /* Week View Grid */
         .view-toggle {
             text-align: center;
             margin-bottom: 15px;
         }
-        
+
         .view-toggle button {
             padding: 8px 20px;
             margin: 0 5px;
@@ -659,99 +659,154 @@
             font-weight: bold;
             transition: all 0.3s ease;
         }
-        
+
         .view-toggle button.active {
             background: var(--primary);
             color: white;
         }
-        
+
         body.dark-mode .view-toggle button {
             background: #2a2a3e;
             color: var(--primary);
         }
-        
+
         body.dark-mode .view-toggle button.active {
             background: var(--primary);
             color: white;
         }
-        
+
         .week-grid {
             overflow-x: auto;
             margin-top: 20px;
+            -webkit-overflow-scrolling: touch;
         }
-        
+
         .week-grid-container {
+            --week-grid-height: 672px;
             display: grid;
-            grid-template-columns: 80px repeat(5, 1fr);
-            gap: 2px;
-            min-width: 800px;
-            background: #e0e0e0;
-            border-radius: 8px;
+            grid-template-columns: 74px repeat(5, minmax(130px, 1fr));
+            grid-template-rows: auto var(--week-grid-height);
+            min-width: 820px;
+            background: #e5e7eb;
+            border: 1px solid #d6d6d6;
+            border-radius: 14px;
             overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
         }
-        
+
         body.dark-mode .week-grid-container {
-            background: #1a1a2e;
+            background: #303044;
+            border-color: #3a3a50;
         }
-        
+
         .grid-header {
-            background: var(--primary);
-            color: white;
-            padding: 15px 10px;
+            background: rgba(255,255,255,0.96);
+            color: var(--primary);
+            padding: 12px 8px;
             text-align: center;
-            font-weight: bold;
+            font-weight: 800;
+            border-right: 1px solid #e5e7eb;
+            border-bottom: 1px solid #d6d6d6;
+            position: sticky;
+            top: 0;
+            z-index: 3;
         }
-        
-        .time-label {
-            background: #f5f5f5;
-            padding: 10px 5px;
-            text-align: center;
-            font-size: 0.8em;
-            color: #666;
-            font-weight: 600;
+
+        body.dark-mode .grid-header {
+            background: #242438;
+            border-color: #3a3a50;
         }
-        
-        body.dark-mode .time-label {
-            background: #2a2a3e;
-            color: #b0b0b0;
-        }
-        
-        .grid-cell {
-            background: white;
-            min-height: 60px;
-            padding: 5px;
+
+        .week-time-column,
+        .week-day-column {
             position: relative;
+            height: var(--week-grid-height);
+            background: white;
+            border-right: 1px solid #e5e7eb;
         }
-        
-        body.dark-mode .grid-cell {
+
+        body.dark-mode .week-time-column,
+        body.dark-mode .week-day-column {
             background: #1e1e2f;
+            border-color: #34344a;
         }
-        
+
+        .week-time-column {
+            background: #f8fafc;
+        }
+
+        body.dark-mode .week-time-column {
+            background: #242438;
+        }
+
+        .week-hour-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            border-top: 1px solid #e5e7eb;
+            pointer-events: none;
+        }
+
+        body.dark-mode .week-hour-line {
+            border-top-color: #34344a;
+        }
+
+        .time-label {
+            position: absolute;
+            right: 7px;
+            transform: translateY(-0.65em);
+            font-size: 0.78em;
+            color: #64748b;
+            font-weight: 700;
+            white-space: nowrap;
+            background: transparent;
+            padding: 0;
+        }
+
+        body.dark-mode .time-label {
+            color: #b0b0c8;
+        }
+
         .grid-event {
+            position: absolute;
+            z-index: 2;
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 5px;
-            margin: 2px 0;
-            border-radius: 4px;
-            font-size: 0.75em;
-            line-height: 1.3;
+            padding: 4px 5px;
+            border-radius: 6px;
+            font-size: 0.72em;
+            line-height: 1.22;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.16);
+            border-left: 3px solid rgba(255,255,255,0.75);
+        }
+
+        .grid-event-time {
+            display: block;
+            font-size: 0.82em;
+            opacity: 0.9;
+            margin-top: 2px;
+            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        
+
         .grid-event.music {
             background: linear-gradient(135deg, #FFE66D 0%, #FFC857 100%);
             color: #333;
+            border-left-color: #f59e0b;
         }
-        
+
         .grid-event.sport {
             background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            border-left-color: #c2410c;
         }
-        
+
         .grid-event.school {
             background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+            border-left-color: #0f766e;
         }
-        
+
         /* Reminders Toggle */
         .reminders-toggle {
             position: absolute;
@@ -767,15 +822,15 @@
             color: white;
             font-weight: 600;
         }
-        
+
         .reminders-toggle:hover {
             background: rgba(255, 255, 255, 0.3);
         }
-        
+
         .reminders-toggle.active {
             background: #4ECDC4;
         }
-        
+
         .notification-badge {
             position: fixed;
             bottom: 20px;
@@ -789,26 +844,26 @@
             animation: slideIn 0.3s ease;
             z-index: 1000;
         }
-        
+
         .notification-badge.show {
             display: block;
         }
-        
+
         @keyframes slideIn {
             from { transform: translateX(400px); }
             to { transform: translateX(0); }
         }
-        
+
         .notification-content {
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
+
         .notification-time {
             font-size: 0.85em;
             opacity: 0.9;
         }
-        
+
         /* Achievement Badges */
         .badges-section {
             margin-top: 30px;
@@ -816,14 +871,14 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
         }
-        
+
         .badges-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
-        
+
         .badge {
             text-align: center;
             padding: 15px 10px;
@@ -832,48 +887,48 @@
             transition: all 0.3s ease;
             opacity: 0.3;
         }
-        
+
         .badge.unlocked {
             opacity: 1;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
             animation: badgeUnlock 0.5s ease;
         }
-        
+
         @keyframes badgeUnlock {
             0% { transform: scale(0.5) rotate(0deg); }
             50% { transform: scale(1.2) rotate(180deg); }
             100% { transform: scale(1) rotate(360deg); }
         }
-        
+
         .badge-icon {
             font-size: 2.5em;
             margin-bottom: 5px;
         }
-        
+
         .badge-name {
             font-size: 0.75em;
             font-weight: bold;
             color: #333;
         }
-        
+
         .badge-desc {
             font-size: 0.65em;
             color: #666;
             margin-top: 3px;
         }
-        
+
         body.dark-mode .badge {
             background: #2a2a3e;
         }
-        
+
         body.dark-mode .badge-name {
             color: #e0e0e0;
         }
-        
+
         body.dark-mode .badge-desc {
             color: #b0b0b0;
         }
-        
+
         .badge-unlock-popup {
             position: fixed;
             top: 50%;
@@ -889,33 +944,33 @@
             z-index: 2000;
             animation: popIn 0.5s ease;
         }
-        
+
         .badge-unlock-popup.show {
             display: block;
         }
-        
+
         @keyframes popIn {
             0% { transform: translate(-50%, -50%) scale(0); }
             50% { transform: translate(-50%, -50%) scale(1.1); }
             100% { transform: translate(-50%, -50%) scale(1); }
         }
-        
+
         .badge-unlock-icon {
             font-size: 4em;
             margin-bottom: 10px;
         }
-        
+
         .badge-unlock-title {
             font-size: 1.5em;
             font-weight: bold;
             margin-bottom: 10px;
         }
-        
+
         .badge-unlock-desc {
             font-size: 1em;
             opacity: 0.9;
         }
-        
+
         /* Photo Attachments */
         .photo-preview {
             max-width: 100%;
@@ -924,7 +979,7 @@
             margin-top: 10px;
             cursor: pointer;
         }
-        
+
         .photo-thumbnail {
             width: 60px;
             height: 60px;
@@ -934,7 +989,7 @@
             cursor: pointer;
             border: 2px solid var(--primary);
         }
-        
+
         .photo-modal {
             position: fixed;
             top: 0;
@@ -947,17 +1002,17 @@
             align-items: center;
             z-index: 3000;
         }
-        
+
         .photo-modal.active {
             display: flex;
         }
-        
+
         .photo-modal img {
             max-width: 90%;
             max-height: 90%;
             border-radius: 8px;
         }
-        
+
         .photo-modal-close {
             position: absolute;
             top: 20px;
@@ -969,11 +1024,11 @@
             cursor: pointer;
             font-size: 1.2em;
         }
-        
+
         .file-input-wrapper {
             margin-top: 10px;
         }
-        
+
         .file-input-label {
             display: inline-block;
             padding: 8px 15px;
@@ -983,68 +1038,68 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         .file-input-label:hover {
             transform: translateY(-2px);
         }
-        
+
         .file-input {
             display: none;
         }
-        
+
         .photo-indicator {
             display: inline-block;
             margin-left: 8px;
             font-size: 1.2em;
         }
-        
+
         /* Widget Mode */
         body.widget-mode .container {
             max-width: 400px;
         }
-        
+
         body.widget-mode header h1 {
             font-size: 1.5em;
         }
-        
+
         body.widget-mode header p {
             display: none;
         }
-        
+
         body.widget-mode .tab-nav {
             display: none;
         }
-        
+
         body.widget-mode .card {
             padding: 15px;
             min-height: auto;
         }
-        
+
         body.widget-mode .card h2 {
             font-size: 1.3em;
             margin-bottom: 10px;
         }
-        
+
         body.widget-mode .card h3 {
             font-size: 1.1em;
             margin-bottom: 8px;
         }
-        
+
         body.widget-mode .countdown-badge,
         body.widget-mode .event-item,
         body.widget-mode .task-item {
             padding: 8px;
             font-size: 0.9em;
         }
-        
+
         body.widget-mode .badges-section {
             display: none;
         }
-        
+
         body.widget-mode footer {
             font-size: 0.75em;
         }
-        
+
         .widget-toggle {
             position: absolute;
             top: 15px;
@@ -1059,16 +1114,16 @@
             color: white;
             font-weight: 600;
         }
-        
+
         .widget-toggle:hover {
             background: rgba(255, 255, 255, 0.3);
         }
-        
+
         .widget-toggle.active {
             background: #FFE66D;
             color: #333;
         }
-        
+
         .widget-stats {
             display: none;
             background: rgba(255, 255, 255, 0.1);
@@ -1077,45 +1132,45 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        
+
         body.widget-mode .widget-stats {
             display: block;
         }
-        
+
         .stat-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-top: 10px;
         }
-        
+
         .stat-item {
             background: white;
             padding: 10px;
             border-radius: 8px;
             text-align: center;
         }
-        
+
         body.dark-mode .stat-item {
             background: #2a2a3e;
         }
-        
+
         .stat-number {
             font-size: 1.8em;
             font-weight: bold;
             color: var(--primary);
         }
-        
+
         .stat-label {
             font-size: 0.75em;
             color: #666;
             margin-top: 3px;
         }
-        
+
         body.dark-mode .stat-label {
             color: #b0b0b0;
         }
-        
+
         /* Sync Button */
         .sync-button {
             position: fixed;
@@ -1133,12 +1188,12 @@
             transition: all 0.3s ease;
             z-index: 500;
         }
-        
+
         .sync-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(78, 205, 196, 0.6);
         }
-        
+
         .sync-modal {
             position: fixed;
             top: 0;
@@ -1151,11 +1206,11 @@
             align-items: center;
             z-index: 2000;
         }
-        
+
         .sync-modal.active {
             display: flex;
         }
-        
+
         .sync-content {
             background: white;
             padding: 30px;
@@ -1165,12 +1220,12 @@
             max-height: 80vh;
             overflow-y: auto;
         }
-        
+
         body.dark-mode .sync-content {
             background: #2a2a3e;
             color: #e0e0e0;
         }
-        
+
         .sync-data {
             background: #f5f5f5;
             padding: 15px;
@@ -1183,12 +1238,12 @@
             white-space: pre-wrap;
             word-break: break-all;
         }
-        
+
         body.dark-mode .sync-data {
             background: #1a1a2e;
             color: #4ECDC4;
         }
-        
+
         .copy-button {
             background: var(--primary);
             color: white;
@@ -1199,16 +1254,16 @@
             font-weight: bold;
             margin-right: 10px;
         }
-        
+
         .copy-button:hover {
             opacity: 0.9;
         }
-        
+
         .container {
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         header {
             text-align: center;
             color: white;
@@ -1220,17 +1275,17 @@
             position: relative;
             z-index: 3000;
         }
-        
+
         header h1 {
             font-size: 2.2em;
             margin-bottom: 5px;
         }
-        
+
         header p {
             font-size: 1em;
             opacity: 0.9;
         }
-        
+
         /* Tab Navigation */
         .tab-nav {
             display: flex;
@@ -1238,7 +1293,7 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        
+
         .tab-button {
             flex: 1;
             min-width: 100px;
@@ -1252,18 +1307,18 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .tab-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
-        
+
         .tab-button.active {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             transform: translateY(-2px);
         }
-        
+
         /* Content Card */
         .card {
             background: white;
@@ -1273,21 +1328,21 @@
             min-height: 400px;
             position: relative;
         }
-        
+
         .tab-content {
             display: none;
         }
-        
+
         .tab-content.active {
             display: block;
             animation: fadeIn 0.3s ease;
         }
-        
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .card h2 {
             color: #667eea;
             margin-bottom: 20px;
@@ -1296,7 +1351,7 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         /* Add Button */
         .add-button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -1310,12 +1365,12 @@
             margin-bottom: 15px;
             transition: all 0.3s ease;
         }
-        
+
         .add-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
-        
+
         /* Modal/Form Overlay */
         .modal {
             display: none;
@@ -1329,11 +1384,11 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         .modal.active {
             display: flex;
         }
-        
+
         .modal-content {
             background: white;
             padding: 30px;
@@ -1343,23 +1398,23 @@
             max-height: 80vh;
             overflow-y: auto;
         }
-        
+
         .modal-content h3 {
             color: #667eea;
             margin-bottom: 20px;
         }
-        
+
         .form-group {
             margin-bottom: 15px;
         }
-        
+
         .form-group label {
             display: block;
             font-weight: bold;
             margin-bottom: 5px;
             color: #333;
         }
-        
+
         .form-group input,
         .form-group select,
         .form-group textarea {
@@ -1370,20 +1425,20 @@
             font-size: 1em;
             font-family: inherit;
         }
-        
+
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: #667eea;
         }
-        
+
         .form-buttons {
             display: flex;
             gap: 10px;
             margin-top: 20px;
         }
-        
+
         .form-buttons button {
             flex: 1;
             padding: 12px;
@@ -1393,22 +1448,22 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         .btn-submit {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
-        
+
         .btn-cancel {
             background: #e0e0e0;
             color: #333;
         }
-        
+
         .btn-submit:hover,
         .btn-cancel:hover {
             transform: translateY(-2px);
         }
-        
+
         /* Day Headers */
         .day-header {
             font-weight: bold;
@@ -1418,11 +1473,11 @@
             padding-bottom: 5px;
             border-bottom: 2px solid #667eea;
         }
-        
+
         .day-header:first-child {
             margin-top: 0;
         }
-        
+
         /* Event/Task/Contact Items */
         .event-item, .contact-item, .task-item, .note-item {
             padding: 12px;
@@ -1432,34 +1487,34 @@
             border-left: 4px solid #667eea;
             position: relative;
         }
-        
+
         .event-item.sport {
             border-left-color: #FF6B35;
         }
-        
+
         .event-item.school {
             border-left-color: #4ECDC4;
         }
-        
+
         .event-item.music {
             border-left-color: #FFE66D;
         }
-        
+
         .task-item.completed {
             opacity: 0.6;
             text-decoration: line-through;
         }
-        
+
         .item-title {
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
+
         .item-detail {
             color: #666;
             font-size: 0.9em;
         }
-        
+
         .item-location {
             color: #999;
             font-size: 0.85em;
@@ -1492,12 +1547,12 @@
         body.dark-mode .daymap-event-note {
             color: #b0b0b0;
         }
-        
+
         .contact-name {
             font-weight: bold;
             color: #333;
         }
-        
+
         .contact-category {
             display: inline-block;
             padding: 3px 8px;
@@ -1507,32 +1562,32 @@
             font-size: 0.8em;
             margin-top: 5px;
         }
-        
+
         .empty-state {
             text-align: center;
             padding: 50px 30px;
             color: #999;
             font-style: italic;
         }
-        
+
         .priority-high {
             border-left-color: #FF6B35;
         }
-        
+
         .priority-medium {
             border-left-color: #FFE66D;
         }
-        
+
         .priority-low {
             border-left-color: #4ECDC4;
         }
-        
+
         .note-date {
             font-size: 0.85em;
             color: #999;
             margin-top: 8px;
         }
-        
+
         .local-badge {
             display: inline-block;
             background: #FFE66D;
@@ -1542,7 +1597,7 @@
             font-size: 0.7em;
             margin-left: 8px;
         }
-        
+
         footer {
             text-align: center;
             color: white;
@@ -1624,7 +1679,7 @@
             <h1>🚀 ROCKY COMMAND CENTRE</h1>
             <p>Your Personal Dashboard</p>
         </header>
-        
+
         <!-- Search Bar -->
         <div class="search-container">
             <span class="search-icon">🔍</span>
@@ -1632,7 +1687,7 @@
             <button class="clear-search hidden" id="clearSearch" onclick="clearSearch()">✕</button>
         </div>
         <div id="searchResults" class="search-results-count" style="display: none;"></div>
-        
+
         <!-- Tab Navigation -->
         <div class="tab-nav">
             <button class="tab-button active" onclick="showTab('home')">🏠 Today</button>
@@ -1645,90 +1700,90 @@
             <button class="tab-button" onclick="showTab('email')">📧 Email</button>
             <button class="tab-button" onclick="showTab('daymap')">🗓️ Daymap</button>
         </div>
-        
+
         <!-- Content Card -->
         <div class="card">
             <!-- Home/Today Tab -->
             <div id="home" class="tab-content active">
                 <h2>🏠 Today's Overview</h2>
                 <div id="today-date" style="color: #667eea; font-size: 1.1em; margin-bottom: 20px;"></div>
-                
+
                 <!-- Widget Stats -->
                 <div class="widget-stats">
                     <h3 style="color: white; margin-bottom: 10px;">📊 Quick Stats</h3>
                     <div class="stat-grid" id="widget-stats"></div>
                 </div>
-                
+
                 <!-- Achievement Badges -->
                 <div class="badges-section">
                     <h3 style="color: #667eea; font-size: 1.3em; margin-bottom: 10px;">🏆 Your Achievements</h3>
                     <div class="badges-grid" id="badges-grid"></div>
                 </div>
-                
+
                 <!-- Countdown Section -->
                 <div class="countdown-section" id="countdown-section" style="display: none;">
                     <h3 style="color: #667eea; font-size: 1.3em; margin-bottom: 10px;">🔔 Upcoming Deadlines</h3>
                     <div class="countdown-grid" id="countdown-grid"></div>
                 </div>
-                
+
                 <div style="margin-bottom: 30px;">
                     <h3 style="color: #667eea; font-size: 1.3em; margin-bottom: 10px;">📅 Today's Events</h3>
                     <div id="today-events"></div>
                 </div>
-                
+
                 <div style="margin-bottom: 30px;">
                     <h3 style="color: #667eea; font-size: 1.3em; margin-bottom: 10px;">✅ Active Tasks</h3>
                     <div id="today-tasks"></div>
                 </div>
-                
+
                 <div>
                     <h3 style="color: #667eea; font-size: 1.3em; margin-bottom: 10px;">📝 Quick Notes</h3>
                     <div id="today-notes"></div>
                 </div>
             </div>
-            
+
             <!-- Calendar Tab -->
             <div id="calendar" class="tab-content">
                 <h2>📅 Weekly Schedule</h2>
                 <button class="add-button" onclick="openAddEventModal()">+ Add Event</button>
-                
+
                 <div class="view-toggle">
                     <button id="listViewBtn" class="active" onclick="switchCalendarView('list')">📋 List View</button>
                     <button id="gridViewBtn" onclick="switchCalendarView('grid')">📊 Week Grid</button>
                 </div>
-                
+
                 <div id="calendar-list"></div>
                 <div id="calendar-grid" class="week-grid" style="display: none;"></div>
             </div>
-            
+
             <!-- Homework Tab -->
             <div id="homework" class="tab-content">
                 <h2>📚 Homework Tracker</h2>
                 <button class="add-button" onclick="openAddHomeworkModal()">+ Add Assignment</button>
                 <div id="homework-list"></div>
             </div>
-            
+
             <!-- Tasks Tab -->
             <div id="tasks" class="tab-content">
                 <h2>✅ Tasks & Homework</h2>
                 <button class="add-button" onclick="openAddTaskModal()">+ Add Task</button>
                 <div id="tasks-list"></div>
             </div>
-            
+
             <!-- Contacts Tab -->
             <div id="contacts" class="tab-content">
                 <h2>👥 Contacts</h2>
                 <button class="add-button" onclick="openAddContactModal()">+ Add Contact</button>
                 <div id="contacts-list"></div>
             </div>
-            
+
             <!-- Notes Tab -->
             <div id="notes" class="tab-content">
                 <h2>📝 Quick Notes</h2>
                 <button class="add-button" onclick="openAddNoteModal()">+ Add Note</button>
                 <div id="notes-list"></div>
             </div>
-            
+
             <!-- Music Tab -->
             <div id="music" class="tab-content">
                 <h2>🎵 Music Centre</h2>
@@ -1759,20 +1814,20 @@
                 </p>
                 <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
                     <a href="https://mail.google.com/mail/u/0/#inbox" target="_blank" rel="noopener noreferrer"
-                       style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                              color: white; text-decoration: none; border-radius: 12px; text-align: center; font-size: 18px; 
+                       style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                              color: white; text-decoration: none; border-radius: 12px; text-align: center; font-size: 18px;
                               transition: transform 0.2s;">
                         📬 Open Gmail Inbox
                     </a>
                     <a href="https://mail.google.com/mail/u/0/#starred" target="_blank" rel="noopener noreferrer"
-                       style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
-                              color: white; text-decoration: none; border-radius: 12px; text-align: center; font-size: 18px; 
+                       style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                              color: white; text-decoration: none; border-radius: 12px; text-align: center; font-size: 18px;
                               transition: transform 0.2s;">
                         ⭐ Starred Emails
                     </a>
                     <a href="https://mail.google.com/mail/u/0/#sent" target="_blank" rel="noopener noreferrer"
-                       style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
-                              color: white; text-decoration: none; border-radius: 12px; text-align: center; font-size: 18px; 
+                       style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                              color: white; text-decoration: none; border-radius: 12px; text-align: center; font-size: 18px;
                               transition: transform 0.2s;">
                         📤 Sent Emails
                     </a>
@@ -1817,7 +1872,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 </div>
             </div>
         </div>
-        
+
         <!-- Add Event Modal -->
         <div id="eventModal" class="modal">
             <div class="modal-content">
@@ -1864,7 +1919,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 </form>
             </div>
         </div>
-        
+
         <!-- Add Task Modal -->
         <div id="taskModal" class="modal">
             <div class="modal-content">
@@ -1893,7 +1948,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 </form>
             </div>
         </div>
-        
+
         <!-- Add Contact Modal -->
         <div id="contactModal" class="modal">
             <div class="modal-content">
@@ -1927,7 +1982,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 </form>
             </div>
         </div>
-        
+
         <!-- Add Note Modal -->
         <div id="noteModal" class="modal">
             <div class="modal-content">
@@ -1954,7 +2009,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 </form>
             </div>
         </div>
-        
+
         <!-- Add/Edit Music Note Modal -->
         <div id="musicNoteModal" class="modal">
             <div class="modal-content">
@@ -2071,42 +2126,42 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 </form>
             </div>
         </div>
-        
+
         <footer>
             <p>Built by Carter & Rocky 🤘 | Last updated: Sunday, March 29, 2026 7:49 PM | 💾 Sync + Daily Summaries!</p>
         </footer>
-        
+
         <!-- Notification Badge -->
         <div id="notificationBadge" class="notification-badge">
             <div class="notification-content" id="notificationContent"></div>
             <div class="notification-time" id="notificationTime"></div>
         </div>
-        
+
         <!-- Badge Unlock Popup -->
         <div id="badgeUnlockPopup" class="badge-unlock-popup">
             <div class="badge-unlock-icon" id="unlockIcon"></div>
             <div class="badge-unlock-title" id="unlockTitle"></div>
             <div class="badge-unlock-desc" id="unlockDesc"></div>
         </div>
-        
+
         <!-- Photo Modal -->
         <div id="photoModal" class="photo-modal" onclick="closePhotoModal()">
             <button class="photo-modal-close" onclick="closePhotoModal()">✕ Close</button>
             <img id="photoModalImg" src="" alt="Full size photo">
         </div>
-        
+
         <!-- Sync Button -->
         <button class="sync-button" onclick="openSyncModal()" title="Export LOCAL data and notify Rocky">💾 Sync Data</button>
-        
+
         <!-- Sync Modal -->
         <div id="syncModal" class="sync-modal">
             <div class="sync-content">
                 <h2 style="color: var(--primary); margin-bottom: 15px;">💾 Sync LOCAL Data</h2>
                 <p style="margin-bottom: 10px;">RCC made a sync package for Rocky. If a safe Rocky webhook is connected, RCC will send it automatically.</p>
                 <div id="syncStatus" style="margin-bottom: 15px; padding: 12px; border-radius: 12px; background: rgba(102,126,234,0.12); font-size: 0.95em;"></div>
-                
+
                 <div class="sync-data" id="syncData"></div>
-                
+
                 <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px;">
                     <button class="copy-button" onclick="copyRockySyncMessage()">📋 Copy Rocky Message</button>
                     <button class="copy-button" onclick="shareRockySyncMessage()">📤 Share</button>
@@ -2114,55 +2169,55 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     <button class="copy-button" onclick="configureRockyWebhook()">🔔 Rocky Doorbell</button>
                     <button class="copy-button" style="background: #666;" onclick="closeSyncModal()">Cancel</button>
                 </div>
-                
+
                 <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.8;">
                     Safe version: no passwords or tokens are built into RCC. A webhook can be saved on this device later if Dad/Rocky sets one up.
                 </p>
             </div>
         </div>
     </div>
-    
+
     <script>
         // Dark Mode Toggle
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             localStorage.setItem('rcc_darkMode', isDark);
-            
+
             // Update toggle button emoji
             const btn = document.querySelector('.dark-mode-toggle');
             btn.textContent = isDark ? '☀️' : '🌙';
         }
-        
+
         // Theme Menu Toggle
         function toggleThemeMenu() {
             const menu = document.getElementById('themeMenu');
             menu.classList.toggle('active');
         }
-        
+
         // Set Theme
         function setTheme(theme) {
             // Remove all theme classes
             document.body.classList.remove('theme-purple', 'theme-blue', 'theme-green', 'theme-orange', 'theme-pink', 'theme-red', 'theme-sunset', 'theme-ocean', 'theme-forest', 'theme-gold', 'theme-lavender', 'theme-midnight');
-            
+
             // Add new theme class
             if (theme !== 'purple') {
                 document.body.classList.add('theme-' + theme);
             }
-            
+
             // Save preference
             localStorage.setItem('rcc_theme', theme);
-            
+
             // Update active state in menu
             document.querySelectorAll('.theme-option').forEach(opt => {
                 opt.classList.remove('active');
             });
             event.target.closest('.theme-option').classList.add('active');
-            
+
             // Close menu
             toggleThemeMenu();
         }
-        
+
         // Load preferences
         window.addEventListener('DOMContentLoaded', function() {
             // Dark mode
@@ -2171,13 +2226,13 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 document.body.classList.add('dark-mode');
                 document.querySelector('.dark-mode-toggle').textContent = '☀️';
             }
-            
+
             // Theme
             const theme = localStorage.getItem('rcc_theme') || 'purple';
             if (theme !== 'purple') {
                 document.body.classList.add('theme-' + theme);
             }
-            
+
             // Mark active theme
             const themeOptions = document.querySelectorAll('.theme-option');
             themeOptions.forEach((opt, idx) => {
@@ -2607,7 +2662,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             const query = document.getElementById('searchBar').value.toLowerCase().trim();
             const clearBtn = document.getElementById('clearSearch');
             const resultsDiv = document.getElementById('searchResults');
-            
+
             if (query.length > 0) {
                 clearBtn.classList.remove('hidden');
             } else {
@@ -2616,9 +2671,9 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 renderAll();
                 return;
             }
-            
+
             if (query.length < 2) return;
-            
+
             const allData = getAllData();
             let results = {
                 events: [],
@@ -2626,24 +2681,24 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 contacts: [],
                 notes: []
             };
-            
+
             // Search events
             allData.calendar.forEach(event => {
-                if (event.title.toLowerCase().includes(query) || 
+                if (event.title.toLowerCase().includes(query) ||
                     event.date.toLowerCase().includes(query) ||
                     (event.location && event.location.toLowerCase().includes(query))) {
                     results.events.push(event);
                 }
             });
-            
+
             // Search tasks
             allData.tasks.forEach(task => {
-                if (task.title.toLowerCase().includes(query) || 
+                if (task.title.toLowerCase().includes(query) ||
                     task.due.toLowerCase().includes(query)) {
                     results.tasks.push(task);
                 }
             });
-            
+
             // Search contacts
             allData.contacts.forEach(contact => {
                 if (contact.name.toLowerCase().includes(query) ||
@@ -2652,7 +2707,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     results.contacts.push(contact);
                 }
             });
-            
+
             // Search notes
             allData.notes.forEach(note => {
                 if (note.title.toLowerCase().includes(query) ||
@@ -2660,9 +2715,9 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     results.notes.push(note);
                 }
             });
-            
+
             const totalResults = results.events.length + results.tasks.length + results.contacts.length + results.notes.length;
-            
+
             if (totalResults > 0) {
                 resultsDiv.textContent = `Found ${totalResults} result${totalResults > 1 ? 's' : ''} for "${query}"`;
                 resultsDiv.style.display = 'block';
@@ -2673,20 +2728,20 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 renderAll();
             }
         }
-        
+
         function clearSearch() {
             document.getElementById('searchBar').value = '';
             document.getElementById('clearSearch').classList.add('hidden');
             document.getElementById('searchResults').style.display = 'none';
             renderAll();
         }
-        
+
         function highlightText(text, query) {
             if (!query) return text;
             const regex = new RegExp(`(${query})`, 'gi');
             return text.replace(regex, '<span class="highlight">$1</span>');
         }
-        
+
         function renderSearchResults(results, query) {
             // Render filtered calendar
             const calendarList = document.getElementById('calendar-list');
@@ -2699,7 +2754,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 });
                 calendarList.innerHTML = html;
             }
-            
+
             // Render filtered tasks
             const tasksList = document.getElementById('tasks-list');
             if (results.tasks.length === 0) {
@@ -2712,7 +2767,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     </div>
                 `).join('');
             }
-            
+
             // Render filtered contacts
             const contactsList = document.getElementById('contacts-list');
             if (results.contacts.length === 0) {
@@ -2727,7 +2782,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     </div>
                 `).join('');
             }
-            
+
             // Render filtered notes
             const notesList = document.getElementById('notes-list');
             if (results.notes.length === 0) {
@@ -2742,14 +2797,14 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 `).join('');
             }
         }
-        
+
         // Calendar View Switching
         function switchCalendarView(view) {
             const listView = document.getElementById('calendar-list');
             const gridView = document.getElementById('calendar-grid');
             const listBtn = document.getElementById('listViewBtn');
             const gridBtn = document.getElementById('gridViewBtn');
-            
+
             if (view === 'list') {
                 listView.style.display = 'block';
                 gridView.style.display = 'none';
@@ -2763,92 +2818,149 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 renderWeekGrid();
             }
         }
-        
+
         // Render Week Grid View
+        function eventTimeToMinutes(hour, minute, period) {
+            let result = Number(hour) * 60 + Number(minute || 0);
+            const ampm = String(period || '').toLowerCase();
+            if (ampm === 'pm' && Number(hour) !== 12) result += 12 * 60;
+            if (ampm === 'am' && Number(hour) === 12) result -= 12 * 60;
+            return result;
+        }
+
+        function parseEventTimeRange(timeText) {
+            const text = String(timeText || '').replace(/\s+/g, ' ').trim();
+            const range = text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*(?:-|–|—|to)\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
+            if (range) {
+                let [, startHour, startMinute = '0', startPeriod, endHour, endMinute = '0', endPeriod] = range;
+                if (!startPeriod && endPeriod) startPeriod = endPeriod;
+                let start = eventTimeToMinutes(startHour, startMinute, startPeriod);
+                let end = eventTimeToMinutes(endHour, endMinute, endPeriod || startPeriod);
+                if (end <= start && !startPeriod && endPeriod === 'pm') {
+                    start = eventTimeToMinutes(startHour, startMinute, 'pm');
+                }
+                if (end <= start) end = start + 50;
+                return {start, end};
+            }
+
+            const single = text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i);
+            if (single) {
+                const start = eventTimeToMinutes(single[1], single[2] || '0', single[3]);
+                return {start, end: start + 50};
+            }
+
+            return null;
+        }
+
+        function layoutWeekEvents(events) {
+            const timed = events
+                .map(event => ({...event, range: parseEventTimeRange(event.time)}))
+                .filter(event => event.range)
+                .sort((a, b) => a.range.start - b.range.start || a.range.end - b.range.end);
+
+            const active = [];
+            timed.forEach(event => {
+                for (let i = active.length - 1; i >= 0; i--) {
+                    if (active[i].range.end <= event.range.start) active.splice(i, 1);
+                }
+                const usedColumns = new Set(active.map(item => item.column));
+                let column = 0;
+                while (usedColumns.has(column)) column++;
+                event.column = column;
+                active.push(event);
+            });
+
+            timed.forEach(event => {
+                const conflicts = timed.filter(other => other.range.start < event.range.end && other.range.end > event.range.start);
+                event.columnCount = Math.max(1, ...conflicts.map(other => other.column + 1));
+            });
+
+            return timed;
+        }
+
         function renderWeekGrid() {
             const allData = getAllData();
             const gridContainer = document.getElementById('calendar-grid');
-            
-            // Time slots (8 AM to 6 PM for school hours)
-            const timeSlots = [
-                '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', 
-                '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM',
-                '4:00 PM', '5:00 PM', '6:00 PM'
-            ];
-            
             const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-            
-            // Build grid HTML
-            let html = '<div class="week-grid-container">';
-            
-            // Header row
+            const gridStart = 8 * 60;
+            const gridEnd = 18 * 60 + 30;
+            const pixelsPerHour = 64;
+            const gridHeight = ((gridEnd - gridStart) / 60) * pixelsPerHour;
+            const pixelsPerMinute = gridHeight / (gridEnd - gridStart);
+            const hourLabels = [];
+            for (let minutes = gridStart; minutes <= 18 * 60; minutes += 60) {
+                const hour24 = Math.floor(minutes / 60);
+                const hour12 = hour24 === 12 ? 12 : hour24 > 12 ? hour24 - 12 : hour24;
+                hourLabels.push({label: `${hour12}:00 ${hour24 >= 12 ? 'PM' : 'AM'}`, top: (minutes - gridStart) * pixelsPerMinute});
+            }
+
+            const hourLines = hourLabels.map(item => `<div class="week-hour-line" style="top:${item.top}px"></div>`).join('');
+            let html = `<div class="week-grid-container" style="--week-grid-height:${gridHeight}px">`;
             html += '<div class="grid-header">Time</div>';
             days.forEach(day => {
                 html += `<div class="grid-header">${day}</div>`;
             });
-            
-            // Time rows
-            timeSlots.forEach(time => {
-                html += `<div class="time-label">${time}</div>`;
-                
-                days.forEach(day => {
-                    // Find events for this day and time slot
-                    const dayEvents = allData.calendar.filter(event => 
-                        event.date.includes(day)
-                    );
-                    
-                    const cellEvents = dayEvents.filter(event => {
-                        // Simple time matching (checks if event time includes this hour)
-                        const hour = time.split(':')[0];
-                        return event.time.includes(hour);
-                    });
-                    
-                    html += '<div class="grid-cell">';
-                    cellEvents.forEach(event => {
-                        html += `<div class="grid-event ${event.category}" title="${event.title} - ${event.time}">${event.title}</div>`;
-                    });
-                    html += '</div>';
-                });
+
+            html += '<div class="week-time-column">';
+            hourLabels.forEach(item => {
+                html += `<div class="time-label" style="top:${item.top}px">${item.label}</div>`;
             });
-            
+            html += '</div>';
+
+            days.forEach(day => {
+                const dayEvents = layoutWeekEvents(allData.calendar.filter(event => event.date.includes(day)));
+                html += `<div class="week-day-column" aria-label="${day} calendar">${hourLines}`;
+                dayEvents.forEach(event => {
+                    const start = Math.max(event.range.start, gridStart);
+                    const end = Math.min(event.range.end, gridEnd);
+                    if (end <= gridStart || start >= gridEnd) return;
+                    const top = (start - gridStart) * pixelsPerMinute;
+                    const height = Math.max(22, (end - start) * pixelsPerMinute - 3);
+                    const width = 100 / event.columnCount;
+                    const left = width * event.column;
+                    const safeCategory = String(event.category || 'general').replace(/[^a-z0-9_-]/gi, '');
+                    html += `<div class="grid-event ${safeCategory}" style="top:${top}px; height:${height}px; left:calc(${left}% + 3px); width:calc(${width}% - 6px);" title="${escapeHtml(event.title)} - ${escapeHtml(event.time)}"><strong>${escapeHtml(event.title)}</strong><span class="grid-event-time">${escapeHtml(event.time)}</span></div>`;
+                });
+                html += '</div>';
+            });
             html += '</div>';
             gridContainer.innerHTML = html;
         }
-        
+
         // Tab switching function
         function showTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
-            
+
             document.querySelectorAll('.tab-button').forEach(btn => {
                 btn.classList.remove('active');
             });
-            
+
             document.getElementById(tabName).classList.add('active');
             const activeButton = (typeof event !== 'undefined' && event && event.target && event.target.classList.contains('tab-button'))
                 ? event.target
                 : Array.from(document.querySelectorAll('.tab-button')).find(btn => btn.getAttribute('onclick') === `showTab('${tabName}')`);
             if (activeButton) activeButton.classList.add('active');
         }
-        
+
         // Modal functions
         function openAddEventModal() {
             document.getElementById('eventModal').classList.add('active');
         }
-        
+
         function openAddTaskModal() {
             document.getElementById('taskModal').classList.add('active');
         }
-        
+
         function openAddContactModal() {
             document.getElementById('contactModal').classList.add('active');
         }
-        
+
         function openAddNoteModal() {
             document.getElementById('noteModal').classList.add('active');
         }
-        
+
         function openAddHomeworkModal() {
             document.getElementById('homeworkModal').classList.add('active');
         }
@@ -2880,17 +2992,17 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         function openAddSheetMusicModal() {
             document.getElementById('sheetMusicModal').classList.add('active');
         }
-        
+
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
-        
+
         // Local storage helpers
         function getLocalData(key) {
             const stored = localStorage.getItem('rcc_' + key);
             return stored ? JSON.parse(stored) : [];
         }
-        
+
         function saveLocalData(key, data) {
             localStorage.setItem('rcc_' + key, JSON.stringify(data));
         }
@@ -2906,7 +3018,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             });
             if (changed) saveLocalData('events', localEvents);
         }
-        
+
         // Form submissions
         document.getElementById('eventForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -2926,7 +3038,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             renderAll();
             alert('Event added! 🎉\nIt\'s saved locally. Tell Rocky to make it permanent!');
         });
-        
+
         document.getElementById('taskForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const localTasks = getLocalData('tasks');
@@ -2944,7 +3056,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             renderAll();
             alert('Task added! ✅\nIt\'s saved locally. Tell Rocky to make it permanent!');
         });
-        
+
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const localContacts = getLocalData('contacts');
@@ -2962,7 +3074,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             renderAll();
             alert('Contact added! 👥\nIt\'s saved locally. Tell Rocky to make it permanent!');
         });
-        
+
         document.getElementById('noteForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const localNotes = getLocalData('notes');
@@ -2983,7 +3095,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             renderAll();
             alert('Note added! 📝\nIt\'s saved locally. Tell Rocky to make it permanent!');
         });
-        
+
         document.getElementById('musicNoteForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const localMusicNotes = getLocalData('musicNotes');
@@ -3039,17 +3151,17 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         document.getElementById('homework-photo').addEventListener('change', function(e) {
             handlePhotoUpload(e, 'homework-photo-preview');
         });
-        
+
         document.getElementById('note-photo').addEventListener('change', function(e) {
             handlePhotoUpload(e, 'note-photo-preview');
         });
-        
+
         let currentPhoto = null;
-        
+
         function handlePhotoUpload(event, previewId) {
             const file = event.target.files[0];
             if (!file) return;
-            
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 currentPhoto = e.target.result;
@@ -3058,16 +3170,16 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             };
             reader.readAsDataURL(file);
         }
-        
+
         function openPhotoModal(photoData) {
             document.getElementById('photoModalImg').src = photoData;
             document.getElementById('photoModal').classList.add('active');
         }
-        
+
         function closePhotoModal() {
             document.getElementById('photoModal').classList.remove('active');
         }
-        
+
         document.getElementById('homeworkForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const localHomework = getLocalData('homework');
@@ -3090,10 +3202,10 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             renderAll();
             alert('Homework added! 📚\nIt\'s saved locally. Tell Rocky to make it permanent!');
         });
-        
+
         // All your data is embedded right here - no external files needed!
         const data = {"calendar":[{"id":20,"title":"\ud83c\udfb7 Saxophone Lesson","date":"Every Monday","time":"5:00-6:00 PM","location":"Home","category":"music"},{"id":22,"title":"\ud83c\udfb8 Guitar Lesson","date":"Every Tuesday","time":"4:30-5:15 PM","location":"Magill Rd","category":"music"},{"id":"newschool-mon-1-1","title":"7 HUMANITIES - HASS 2D","date":"Every Monday","time":"8:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-2-2","title":"7 HUMANITIES - HASS 2D","date":"Every Monday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-3-3","title":"7 HPE - HPE & LEAF 2E","date":"Every Monday","time":"9:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-4-4","title":"7 HOMEGROUP C","date":"Every Monday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-5-5","title":"7 ELECTIVE MUSIC","date":"Every Monday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-6-6","title":"7 ELECTIVE MUSIC","date":"Every Monday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-7-7","title":"7 ENGLISH - English 2B","date":"Every Monday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-8-8","title":"7 ENGLISH - English 2B","date":"Every Monday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-2-9","title":"7 MATHEMATICS","date":"Every Tuesday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-4-10","title":"7 MATHEMATICS","date":"Every Tuesday","time":"10:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-5-11","title":"7 LANGUAGES - French 2","date":"Every Tuesday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-6-12","title":"7 HPE - HPE & LEAF 2E","date":"Every Tuesday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-7-13","title":"7 HPE - HPE & LEAF 2E","date":"Every Tuesday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-8-14","title":"7 SCIENCE - Science 2G","date":"Every Tuesday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-tue-9-15","title":"7 SCIENCE - Science 2G","date":"Every Tuesday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-1-16","title":"7 MUSIC - Ensemble Band","date":"Every Wednesday","time":"8:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-2-17","title":"7 MUSIC - Choir A","date":"Every Wednesday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-3-18","title":"7 HUMANITIES - HASS 2D","date":"Every Wednesday","time":"9:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-5-19","title":"7 HOMEGROUP C","date":"Every Wednesday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-6-20","title":"7 ENGLISH - English 2B","date":"Every Wednesday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-7-21","title":"7 ENGLISH - English 2B","date":"Every Wednesday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-8-22","title":"7 LANGUAGES - French 2","date":"Every Wednesday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-wed-9-23","title":"7 LANGUAGES - French 2","date":"Every Wednesday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-2-24","title":"7 SCIENCE - Science 2G","date":"Every Thursday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-4-25","title":"7 SCIENCE - Science 2G","date":"Every Thursday","time":"10:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-5-26","title":"7 ENGLISH - English 2B","date":"Every Thursday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-6-27","title":"7 HPE - HPE & LEAF 2E","date":"Every Thursday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-7-28","title":"7 HPE - HPE & LEAF 2E","date":"Every Thursday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-8-29","title":"7 MATHEMATICS","date":"Every Thursday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-thu-9-30","title":"7 MATHEMATICS","date":"Every Thursday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-1-31","title":"7 LANGUAGES - French 2","date":"Every Friday","time":"8:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-2-32","title":"7 LANGUAGES - French 2","date":"Every Friday","time":"9:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-3-33","title":"7 ELECTIVE MUSIC","date":"Every Friday","time":"9:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-5-34","title":"7 HOMEGROUP C","date":"Every Friday","time":"11:00 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-6-35","title":"7 HUMANITIES - HASS 2D","date":"Every Friday","time":"11:30 AM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-7-36","title":"7 HUMANITIES - HASS 2D","date":"Every Friday","time":"12:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-8-37","title":"7 SCIENCE - Science 2G","date":"Every Friday","time":"1:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-fri-9-38","title":"7 MATHEMATICS","date":"Every Friday","time":"2:00 PM","location":"School","category":"school","source":"timetable-photo-20260926"},{"id":"newschool-mon-concert-band-ii","title":"Concert Band II","date":"Every Monday","time":"3:30 PM","location":"School","category":"music","source":"timetable-photo-20260926"},{"id":"music-clarinet-daymap-mon","title":"\ud83c\udfb5 Clarinet Lesson","date":"Every Monday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"},{"id":"music-big-band-3-tue","title":"\ud83c\udfba Big Band 3","date":"Every Tuesday","time":"3:30-4:45 PM","location":"School","category":"music"},{"id":"music-flute-wed-evening","title":"\ud83c\udfb5 Flute Lesson","date":"Every Wednesday","time":"6:30-7:00 PM","location":"School","category":"music"},{"id":"music-drums-daymap-thu","title":"\ud83e\udd41 Drum Lesson","date":"Every Thursday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"},{"id":"music-piano-daymap-thu","title":"\ud83c\udfb9 Piano Lesson","date":"Every Thursday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"},{"id":"music-jazz-improv-daymap-fri","title":"\ud83c\udfb7 Jazz Improvisation","date":"Every Friday","time":"Linked to Daymap","location":"School","category":"music","source":"daymap-linked"}],"contacts":[{"id":1,"name":"Dad (Darren)","category":"family","phone":"","notes":""},{"id":2,"name":"Myles (Brother)","category":"family","phone":"","notes":"Uses Buddy agent"}],"tasks":[{"id":1,"title":"Weekly calendar check","due":"Every Sunday","priority":"low","completed":false,"category":"personal"}],"notes":[{"id":"music-daymap-linked-20260927","title":"Music lessons updated \u2014 Daymap times needed","content":"Updated on 2026-09-27: Clarinet is Monday, Drums and Piano are Thursday, Jazz Improvisation is Friday, Flute is Wednesday 6:30-7:00 PM, and Big Band 3 is Tuesday 3:30-4:45 PM. Drums, Piano, Jazz Improvisation, and Clarinet are linked to the saved Daymap shortcut for exact times.","date":"2026-09-27","category":"music"},{"id":"school-move-note-20260926","title":"New school timetable added with times","content":"Carter sent timetable photos on 2026-09-26. RCC now includes the visible Monday-Friday classes with approximate times from the time-column photo.","date":"2026-09-26","category":"school"},{"id":1,"title":"RCC is Live! \ud83c\udf89","content":"Now with + Add buttons! Click them to add events, tasks, contacts, and notes instantly!","date":"2026-03-29","category":"general"},{"id":2,"title":"Weekly Schedule","content":"Check the Calendar tab for your full school timetable organized by day!","date":"2026-03-29","category":"school"},{"id":3,"title":"Test","content":"Test","date":"29/3/2026","category":"general"}],"homework":[{"id":"hw1","subject":"HASS","name":"Tester","due":"30th march","status":"completed","priority":"medium","notes":"Hello rocky"},{"id":"hw2","subject":"Mathematics","name":"Tester 2","due":"30th march","status":"completed","priority":"high","notes":""}],"musicNotes":[{"id":"music-note-starter","title":"Music notes from Apple Notes","instrument":"General","content":"Copy and paste your useful Apple Notes music notes here so they are inside RCC too.","date":"2026-09-27"}],"musicTasks":[],"sheetMusic":[]};
-        
+
         // Combine data with localStorage
         function mergeById(baseItems, localItems) {
             const merged = new Map();
@@ -3114,7 +3226,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 sheetMusic: [...(data.sheetMusic || []), ...getLocalData('sheetMusic')]
             };
         }
-        
+
         function escapeHtml(value) {
             return String(value || '')
                 .replace(/&/g, '&amp;')
@@ -3160,12 +3272,12 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         const today = new Date();
         const dayName = days[today.getDay()];
         const dateStr = today.toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        
+
         // Parse date string to Date object (simple parser for common formats)
         function parseDate(dateStr) {
             // Handle formats like "Friday, April 3" or "March 30"
             const currentYear = today.getFullYear();
-            
+
             // Try parsing with current year
             let testDate = new Date(dateStr + ', ' + currentYear);
             if (!isNaN(testDate.getTime())) {
@@ -3175,34 +3287,34 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 }
                 return testDate;
             }
-            
+
             // Try with just the string
             testDate = new Date(dateStr);
             if (!isNaN(testDate.getTime())) {
                 return testDate;
             }
-            
+
             return null;
         }
-        
+
         // Calculate days until a date
         function daysUntil(dateStr) {
             const targetDate = parseDate(dateStr);
             if (!targetDate) return null;
-            
+
             const diffTime = targetDate - today;
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             return diffDays;
         }
-        
+
         // Render countdown timers
         function renderCountdowns(allData) {
             const countdownSection = document.getElementById('countdown-section');
             const countdownGrid = document.getElementById('countdown-grid');
-            
+
             // Collect all items with deadlines
             const deadlines = [];
-            
+
             // Add homework deadlines
             allData.homework.forEach(hw => {
                 if (hw.status !== 'completed') {
@@ -3217,7 +3329,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     }
                 }
             });
-            
+
             // Add task deadlines
             allData.tasks.forEach(task => {
                 if (!task.completed) {
@@ -3232,26 +3344,26 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     }
                 }
             });
-            
+
             // Sort by days (urgent first)
             deadlines.sort((a, b) => a.days - b.days);
-            
+
             if (deadlines.length === 0) {
                 countdownSection.style.display = 'none';
                 return;
             }
-            
+
             countdownSection.style.display = 'block';
-            
+
             countdownGrid.innerHTML = deadlines.slice(0, 4).map(item => {
                 let badgeClass = 'countdown-badge upcoming';
                 if (item.days === 0) badgeClass = 'countdown-badge urgent';
                 else if (item.days <= 2) badgeClass = 'countdown-badge urgent';
                 else if (item.days <= 7) badgeClass = 'countdown-badge';
-                
+
                 const dayLabel = item.days === 0 ? 'TODAY!' : item.days === 1 ? 'TOMORROW' : 'DAYS';
                 const dayNumber = item.days === 0 ? '⚠️' : item.days;
-                
+
                 return `
                     <div class="${badgeClass}">
                         <div class="countdown-number">${dayNumber}</div>
@@ -3261,16 +3373,16 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 `;
             }).join('');
         }
-        
+
         function renderAll() {
             const allData = getAllData();
-            
+
             // Render Countdown Timers
             renderCountdowns(allData);
-            
+
             // Render Today's Overview
             document.getElementById('today-date').textContent = dateStr;
-            
+
             const todayEvents = document.getElementById('today-events');
             const todayDateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
             const todayEventsList = allData.calendar.filter(event => {
@@ -3282,13 +3394,13 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 }
                 return false;
             });
-            
+
             if (todayEventsList.length === 0) {
                 todayEvents.innerHTML = '<div class="empty-state" style="padding: 20px;">No events today! Enjoy your free time! 😎</div>';
             } else {
                 todayEvents.innerHTML = todayEventsList.map(event => renderCalendarEvent(event)).join('');
             }
-            
+
             // Render Today's Tasks
             const todayTasks = document.getElementById('today-tasks');
             const activeTasks = allData.tasks.filter(task => !task.completed);
@@ -3302,7 +3414,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     </div>
                 `).join('');
             }
-            
+
             // Render Today's Notes (most recent)
             const todayNotes = document.getElementById('today-notes');
             if (allData.notes.length === 0) {
@@ -3316,7 +3428,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     </div>
                 `).join('');
             }
-            
+
             // Render Calendar with day grouping
             const calendarList = document.getElementById('calendar-list');
             if (allData.calendar.length === 0) {
@@ -3330,7 +3442,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     'Friday': [],
                     'Other': []
                 };
-                
+
                 allData.calendar.forEach(event => {
                     if (event.date.includes('Monday')) dayGroups['Monday'].push(event);
                     else if (event.date.includes('Tuesday')) dayGroups['Tuesday'].push(event);
@@ -3339,7 +3451,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     else if (event.date.includes('Friday')) dayGroups['Friday'].push(event);
                     else dayGroups['Other'].push(event);
                 });
-                
+
                 // Helper function to parse time for sorting
                 function parseTime(timeStr) {
                     const match = timeStr.match(/(\d{1,2}):(\d{2})/);
@@ -3350,23 +3462,23 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     if (timeStr.toLowerCase().includes('am') && hour === 12) hour = 0;
                     return hour * 60 + minute;
                 }
-                
+
                 let html = '';
                 Object.keys(dayGroups).forEach(day => {
                     if (dayGroups[day].length > 0) {
                         // Sort events by time
                         dayGroups[day].sort((a, b) => parseTime(a.time) - parseTime(b.time));
-                        
+
                         html += `<div class="day-header">${day}</div>`;
                         dayGroups[day].forEach(event => {
                             html += renderCalendarEvent(event);
                         });
                     }
                 });
-                
+
                 calendarList.innerHTML = html;
             }
-            
+
             // Render Tasks
             const tasksList = document.getElementById('tasks-list');
             if (allData.tasks.length === 0) {
@@ -3380,11 +3492,11 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                         <div class="complete-action">✓ Done</div>
                     </div>
                 `).join('');
-                
+
                 // Re-enable swipe after rendering
                 setTimeout(enableSwipeToComplete, 50);
             }
-            
+
             // Render Contacts
             const contactsList = document.getElementById('contacts-list');
             if (allData.contacts.length === 0) {
@@ -3399,7 +3511,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     </div>
                 `).join('');
             }
-            
+
             // Render Notes
             const notesList = document.getElementById('notes-list');
             if (allData.notes.length === 0) {
@@ -3414,7 +3526,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     </div>
                 `).join('');
             }
-            
+
             // Render Music Centre
             const musicNotesList = document.getElementById('music-notes-list');
             musicNotesList.innerHTML = allData.musicNotes.length ? allData.musicNotes.map(note => `
@@ -3456,9 +3568,9 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 const notStarted = allData.homework.filter(hw => hw.status === 'not-started');
                 const inProgress = allData.homework.filter(hw => hw.status === 'in-progress');
                 const completed = allData.homework.filter(hw => hw.status === 'completed');
-                
+
                 let html = '';
-                
+
                 if (notStarted.length > 0) {
                     html += '<div class="day-header">📌 Not Started</div>';
                     notStarted.forEach(hw => {
@@ -3474,7 +3586,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                         `;
                     });
                 }
-                
+
                 if (inProgress.length > 0) {
                     html += '<div class="day-header">⏳ In Progress</div>';
                     inProgress.forEach(hw => {
@@ -3490,7 +3602,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                         `;
                     });
                 }
-                
+
                 if (completed.length > 0) {
                     html += '<div class="day-header">✅ Completed</div>';
                     completed.forEach(hw => {
@@ -3502,61 +3614,61 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                         `;
                     });
                 }
-                
+
                 homeworkList.innerHTML = html;
-                
+
                 // Re-enable swipe after rendering
                 setTimeout(enableSwipeToComplete, 50);
             }
         }
-        
+
         // Swipe to Complete functionality
         let touchStartX = 0;
         let touchEndX = 0;
         let swipingElement = null;
-        
+
         function handleSwipeGesture(element, onComplete) {
             element.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
                 swipingElement = element;
             }, { passive: true });
-            
+
             element.addEventListener('touchmove', (e) => {
                 if (swipingElement !== element) return;
                 touchEndX = e.changedTouches[0].screenX;
                 const diff = touchEndX - touchStartX;
-                
+
                 if (diff > 0 && diff < 100) {
                     element.classList.add('swiping');
                 }
             }, { passive: true });
-            
+
             element.addEventListener('touchend', (e) => {
                 if (swipingElement !== element) return;
                 touchEndX = e.changedTouches[0].screenX;
                 const diff = touchEndX - touchStartX;
-                
+
                 if (diff > 80) {
                     onComplete();
                 } else {
                     element.classList.remove('swiping');
                 }
-                
+
                 swipingElement = null;
             }, { passive: true });
         }
-        
+
         function enableSwipeToComplete() {
             // Enable swipe on tasks
             document.querySelectorAll('.task-item:not(.completed)').forEach(taskEl => {
                 const taskId = taskEl.dataset.taskId;
                 if (!taskId) return;
-                
+
                 handleSwipeGesture(taskEl, () => {
                     completeTask(taskId);
                 });
             });
-            
+
             // Enable swipe on music tasks
             document.querySelectorAll('#music-tasks-list .task-item:not(.completed)').forEach(taskEl => {
                 const musicTaskId = taskEl.dataset.musicTaskId;
@@ -3568,17 +3680,17 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             document.querySelectorAll('#homework-list .task-item:not(.completed)').forEach(hwEl => {
                 const hwId = hwEl.dataset.hwId;
                 if (!hwId) return;
-                
+
                 handleSwipeGesture(hwEl, () => {
                     completeHomework(hwId);
                 });
             });
         }
-        
+
         function completeTask(taskId) {
             const localTasks = getLocalData('tasks');
             const taskIndex = localTasks.findIndex(t => t.id === taskId);
-            
+
             if (taskIndex !== -1) {
                 localTasks[taskIndex].completed = true;
                 saveLocalData('tasks', localTasks);
@@ -3588,7 +3700,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 }, 100);
             }
         }
-        
+
         function completeMusicTask(taskId) {
             const localMusicTasks = getLocalData('musicTasks');
             const taskIndex = localMusicTasks.findIndex(t => t.id === taskId);
@@ -3603,7 +3715,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         function completeHomework(hwId) {
             const localHomework = getLocalData('homework');
             const hwIndex = localHomework.findIndex(h => h.id === hwId);
-            
+
             if (hwIndex !== -1) {
                 localHomework[hwIndex].status = 'completed';
                 saveLocalData('homework', localHomework);
@@ -3613,15 +3725,15 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 }, 100);
             }
         }
-        
+
         // Smart Reminders
         let remindersEnabled = false;
         let reminderInterval = null;
-        
+
         function toggleReminders() {
             remindersEnabled = !remindersEnabled;
             const btn = document.getElementById('remindersToggle');
-            
+
             if (remindersEnabled) {
                 btn.textContent = '🔔 ON';
                 btn.classList.add('active');
@@ -3637,34 +3749,34 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 }
             }
         }
-        
+
         function startReminderCheck() {
             // Check every 30 minutes
             reminderInterval = setInterval(checkReminders, 1800000);
             // Also check immediately
             checkReminders();
         }
-        
+
         function checkReminders() {
             if (!remindersEnabled) return;
-            
+
             const allData = getAllData();
             const now = new Date();
-            
+
             // Check homework due soon
             allData.homework.forEach(hw => {
                 if (hw.status === 'completed') return;
-                
+
                 const dueDate = parseDate(hw.due);
                 if (!dueDate) return;
-                
+
                 const hoursUntil = (dueDate - now) / (1000 * 60 * 60);
-                
+
                 // Remind if due in 24 hours
                 if (hoursUntil > 0 && hoursUntil <= 24) {
                     const lastReminded = localStorage.getItem('reminded_hw_' + hw.id);
                     const lastTime = lastReminded ? new Date(lastReminded) : null;
-                    
+
                     // Only remind once per day
                     if (!lastTime || (now - lastTime) > 86400000) {
                         showNotification(`📚 Homework due soon: ${hw.subject} - ${hw.name}`, `Due: ${hw.due}`);
@@ -3672,20 +3784,20 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     }
                 }
             });
-            
+
             // Check tasks due soon
             allData.tasks.forEach(task => {
                 if (task.completed) return;
-                
+
                 const dueDate = parseDate(task.due);
                 if (!dueDate) return;
-                
+
                 const hoursUntil = (dueDate - now) / (1000 * 60 * 60);
-                
+
                 if (hoursUntil > 0 && hoursUntil <= 24) {
                     const lastReminded = localStorage.getItem('reminded_task_' + task.id);
                     const lastTime = lastReminded ? new Date(lastReminded) : null;
-                    
+
                     if (!lastTime || (now - lastTime) > 86400000) {
                         showNotification(`✅ Task due soon: ${task.title}`, `Due: ${task.due}`);
                         localStorage.setItem('reminded_task_' + task.id, now.toISOString());
@@ -3693,22 +3805,22 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 }
             });
         }
-        
+
         function showNotification(content, time) {
             const badge = document.getElementById('notificationBadge');
             const contentEl = document.getElementById('notificationContent');
             const timeEl = document.getElementById('notificationTime');
-            
+
             contentEl.textContent = content;
             timeEl.textContent = time || '';
-            
+
             badge.classList.add('show');
-            
+
             // Auto-hide after 5 seconds
             setTimeout(() => {
                 badge.classList.remove('show');
             }, 5000);
-            
+
             // Try browser notification if permitted
             if ('Notification' in window && Notification.permission === 'granted') {
                 new Notification('Rocky Command Centre', {
@@ -3717,14 +3829,14 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 });
             }
         }
-        
+
         // Request notification permission
         function requestNotificationPermission() {
             if ('Notification' in window && Notification.permission === 'default') {
                 Notification.requestPermission();
             }
         }
-        
+
         // Load reminders preference
         window.addEventListener('DOMContentLoaded', function() {
             const reminders = localStorage.getItem('rcc_reminders') === 'true';
@@ -3735,11 +3847,11 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 btn.classList.add('active');
                 startReminderCheck();
             }
-            
+
             // Request notification permission
             setTimeout(requestNotificationPermission, 2000);
         });
-        
+
         // Achievement Badges System
         const BADGES = [
             { id: 'first_task', icon: '✅', name: 'First Task', desc: 'Complete your first task', condition: () => getCompletedCount('tasks') >= 1 },
@@ -3751,7 +3863,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             { id: 'organizer', icon: '🗂️', name: 'Organizer', desc: 'Add 5+ events', condition: () => getAllData().calendar.filter(e => e.isLocal).length >= 5 },
             { id: 'social', icon: '👥', name: 'Social', desc: 'Add 3+ contacts', condition: () => getAllData().contacts.filter(c => c.isLocal).length >= 3 },
         ];
-        
+
         function getCompletedCount(type) {
             const allData = getAllData();
             if (type === 'tasks') {
@@ -3761,25 +3873,25 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             }
             return 0;
         }
-        
+
         function getTotalCompleted() {
             return getCompletedCount('tasks') + getCompletedCount('homework');
         }
-        
+
         function checkEarlyCompletion() {
             // Simplified - just check if any completed
             return getTotalCompleted() > 0;
         }
-        
+
         function checkStreak() {
             const visits = JSON.parse(localStorage.getItem('rcc_visits') || '[]');
             return visits.length >= 3;
         }
-        
+
         function trackVisit() {
             const visits = JSON.parse(localStorage.getItem('rcc_visits') || '[]');
             const today = new Date().toDateString();
-            
+
             if (!visits.includes(today)) {
                 visits.push(today);
                 // Keep only last 7 days
@@ -3787,40 +3899,40 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 localStorage.setItem('rcc_visits', JSON.stringify(visits));
             }
         }
-        
+
         function checkBadges() {
             const unlockedBadges = JSON.parse(localStorage.getItem('rcc_badges') || '[]');
-            
+
             BADGES.forEach(badge => {
                 if (unlockedBadges.includes(badge.id)) return;
-                
+
                 if (badge.condition()) {
                     unlockBadge(badge);
                     unlockedBadges.push(badge.id);
                 }
             });
-            
+
             localStorage.setItem('rcc_badges', JSON.stringify(unlockedBadges));
         }
-        
+
         function unlockBadge(badge) {
             // Show unlock popup
             const popup = document.getElementById('badgeUnlockPopup');
             document.getElementById('unlockIcon').textContent = badge.icon;
             document.getElementById('unlockTitle').textContent = 'Achievement Unlocked!';
             document.getElementById('unlockDesc').textContent = badge.name + ': ' + badge.desc;
-            
+
             popup.classList.add('show');
-            
+
             setTimeout(() => {
                 popup.classList.remove('show');
             }, 3000);
         }
-        
+
         function renderBadges() {
             const badgesGrid = document.getElementById('badges-grid');
             const unlockedBadges = JSON.parse(localStorage.getItem('rcc_badges') || '[]');
-            
+
             badgesGrid.innerHTML = BADGES.map(badge => {
                 const isUnlocked = unlockedBadges.includes(badge.id);
                 return `
@@ -3832,27 +3944,27 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 `;
             }).join('');
         }
-        
+
         // Override complete functions to check badges
         const originalCompleteTask = completeTask;
         completeTask = function(taskId) {
             originalCompleteTask(taskId);
             setTimeout(checkBadges, 500);
         };
-        
+
         const originalCompleteHomework = completeHomework;
         completeHomework = function(hwId) {
             originalCompleteHomework(hwId);
             setTimeout(checkBadges, 500);
         };
-        
+
         // Widget Mode
         let widgetMode = false;
-        
+
         function toggleWidgetMode() {
             widgetMode = !widgetMode;
             const btn = document.getElementById('widgetToggle');
-            
+
             if (widgetMode) {
                 document.body.classList.add('widget-mode');
                 btn.textContent = '📱 Mini';
@@ -3866,18 +3978,18 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 localStorage.setItem('rcc_widgetMode', 'false');
             }
         }
-        
+
         function renderWidgetStats() {
             const allData = getAllData();
             const statsContainer = document.getElementById('widget-stats');
-            
+
             const totalTasks = allData.tasks.length;
             const completedTasks = allData.tasks.filter(t => t.completed).length;
             const totalHomework = allData.homework.length;
             const completedHomework = allData.homework.filter(hw => hw.status === 'completed').length;
             const totalEvents = allData.calendar.filter(e => e.isLocal).length;
             const unlockedBadges = JSON.parse(localStorage.getItem('rcc_badges') || '[]').length;
-            
+
             statsContainer.innerHTML = `
                 <div class="stat-item">
                     <div class="stat-number">${completedTasks}/${totalTasks}</div>
@@ -3893,7 +4005,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 </div>
             `;
         }
-        
+
         // Load widget mode preference
         window.addEventListener('DOMContentLoaded', function() {
             const widget = localStorage.getItem('rcc_widgetMode') === 'true';
@@ -3906,7 +4018,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 renderWidgetStats();
             }
         });
-        
+
         // Sync Modal Functions
         let latestSyncData = null;
         let latestRockySyncMessage = '';
@@ -3985,7 +4097,7 @@ ${JSON.stringify(syncData, null, 2)}`;
                 notifyRockyWebhook(webhook, latestSyncData);
             }
         }
-        
+
         function closeSyncModal() {
             document.getElementById('syncModal').classList.remove('active');
         }
@@ -4039,7 +4151,7 @@ ${JSON.stringify(syncData, null, 2)}`;
                 setSyncStatus(`⚠️ Rocky doorbell could not send from this browser (${error.message}). Use Copy/Share this time.`, 'error');
             }
         }
-        
+
         function copySyncData() {
             const dataElement = document.getElementById('syncData');
             copyText(dataElement.textContent, '✅ Raw data copied! Send it to Rocky if he asks for the full package.');
@@ -4074,7 +4186,7 @@ ${JSON.stringify(syncData, null, 2)}`;
                 fallbackCopyText(text, successMessage);
             }
         }
-        
+
         function fallbackCopyText(text, successMessage) {
             const textArea = document.createElement('textarea');
             textArea.value = text;
@@ -4091,16 +4203,16 @@ ${JSON.stringify(syncData, null, 2)}`;
             }
             document.body.removeChild(textArea);
         }
-        
+
         // Daily Notifications
         function scheduleDailyNotifications() {
             const now = new Date();
             const morningTime = new Date(now);
             morningTime.setHours(6, 50, 0, 0); // 6:50 AM
-            
+
             const eveningTime = new Date(now);
             eveningTime.setHours(19, 0, 0, 0); // 7:00 PM
-            
+
             // If already past today's times, schedule for tomorrow
             if (now > morningTime) {
                 morningTime.setDate(morningTime.getDate() + 1);
@@ -4108,29 +4220,29 @@ ${JSON.stringify(syncData, null, 2)}`;
             if (now > eveningTime) {
                 eveningTime.setDate(eveningTime.getDate() + 1);
             }
-            
+
             // Check and send notifications periodically
             setInterval(() => {
                 const checkTime = new Date();
                 const hour = checkTime.getHours();
                 const minute = checkTime.getMinutes();
-                
+
                 // Morning summary at 6:50 AM
                 if (hour === 6 && minute === 50) {
                     const lastMorning = localStorage.getItem('lastMorningSummary');
                     const today = checkTime.toDateString();
-                    
+
                     if (lastMorning !== today) {
                         sendMorningSummary();
                         localStorage.setItem('lastMorningSummary', today);
                     }
                 }
-                
+
                 // Evening recap at 7:00 PM
                 if (hour === 19 && minute === 0) {
                     const lastEvening = localStorage.getItem('lastEveningRecap');
                     const today = checkTime.toDateString();
-                    
+
                     if (lastEvening !== today) {
                         sendEveningRecap();
                         localStorage.setItem('lastEveningRecap', today);
@@ -4138,18 +4250,18 @@ ${JSON.stringify(syncData, null, 2)}`;
                 }
             }, 60000); // Check every minute
         }
-        
+
         function sendMorningSummary() {
             const allData = getAllData();
             const today = new Date();
             const todayStr = today.toLocaleDateString('en-US', { weekday: 'long' });
-            
+
             // Get today's events
             const todayEvents = allData.calendar.filter(e => {
                 if (!e.day) return false;
                 return e.day.toLowerCase() === todayStr.toLowerCase();
             });
-            
+
             // Get homework due soon
             const urgentHomework = allData.homework.filter(hw => {
                 if (hw.status === 'completed') return false;
@@ -4158,30 +4270,30 @@ ${JSON.stringify(syncData, null, 2)}`;
                 const daysUntil = (dueDate - today) / (1000 * 60 * 60 * 24);
                 return daysUntil <= 2;
             });
-            
+
             let summary = `🌅 Good morning! Today is ${todayStr}\n\n`;
             summary += `📅 You have ${todayEvents.length} events today\n`;
             summary += `📚 ${urgentHomework.length} homework items due soon\n`;
-            
+
             showNotification(summary, 'Morning Summary');
         }
-        
+
         function sendEveningRecap() {
             const allData = getAllData();
-            const completedToday = allData.tasks.filter(t => t.completed).length + 
+            const completedToday = allData.tasks.filter(t => t.completed).length +
                                   allData.homework.filter(hw => hw.status === 'completed').length;
-            
+
             const pendingTasks = allData.tasks.filter(t => !t.completed).length;
             const pendingHomework = allData.homework.filter(hw => hw.status !== 'completed').length;
-            
+
             let recap = `🌙 End of day recap!\n\n`;
             recap += `✅ Completed today: ${completedToday} items\n`;
             recap += `📋 Still pending: ${pendingTasks} tasks, ${pendingHomework} homework\n`;
             recap += `\nGreat work today! 🎉`;
-            
+
             showNotification(recap, 'Evening Recap');
         }
-        
+
 
         // Register the service worker so RCC can open after it has been loaded once, even without internet.
         if ('serviceWorker' in navigator) {
@@ -4198,10 +4310,10 @@ ${JSON.stringify(syncData, null, 2)}`;
         renderBadges();
         trackVisit();
         checkBadges();
-        
+
         // Start daily notifications
         scheduleDailyNotifications();
-        
+
         // Enable swipe after initial render
         setTimeout(enableSwipeToComplete, 100);
     </script>
