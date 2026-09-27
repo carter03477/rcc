@@ -1171,6 +1171,173 @@
             color: #b0b0b0;
         }
 
+        .week-grid-shell {
+            position: relative;
+        }
+
+        .week-grid-add-button {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.92);
+            color: var(--primary);
+            font-size: 1.9em;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.18);
+            z-index: 6;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .week-grid-add-button:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+        }
+
+        body.dark-mode .week-grid-add-button {
+            background: rgba(36,36,56,0.94);
+            color: #9ad9ff;
+        }
+
+        .grid-event {
+            cursor: pointer;
+        }
+
+        .event-detail-modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(20, 25, 35, 0.16);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 2100;
+        }
+
+        .event-detail-modal.active {
+            display: flex;
+        }
+
+        .event-detail-card {
+            width: min(360px, 92vw);
+            border-radius: 28px;
+            padding: 24px;
+            background: rgba(239, 250, 255, 0.86);
+            backdrop-filter: blur(22px) saturate(1.2);
+            -webkit-backdrop-filter: blur(22px) saturate(1.2);
+            box-shadow: 0 22px 70px rgba(15, 23, 42, 0.22);
+            color: #111827;
+            position: relative;
+        }
+
+        body.dark-mode .event-detail-card {
+            background: rgba(36,36,56,0.9);
+            color: #f8fafc;
+        }
+
+        .event-detail-close {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            border: none;
+            background: rgba(255,255,255,0.55);
+            color: inherit;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
+        .event-detail-title {
+            font-size: 1.35em;
+            font-weight: 900;
+            line-height: 1.14;
+            padding-right: 64px;
+            margin-bottom: 12px;
+        }
+
+        .event-detail-edit {
+            position: absolute;
+            top: 22px;
+            right: 58px;
+            border: none;
+            background: rgba(0,0,0,0.12);
+            color: inherit;
+            border-radius: 18px;
+            padding: 8px 12px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .event-detail-edit[hidden] {
+            display: none;
+        }
+
+        .event-detail-time {
+            font-size: 1.02em;
+            margin-bottom: 18px;
+        }
+
+        .event-detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,255,255,0.55);
+            border-radius: 16px;
+            padding: 13px 14px;
+            margin: 10px 0;
+        }
+
+        body.dark-mode .event-detail-row {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .event-detail-label {
+            font-weight: 700;
+        }
+
+        .event-detail-value {
+            text-align: right;
+            color: #475569;
+        }
+
+        body.dark-mode .event-detail-value {
+            color: #cbd5e1;
+        }
+
+        .event-detail-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4ECDC4;
+            margin-right: 8px;
+            vertical-align: -1px;
+        }
+
+        .event-detail-delete {
+            width: 100%;
+            margin-top: 15px;
+            border: none;
+            background: transparent;
+            color: #ef4444;
+            font-size: 1em;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .event-detail-delete[hidden] {
+            display: none;
+        }
+
         /* Sync Button */
         .sync-button {
             position: fixed;
@@ -1753,7 +1920,10 @@
                 </div>
 
                 <div id="calendar-list"></div>
-                <div id="calendar-grid" class="week-grid" style="display: none;"></div>
+                <div id="calendar-grid" class="week-grid week-grid-shell" style="display: none;">
+                    <button class="week-grid-add-button" onclick="openAddEventModal()" title="Add event">+</button>
+                    <div id="calendar-grid-content"></div>
+                </div>
             </div>
 
             <!-- Homework Tab -->
@@ -1876,7 +2046,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         <!-- Add Event Modal -->
         <div id="eventModal" class="modal">
             <div class="modal-content">
-                <h3>📅 Add New Event</h3>
+                <h3 id="eventModalTitle">📅 Add New Event</h3>
                 <form id="eventForm">
                     <div class="form-group">
                         <label>Event Name*</label>
@@ -1914,7 +2084,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     </div>
                     <div class="form-buttons">
                         <button type="button" class="btn-cancel" onclick="closeModal('eventModal')">Cancel</button>
-                        <button type="submit" class="btn-submit">Add Event</button>
+                        <button type="submit" class="btn-submit" id="eventSubmitButton">Add Event</button>
                     </div>
                 </form>
             </div>
@@ -2148,6 +2318,29 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         <div id="photoModal" class="photo-modal" onclick="closePhotoModal()">
             <button class="photo-modal-close" onclick="closePhotoModal()">✕ Close</button>
             <img id="photoModalImg" src="" alt="Full size photo">
+        </div>
+
+        <!-- Week Grid Event Detail Popup -->
+        <div id="eventDetailModal" class="event-detail-modal" onclick="closeEventDetailFromBackdrop(event)">
+            <div class="event-detail-card" role="dialog" aria-modal="true" aria-labelledby="eventDetailTitle">
+                <button class="event-detail-close" onclick="closeEventDetailModal()" aria-label="Close">×</button>
+                <button class="event-detail-edit" id="eventDetailEditButton" onclick="editSelectedEvent()">Edit</button>
+                <div class="event-detail-title" id="eventDetailTitle"></div>
+                <div class="event-detail-time" id="eventDetailTime"></div>
+                <div class="event-detail-row">
+                    <span class="event-detail-label">Calendar</span>
+                    <span class="event-detail-value"><span class="event-detail-dot" id="eventDetailDot"></span><span id="eventDetailCategory"></span></span>
+                </div>
+                <div class="event-detail-row">
+                    <span class="event-detail-label">Location</span>
+                    <span class="event-detail-value" id="eventDetailLocation"></span>
+                </div>
+                <div class="event-detail-row">
+                    <span class="event-detail-label">Alert</span>
+                    <span class="event-detail-value">None</span>
+                </div>
+                <button class="event-detail-delete" id="eventDetailDeleteButton" onclick="deleteSelectedEvent()">Delete Event</button>
+            </div>
         </div>
 
         <!-- Sync Button -->
@@ -2880,7 +3073,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
 
         function renderWeekGrid() {
             const allData = getAllData();
-            const gridContainer = document.getElementById('calendar-grid');
+            const gridContainer = document.getElementById('calendar-grid-content') || document.getElementById('calendar-grid');
             const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
             const gridStart = 8 * 60;
             const gridEnd = 18 * 60 + 30;
@@ -2919,12 +3112,78 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                     const width = 100 / event.columnCount;
                     const left = width * event.column;
                     const safeCategory = String(event.category || 'general').replace(/[^a-z0-9_-]/gi, '');
-                    html += `<div class="grid-event ${safeCategory}" style="top:${top}px; height:${height}px; left:calc(${left}% + 3px); width:calc(${width}% - 6px);" title="${escapeHtml(event.title)} - ${escapeHtml(event.time)}"><strong>${escapeHtml(event.title)}</strong><span class="grid-event-time">${escapeHtml(event.time)}</span></div>`;
+                    html += `<div class="grid-event ${safeCategory}" style="top:${top}px; height:${height}px; left:calc(${left}% + 3px); width:calc(${width}% - 6px);" title="${escapeHtml(event.title)} - ${escapeHtml(event.time)}" onclick="openEventDetail('${encodeURIComponent(String(event.id))}')"><strong>${escapeHtml(event.title)}</strong><span class="grid-event-time">${escapeHtml(event.time)}</span></div>`;
                 });
                 html += '</div>';
             });
             html += '</div>';
             gridContainer.innerHTML = html;
+        }
+
+        function getCalendarEventById(encodedId) {
+            const id = decodeURIComponent(encodedId);
+            return getAllData().calendar.find(item => String(item.id) === id) || null;
+        }
+
+        function eventCategoryLabel(category) {
+            return {
+                school: 'School',
+                music: 'Music',
+                sport: 'Sport',
+                other: 'Other'
+            }[category] || 'Calendar';
+        }
+
+        function eventCategoryColour(category) {
+            return {
+                school: '#4ECDC4',
+                music: '#FFC857',
+                sport: '#FF6B35',
+                other: '#667eea'
+            }[category] || '#667eea';
+        }
+
+        function openEventDetail(encodedId) {
+            const eventItem = getCalendarEventById(encodedId);
+            if (!eventItem) return;
+            selectedEventId = String(eventItem.id);
+            document.getElementById('eventDetailTitle').textContent = eventItem.title || 'Untitled Event';
+            document.getElementById('eventDetailTime').textContent = `${eventItem.date || ''}${eventItem.date && eventItem.time ? ' · ' : ''}${eventItem.time || ''}`;
+            document.getElementById('eventDetailCategory').textContent = eventCategoryLabel(eventItem.category);
+            document.getElementById('eventDetailDot').style.background = eventCategoryColour(eventItem.category);
+            document.getElementById('eventDetailLocation').textContent = eventItem.location || 'None';
+            const canEdit = !!eventItem.isLocal;
+            document.getElementById('eventDetailEditButton').hidden = !canEdit;
+            document.getElementById('eventDetailDeleteButton').hidden = !canEdit;
+            document.getElementById('eventDetailModal').classList.add('active');
+        }
+
+        function closeEventDetailModal() {
+            document.getElementById('eventDetailModal').classList.remove('active');
+        }
+
+        function closeEventDetailFromBackdrop(event) {
+            if (event.target.id === 'eventDetailModal') closeEventDetailModal();
+        }
+
+        function editSelectedEvent() {
+            if (!selectedEventId) return;
+            const eventItem = getLocalData('events').find(item => String(item.id) === selectedEventId);
+            if (!eventItem) return;
+            closeEventDetailModal();
+            openEditEventModal(eventItem);
+        }
+
+        function deleteSelectedEvent() {
+            if (!selectedEventId) return;
+            const eventItem = getLocalData('events').find(item => String(item.id) === selectedEventId);
+            if (!eventItem) return;
+            if (!confirm(`Delete ${eventItem.title}?`)) return;
+            saveLocalData('events', getLocalData('events').filter(item => String(item.id) !== selectedEventId));
+            selectedEventId = null;
+            closeEventDetailModal();
+            renderAll();
+            if (document.getElementById('calendar-grid').style.display !== 'none') renderWeekGrid();
         }
 
         // Tab switching function
@@ -2945,7 +3204,32 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         }
 
         // Modal functions
-        function openAddEventModal() {
+        let editingEventId = null;
+        let selectedEventId = null;
+
+        function resetEventFormMode() {
+            editingEventId = null;
+            document.getElementById('eventModalTitle').textContent = '📅 Add New Event';
+            document.getElementById('eventSubmitButton').textContent = 'Add Event';
+            document.getElementById('eventForm').reset();
+        }
+
+        function openAddEventModal(defaults = {}) {
+            resetEventFormMode();
+            if (defaults.day) document.getElementById('event-day').value = defaults.day;
+            if (defaults.time) document.getElementById('event-time').value = defaults.time;
+            document.getElementById('eventModal').classList.add('active');
+        }
+
+        function openEditEventModal(eventItem) {
+            editingEventId = String(eventItem.id);
+            document.getElementById('eventModalTitle').textContent = '✏️ Edit Event';
+            document.getElementById('eventSubmitButton').textContent = 'Save Event';
+            document.getElementById('event-title').value = eventItem.title || '';
+            document.getElementById('event-day').value = eventItem.date || '';
+            document.getElementById('event-time').value = eventItem.time || '';
+            document.getElementById('event-location').value = eventItem.location || '';
+            document.getElementById('event-category').value = eventItem.category || 'other';
             document.getElementById('eventModal').classList.add('active');
         }
 
@@ -2995,6 +3279,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
+            if (modalId === 'eventModal') resetEventFormMode();
         }
 
         // Local storage helpers
@@ -3023,21 +3308,32 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         document.getElementById('eventForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const localEvents = getLocalData('events');
-            localEvents.push({
-                id: 'local_' + Date.now(),
+            const eventData = {
                 title: document.getElementById('event-title').value,
                 date: document.getElementById('event-day').value,
                 time: document.getElementById('event-time').value,
                 location: document.getElementById('event-location').value,
                 category: document.getElementById('event-category').value,
                 isLocal: true
-            });
+            };
+
+            const wasEditing = !!editingEventId;
+            if (wasEditing) {
+                const index = localEvents.findIndex(item => String(item.id) === editingEventId);
+                if (index !== -1) {
+                    localEvents[index] = {...localEvents[index], ...eventData};
+                }
+            } else {
+                localEvents.push({id: 'local_' + Date.now(), ...eventData});
+            }
+
             saveLocalData('events', localEvents);
             closeModal('eventModal');
-            this.reset();
             renderAll();
-            alert('Event added! 🎉\nIt\'s saved locally. Tell Rocky to make it permanent!');
+            if (document.getElementById('calendar-grid').style.display !== 'none') renderWeekGrid();
+            alert(wasEditing ? 'Event updated! ✨' : 'Event added! 🎉\nIt\'s saved locally. Use Sync Data when you want Rocky to make it permanent!');
         });
+
 
         document.getElementById('taskForm').addEventListener('submit', function(e) {
             e.preventDefault();
