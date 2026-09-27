@@ -2392,28 +2392,28 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         </div>
 
         <!-- Sync Button -->
-        <button class="sync-button" onclick="openSyncModal()" title="Export LOCAL data and notify Rocky">💾 Sync Data</button>
+        <button class="sync-button" onclick="openSyncModal()" title="Send your local RCC changes to Rocky">💾 Sync Data</button>
 
         <!-- Sync Modal -->
         <div id="syncModal" class="sync-modal">
             <div class="sync-content">
-                <h2 style="color: var(--primary); margin-bottom: 15px;">💾 Sync LOCAL Data</h2>
-                <p style="margin-bottom: 10px;">RCC made a sync package for Rocky. If a safe Rocky webhook is connected, RCC will send it automatically.</p>
+                <h2 style="color: var(--primary); margin-bottom: 12px;">💾 Send Updates to Rocky</h2>
+                <p style="margin-bottom: 12px;">RCC found changes saved only on this device. Send them to Rocky so he can add them online.</p>
                 <div id="syncStatus" style="margin-bottom: 15px; padding: 12px; border-radius: 12px; background: rgba(102,126,234,0.12); font-size: 0.95em;"></div>
 
-                <div class="sync-data" id="syncData"></div>
+                <div class="sync-data" id="syncData" style="display: none;"></div>
 
-                <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px;">
-                    <button class="copy-button" onclick="copyRockySyncMessage()">📋 Copy Rocky Message</button>
-                    <button class="copy-button" onclick="shareRockySyncMessage()">📤 Share</button>
-                    <button class="copy-button" onclick="copySyncData()">🧾 Copy Raw Data</button>
-                    <button class="copy-button" onclick="configureRockyWebhook()">🔔 Rocky Doorbell</button>
-                    <button class="copy-button" style="background: #666;" onclick="closeSyncModal()">Cancel</button>
+                <div style="margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px;">
+                    <button class="copy-button" style="font-size: 1.05em; padding: 13px 18px;" onclick="shareRockySyncMessage()">🚀 Send to Rocky</button>
+                    <button class="copy-button" onclick="copyRockySyncMessage()">📋 Copy Message</button>
+                    <button class="copy-button" style="background: #666;" onclick="closeSyncModal()">Done</button>
                 </div>
 
-                <p style="margin-top: 15px; font-size: 0.9em; opacity: 0.8;">
-                    Safe version: no passwords or tokens are built into RCC. A webhook can be saved on this device later if Dad/Rocky sets one up.
-                </p>
+                <details style="margin-top: 15px; font-size: 0.9em; opacity: 0.85;">
+                    <summary>Advanced</summary>
+                    <p style="margin: 10px 0;">Only use this if Rocky asks for the raw data.</p>
+                    <button class="copy-button" onclick="copySyncData()">🧾 Copy Raw Data</button>
+                </details>
             </div>
         </div>
     </div>
@@ -4488,75 +4488,24 @@ ${JSON.stringify(syncData, null, 2)}`;
             latestRockySyncMessage = buildRockySyncMessage(latestSyncData);
             const counts = getSyncCounts(latestSyncData);
             const totalItems = Object.values(counts).reduce((sum, count) => sum + count, 0);
-            const webhook = getRockyWebhookUrl();
 
             document.getElementById('syncData').textContent = JSON.stringify(latestSyncData, null, 2);
             document.getElementById('syncModal').classList.add('active');
 
             if (totalItems === 0) {
-                setSyncStatus('✅ No LOCAL-only data found on this device. Nothing to send Rocky right now.', 'success');
+                setSyncStatus('✅ Nothing new to send. This device has no local-only changes right now.', 'success');
                 return;
             }
 
-            setSyncStatus(`📦 Sync package ready with <strong>${totalItems}</strong> local item(s). ${webhook ? 'Trying the Rocky doorbell now…' : 'Rocky doorbell is not connected yet — use Copy/Share for now.'}`, webhook ? 'info' : 'warning');
-
-            if (webhook) {
-                notifyRockyWebhook(webhook, latestSyncData);
-            }
+            const summary = Object.entries(counts)
+                .filter(([, count]) => count > 0)
+                .map(([name, count]) => `${count} ${name}`)
+                .join(', ');
+            setSyncStatus(`📦 Ready to send Rocky: <strong>${summary}</strong><br><small>Tap <strong>Send to Rocky</strong>, then choose Discord/Rocky. If that does not work, tap Copy Message and paste it to Rocky.</small>`, 'info');
         }
 
         function closeSyncModal() {
             document.getElementById('syncModal').classList.remove('active');
-        }
-
-        function getRockyWebhookUrl() {
-            const saved = localStorage.getItem('rcc_rocky_webhook_url') || '';
-            if (!saved) return '';
-            try {
-                const parsed = new URL(saved);
-                return parsed.protocol === 'https:' ? parsed.href : '';
-            } catch {
-                return '';
-            }
-        }
-
-        function configureRockyWebhook() {
-            const current = getRockyWebhookUrl();
-            const input = prompt('Rocky Doorbell URL (Dad/Rocky setup only). Leave blank to turn it off.', current);
-            if (input === null) return;
-            const trimmed = input.trim();
-            if (!trimmed) {
-                localStorage.removeItem('rcc_rocky_webhook_url');
-                setSyncStatus('🔕 Rocky doorbell turned off on this device. Use Copy/Share for now.', 'warning');
-                return;
-            }
-            try {
-                const parsed = new URL(trimmed);
-                if (parsed.protocol !== 'https:') throw new Error('Use https');
-                localStorage.setItem('rcc_rocky_webhook_url', parsed.href);
-                setSyncStatus('🔔 Rocky doorbell saved on this device. Next Sync Data tap will try to message Rocky automatically.', 'success');
-            } catch {
-                alert('Please use a safe https:// webhook URL, or leave it blank.');
-            }
-        }
-
-        async function notifyRockyWebhook(webhook, syncData) {
-            try {
-                const response = await fetch(webhook, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        type: 'rcc-local-sync',
-                        message: buildRockySyncMessage(syncData),
-                        syncData
-                    })
-                });
-                if (!response.ok) throw new Error(`Doorbell returned ${response.status}`);
-                localStorage.setItem('rcc_last_rocky_sync_notice', new Date().toISOString());
-                setSyncStatus('✅ Rocky doorbell sent! Rocky should get the sync message automatically.', 'success');
-            } catch (error) {
-                setSyncStatus(`⚠️ Rocky doorbell could not send from this browser (${error.message}). Use Copy/Share this time.`, 'error');
-            }
         }
 
         function copySyncData() {

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rcc-v21';
+const CACHE_NAME = 'rcc-v22';
 const urlsToCache = [
   './',
   './index.html',
