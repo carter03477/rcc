@@ -4026,31 +4026,81 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
         let remindersEnabled = false;
         let reminderInterval = null;
 
-        function toggleReminders() {
+        async function toggleReminders() {
             remindersEnabled = !remindersEnabled;
             const btn = document.getElementById('remindersToggle');
 
             if (remindersEnabled) {
+                await requestNotificationPermission();
                 btn.textContent = '🔔 ON';
                 btn.classList.add('active');
                 localStorage.setItem('rcc_reminders', 'true');
                 startReminderCheck();
-                showNotification('Reminders enabled! You\'ll get alerts for upcoming deadlines.', '⏰');
+                showNotification('🔔 Reminders enabled!', 'RCC will warn you when homework/tasks are due or events are starting soon.');
             } else {
                 btn.textContent = '🔔 OFF';
                 btn.classList.remove('active');
                 localStorage.setItem('rcc_reminders', 'false');
                 if (reminderInterval) {
                     clearInterval(reminderInterval);
+                    reminderInterval = null;
                 }
+                showNotification('🔕 Reminders turned off', 'You can turn them back on anytime.');
             }
         }
 
         function startReminderCheck() {
-            // Check every 30 minutes
-            reminderInterval = setInterval(checkReminders, 1800000);
-            // Also check immediately
+            if (reminderInterval) clearInterval(reminderInterval);
+            // Check every 5 minutes while RCC is open/running.
+            reminderInterval = setInterval(checkReminders, 300000);
             checkReminders();
+        }
+
+        function reminderRecentlySent(key, quietHours) {
+            const lastReminded = localStorage.getItem(key);
+            const lastTime = lastReminded ? new Date(lastReminded) : null;
+            return lastTime && (Date.now() - lastTime.getTime()) < quietHours * 60 * 60 * 1000;
+        }
+
+        function markReminderSent(key) {
+            localStorage.setItem(key, new Date().toISOString());
+        }
+
+        function notifyOnce(key, title, detail, quietHours = 12) {
+            if (reminderRecentlySent(key, quietHours)) return;
+            showNotification(title, detail);
+            markReminderSent(key);
+        }
+
+        function getWeekdayDate(dayName, now = new Date()) {
+            const dayIndex = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(dayName);
+            if (dayIndex === -1) return null;
+            const date = new Date(now);
+            date.setHours(0, 0, 0, 0);
+            const diff = (dayIndex - date.getDay() + 7) % 7;
+            date.setDate(date.getDate() + diff);
+            return date;
+        }
+
+        function getNextEventStart(eventItem, now = new Date()) {
+            const dayMatch = String(eventItem.date || '').match(/\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b/i);
+            if (!dayMatch) return null;
+            const dayName = dayMatch[1][0].toUpperCase() + dayMatch[1].slice(1).toLowerCase();
+            const range = parseEventTimeRange(eventItem.time);
+            if (!range) return null;
+            const startDate = getWeekdayDate(dayName, now);
+            if (!startDate) return null;
+            startDate.setHours(Math.floor(range.start / 60), range.start % 60, 0, 0);
+            if (startDate < now) startDate.setDate(startDate.getDate() + 7);
+            return startDate;
+        }
+
+        function formatReminderTime(date) {
+            return date.toLocaleString('en-AU', {
+                weekday: 'short',
+                hour: 'numeric',
+                minute: '2-digit'
+            });
         }
 
         function checkReminders() {
@@ -4059,7 +4109,20 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             const allData = getAllData();
             const now = new Date();
 
-            // Check homework due soon
+            // Calendar events: remind 15 minutes before, and also within 2 hours for newly-enabled reminders.
+            allData.calendar.forEach(eventItem => {
+                const startDate = getNextEventStart(eventItem, now);
+                if (!startDate) return;
+                const minutesUntil = (startDate - now) / (1000 * 60);
+                const eventKey = String(eventItem.id).replace(/[^a-z0-9_-]/gi, '_');
+                if (minutesUntil > 0 && minutesUntil <= 15) {
+                    notifyOnce(`reminded_event_15_${eventKey}_${startDate.toDateString()}`, `📅 Starting soon: ${eventItem.title}`, `${eventItem.time}${eventItem.location ? ' • ' + eventItem.location : ''}`, 24);
+                } else if (minutesUntil > 15 && minutesUntil <= 120) {
+                    notifyOnce(`reminded_event_120_${eventKey}_${startDate.toDateString()}`, `🗓️ Upcoming event: ${eventItem.title}`, `${formatReminderTime(startDate)} • ${eventItem.time}`, 24);
+                }
+            });
+
+            // Homework: remind when due within 48 hours and again within 24 hours.
             allData.homework.forEach(hw => {
                 if (hw.status === 'completed') return;
 
@@ -4067,21 +4130,14 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 if (!dueDate) return;
 
                 const hoursUntil = (dueDate - now) / (1000 * 60 * 60);
-
-                // Remind if due in 24 hours
                 if (hoursUntil > 0 && hoursUntil <= 24) {
-                    const lastReminded = localStorage.getItem('reminded_hw_' + hw.id);
-                    const lastTime = lastReminded ? new Date(lastReminded) : null;
-
-                    // Only remind once per day
-                    if (!lastTime || (now - lastTime) > 86400000) {
-                        showNotification(`📚 Homework due soon: ${hw.subject} - ${hw.name}`, `Due: ${hw.due}`);
-                        localStorage.setItem('reminded_hw_' + hw.id, now.toISOString());
-                    }
+                    notifyOnce(`reminded_hw_24_${hw.id}`, `📚 Homework due soon: ${hw.subject} - ${hw.name}`, `Due: ${hw.due}`, 24);
+                } else if (hoursUntil > 24 && hoursUntil <= 48) {
+                    notifyOnce(`reminded_hw_48_${hw.id}`, `📚 Homework coming up: ${hw.subject} - ${hw.name}`, `Due: ${hw.due}`, 24);
                 }
             });
 
-            // Check tasks due soon
+            // Tasks: remind when due within 48 hours and again within 24 hours.
             allData.tasks.forEach(task => {
                 if (task.completed) return;
 
@@ -4089,15 +4145,10 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 if (!dueDate) return;
 
                 const hoursUntil = (dueDate - now) / (1000 * 60 * 60);
-
                 if (hoursUntil > 0 && hoursUntil <= 24) {
-                    const lastReminded = localStorage.getItem('reminded_task_' + task.id);
-                    const lastTime = lastReminded ? new Date(lastReminded) : null;
-
-                    if (!lastTime || (now - lastTime) > 86400000) {
-                        showNotification(`✅ Task due soon: ${task.title}`, `Due: ${task.due}`);
-                        localStorage.setItem('reminded_task_' + task.id, now.toISOString());
-                    }
+                    notifyOnce(`reminded_task_24_${task.id}`, `✅ Task due soon: ${task.title}`, `Due: ${task.due}`, 24);
+                } else if (hoursUntil > 24 && hoursUntil <= 48) {
+                    notifyOnce(`reminded_task_48_${task.id}`, `✅ Task coming up: ${task.title}`, `Due: ${task.due}`, 24);
                 }
             });
         }
@@ -4112,25 +4163,28 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
 
             badge.classList.add('show');
 
-            // Auto-hide after 5 seconds
+            // Auto-hide after 7 seconds
             setTimeout(() => {
                 badge.classList.remove('show');
-            }, 5000);
+            }, 7000);
 
-            // Try browser notification if permitted
+            // Try browser/iPad notification if permitted.
             if ('Notification' in window && Notification.permission === 'granted') {
                 new Notification('Rocky Command Centre', {
-                    body: content,
-                    icon: '🚀'
+                    body: `${content}${time ? ' — ' + time : ''}`,
+                    icon: './icon-192.png',
+                    badge: './icon-192.png'
                 });
             }
         }
 
-        // Request notification permission
-        function requestNotificationPermission() {
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
+        // Request notification permission from a user action when possible.
+        async function requestNotificationPermission() {
+            if (!('Notification' in window)) return 'unsupported';
+            if (Notification.permission === 'default') {
+                return Notification.requestPermission();
             }
+            return Notification.permission;
         }
 
         // Load reminders preference
@@ -4143,9 +4197,6 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
                 btn.classList.add('active');
                 startReminderCheck();
             }
-
-            // Request notification permission
-            setTimeout(requestNotificationPermission, 2000);
         });
 
         // Achievement Badges System
