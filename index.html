@@ -685,7 +685,7 @@
             --week-grid-height: 672px;
             display: grid;
             grid-template-columns: 74px repeat(5, minmax(130px, 1fr));
-            grid-template-rows: auto var(--week-grid-height);
+            grid-template-rows: auto auto var(--week-grid-height);
             min-width: 820px;
             background: #e5e7eb;
             border: 1px solid #d6d6d6;
@@ -715,6 +715,54 @@
         body.dark-mode .grid-header {
             background: #242438;
             border-color: #3a3a50;
+        }
+
+        .week-untimed-label,
+        .week-untimed-cell {
+            background: rgba(248,250,252,0.96);
+            border-right: 1px solid #e5e7eb;
+            border-bottom: 1px solid #d6d6d6;
+            min-height: 42px;
+            padding: 6px;
+        }
+
+        .week-untimed-label {
+            color: #64748b;
+            font-size: 0.74em;
+            font-weight: 800;
+            text-align: right;
+            padding-top: 11px;
+        }
+
+        body.dark-mode .week-untimed-label,
+        body.dark-mode .week-untimed-cell {
+            background: #242438;
+            border-color: #3a3a50;
+        }
+
+        .week-untimed-event {
+            display: block;
+            width: 100%;
+            border: none;
+            border-left: 3px solid #f59e0b;
+            border-radius: 7px;
+            background: linear-gradient(135deg, #FFE66D 0%, #FFC857 100%);
+            color: #333;
+            text-align: left;
+            font-size: 0.72em;
+            font-weight: 800;
+            line-height: 1.15;
+            padding: 5px 6px;
+            margin: 2px 0;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .week-untimed-event .grid-event-time {
+            font-weight: 700;
+            opacity: 0.72;
         }
 
         .week-time-column,
@@ -3088,10 +3136,22 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             }
 
             const hourLines = hourLabels.map(item => `<div class="week-hour-line" style="top:${item.top}px"></div>`).join('');
+            const eventsByDay = Object.fromEntries(days.map(day => [day, allData.calendar.filter(event => event.date.includes(day))]));
             let html = `<div class="week-grid-container" style="--week-grid-height:${gridHeight}px">`;
             html += '<div class="grid-header">Time</div>';
             days.forEach(day => {
                 html += `<div class="grid-header">${day}</div>`;
+            });
+
+            html += '<div class="week-untimed-label">linked</div>';
+            days.forEach(day => {
+                const untimedEvents = eventsByDay[day].filter(event => !parseEventTimeRange(event.time));
+                html += '<div class="week-untimed-cell">';
+                untimedEvents.forEach(event => {
+                    const safeCategory = String(event.category || 'general').replace(/[^a-z0-9_-]/gi, '');
+                    html += `<button class="week-untimed-event ${safeCategory}" title="${escapeHtml(event.title)} - ${escapeHtml(event.time)}" onclick="openEventDetail('${encodeURIComponent(String(event.id))}')"><strong>${escapeHtml(event.title)}</strong><span class="grid-event-time">${escapeHtml(event.time || 'Linked')}</span></button>`;
+                });
+                html += '</div>';
             });
 
             html += '<div class="week-time-column">';
@@ -3101,7 +3161,7 @@ BEGIN:VCALENDAR ... pasted .ics text also works"></textarea>
             html += '</div>';
 
             days.forEach(day => {
-                const dayEvents = layoutWeekEvents(allData.calendar.filter(event => event.date.includes(day)));
+                const dayEvents = layoutWeekEvents(eventsByDay[day]);
                 html += `<div class="week-day-column" aria-label="${day} calendar">${hourLines}`;
                 dayEvents.forEach(event => {
                     const start = Math.max(event.range.start, gridStart);
